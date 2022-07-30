@@ -26,6 +26,8 @@ public class UserDto {
     @NonNull
     private String fullname;
 
+    private String password;
+
     @NonNull
     private String role;
 

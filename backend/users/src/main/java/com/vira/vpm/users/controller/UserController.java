@@ -1,22 +1,32 @@
 package com.vira.vpm.users.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.vira.vpm.users.dto.UserDto;
 import com.vira.vpm.users.service.UserService;
 
+@RestController("users")
 public class UserController {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
 
-    @RabbitListener(queues = {"${rabbitmq.queue.name}"})
-    public void consume(String message) {
-        LOGGER.info(String.format("Received message -> %s", message));
-        userService.findAll();
+    @GetMapping
+    public ResponseEntity<List<UserDto>> findAll() {
+        try {
+            List<UserDto> users = userService.findAll();
+            if (users == null || users.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
