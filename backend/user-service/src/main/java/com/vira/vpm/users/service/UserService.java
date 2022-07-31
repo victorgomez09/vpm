@@ -22,7 +22,7 @@ public class UserService {
 
     public List<UserDto> findAll() {
         return userRepository.findAll().stream().map((User user) -> new UserDto(user.getId(), user.getUsername(), user.getEmail(),
-            user.getFullname(), user.getRole().getName(), user.getActive(), user.getLastLogin(), user.getProjects(),
+            user.getFullname(), user.getRole().getName(), user.getActive(), user.getLastLogin(),
             user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
     }
     
@@ -30,7 +30,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             return new UserDto(user.getId(), user.getUsername(), user.getEmail(),
-                user.getFullname(), user.getRole().getName(), user.getActive(), user.getLastLogin(), user.getProjects(),
+                user.getFullname(), user.getRole().getName(), user.getActive(), user.getLastLogin(),
                 user.getCreationDate(), user.getUpdateDate());
         }
         return null;
@@ -43,7 +43,7 @@ public class UserService {
             userToCreate = userRepository.save(new User(userData.getUsername(), userData.getEmail(), userData.getFullname(), userData.getPassword(), role, 
                 false, null));
             return new UserDto(userToCreate.getId(), userToCreate.getUsername(), userToCreate.getEmail(), userToCreate.getFullname(), userToCreate.getRole().getName(), 
-                userToCreate.getActive(), userToCreate.getLastLogin(), userToCreate.getProjects(), userToCreate.getCreationDate(), userToCreate.getUpdateDate());
+                userToCreate.getActive(), userToCreate.getLastLogin(), userToCreate.getCreationDate(), userToCreate.getUpdateDate());
         }
         return null;
     }
@@ -57,7 +57,7 @@ public class UserService {
             userToUpdate.setRole(roleRepository.findByName(userData.getRole()));
             userRepository.save(userToUpdate);
             return new UserDto(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail(), userToUpdate.getFullname(), userToUpdate.getRole().getName(), 
-                userToUpdate.getActive(), userToUpdate.getLastLogin(), userToUpdate.getProjects(), userToUpdate.getCreationDate(), userToUpdate.getUpdateDate());
+                userToUpdate.getActive(), userToUpdate.getLastLogin(), userToUpdate.getCreationDate(), userToUpdate.getUpdateDate());
         }
         return null;
     }

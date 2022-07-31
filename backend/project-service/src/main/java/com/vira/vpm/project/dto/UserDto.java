@@ -1,16 +1,11 @@
-package com.vira.vpm.users.dto;
+package com.vira.vpm.project.dto;
 
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@Getter @Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
+@Data
 public class UserDto {
     @NonNull
     private String id;
@@ -23,8 +18,6 @@ public class UserDto {
 
     @NonNull
     private String fullname;
-
-    private String password;
 
     @NonNull
     private String role;
