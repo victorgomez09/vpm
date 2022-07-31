@@ -8,6 +8,6 @@ spring:
                 git:
                     uri: https://github.com/Victin09/vpm
                     search-paths:
-                    - config-server-data
+                    - /backend/config-server-data
     application:
         name: config-server
