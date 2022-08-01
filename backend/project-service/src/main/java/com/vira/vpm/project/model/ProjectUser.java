@@ -6,14 +6,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.Data;
+import lombok.NonNull;
+
 @Entity
 @Table(name = "project_user")
+@Data
 public class ProjectUser {
      
     @Id
@@ -22,9 +28,12 @@ public class ProjectUser {
     @Column(name = "id")
     public String id;
 
-    @Column(name = "project")
+    @ManyToOne
+    @NonNull
+    @JoinColumn(name = "project", nullable = false)
     private Project project;
 
+    @NonNull
     @Column(name = "user")
     private String user;
 

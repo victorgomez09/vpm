@@ -1,11 +1,13 @@
 package com.vira.vpm.project.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,6 +39,9 @@ public class Project {
     @NonNull
     @Column(name = "image")
     private String image;
+
+    @OneToMany(mappedBy = "project")
+    private List<ProjectUser> users;
 
     @CreationTimestamp
     @Column(name = "creation_date")

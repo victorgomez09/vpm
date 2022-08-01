@@ -38,7 +38,7 @@ public class UserService {
 
     public UserDto save(UserDto userData) {
         User userToCreate = userRepository.findByUsername(userData.getUsername());
-        if (userToCreate != null) {
+        if (userToCreate == null) {
             Role role = roleRepository.findByName(userData.getRole());
             userToCreate = userRepository.save(new User(userData.getUsername(), userData.getEmail(), userData.getFullname(), userData.getPassword(), role, 
                 false, null));

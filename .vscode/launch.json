@@ -49,6 +49,16 @@
             "projectName": "user-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ProjectServiceApplication<project-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.vira.vpm.project.ProjectServiceApplication",
+            "projectName": "project-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
