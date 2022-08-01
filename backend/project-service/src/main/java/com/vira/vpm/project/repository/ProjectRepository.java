@@ -10,6 +10,6 @@ import com.vira.vpm.project.model.ProjectUser;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, String> {
-    public List<Project> findByUsers(List<ProjectUser> users);
+    public List<Project> findByUsersIn(List<ProjectUser> users);
     public Project findByName(String name);
 }
