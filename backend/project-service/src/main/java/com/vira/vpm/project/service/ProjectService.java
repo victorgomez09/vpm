@@ -1,5 +1,6 @@
 package com.vira.vpm.project.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,6 @@ import com.vira.vpm.project.dto.ProjectDto;
 import com.vira.vpm.project.model.Project;
 import com.vira.vpm.project.model.ProjectUser;
 import com.vira.vpm.project.repository.ProjectRepository;
-import com.vira.vpm.project.repository.ProjectUserRepository;
 
 @Service
 public class ProjectService {
@@ -18,10 +18,10 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
-    private ProjectUserRepository projectUserRepository;
+    private ProjectUserService projectUserService;
 
     public List<ProjectDto> findAllByUser(String userId) {
-        List<ProjectUser> projectUserList = projectUserRepository.findAllByUser(userId);
+        List<ProjectUser> projectUserList = projectUserService.findAllByUser(userId);
         if (projectUserList.isEmpty()) return null;
 
         List<ProjectDto> projects = projectRepository.findByUsersIn(projectUserList).stream().map((Project project) -> new ProjectDto(project.getId(), 
@@ -43,12 +43,14 @@ public class ProjectService {
         Project projectToSave = projectRepository.findByName(projectData.getName());
         if (projectToSave == null) {
             projectToSave = new Project(projectData.getName(), projectData.getDescription(), projectData.getImage());
-            projectRepository.save(projectToSave);
-
+            
+            List<ProjectUser> projectUserSet = new ArrayList<>();
             for (String user : projectData.getUsers()) {
-                ProjectUser projectUser = new ProjectUser(projectToSave, user);
-                projectUserRepository.save(projectUser);
+                ProjectUser projectUser = projectUserService.save(projectToSave, user);
+                projectUserSet.add(projectUser);
             }
+            projectToSave.setUsers(projectUserSet);
+            projectRepository.save(projectToSave);
 
             return new ProjectDto(projectToSave.getId(), projectToSave.getName(), projectToSave.getDescription(), projectToSave.getImage(), projectToSave.getUsers().stream().map((ProjectUser pu) -> pu.getUser()).collect(Collectors.toList()),
                 projectToSave.getCreationDate(), projectToSave.getUpdateDate());
@@ -72,12 +74,7 @@ public class ProjectService {
     public ProjectDto addUserToProject(String projectId, String userId) {
         Project project = projectRepository.findById(projectId).orElse(null);
         if (project != null) {
-            List<ProjectUser> projectUserList = projectUserRepository.findByProject(project);
-            for (ProjectUser e : projectUserList) {
-                if (e.getUser() == userId) return null;
-            }
-            ProjectUser projectUser = new ProjectUser(project, userId);
-            projectUserRepository.save(projectUser);
+            projectUserService.save(project, userId);
             return new ProjectDto(project.getId(), project.getName(), project.getDescription(), project.getImage(), project.getUsers().stream().map((ProjectUser pu) -> pu.getUser()).collect(Collectors.toList()),
                 project.getCreationDate(), project.getUpdateDate());
         }
@@ -88,12 +85,7 @@ public class ProjectService {
     public ProjectDto removeUserFromProject(String projectId, String userId) {
         Project project = projectRepository.findById(projectId).orElse(null);
         if (project != null) {
-            List<ProjectUser> projectUserList = projectUserRepository.findByProject(project);
-            for (ProjectUser e : projectUserList) {
-                if (e.getUser() != userId) return null;
-            }
-            ProjectUser projectUser = projectUserRepository.findByProjectAndUser(project, userId);
-            projectUserRepository.delete(projectUser);
+            projectUserService.delete(project, userId);
             return new ProjectDto(project.getId(), project.getName(), project.getDescription(), project.getImage(), project.getUsers().stream().map((ProjectUser pu) -> pu.getUser()).collect(Collectors.toList()),
                 project.getCreationDate(), project.getUpdateDate());
         }

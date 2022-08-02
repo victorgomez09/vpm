@@ -9,6 +9,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/vpm-projects
     username: postgres
     password: postgres
+  application:
+    zipkin: http://localhost:9411
 
 server:
   port: ${PORT:${SERVER_PORT:0}}

@@ -34,7 +34,7 @@ public class ProjectUser {
     private Project project;
 
     @NonNull
-    @Column(name = "user")
+    @Column(name = "user_id")
     private String user;
 
     @CreationTimestamp
