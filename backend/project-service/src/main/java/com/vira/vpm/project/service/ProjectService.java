@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vira.vpm.project.dto.ProjectDto;
+import com.vira.vpm.project.dto.UserDto;
+import com.vira.vpm.project.feign.UsersFeignClient;
 import com.vira.vpm.project.model.Project;
 import com.vira.vpm.project.model.ProjectUser;
 import com.vira.vpm.project.repository.ProjectRepository;
@@ -19,6 +21,8 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     @Autowired
     private ProjectUserService projectUserService;
+    @Autowired
+    private UsersFeignClient usersFeignClient;
 
     public List<ProjectDto> findAllByUser(String userId) {
         List<ProjectUser> projectUserList = projectUserService.findAllByUser(userId);
@@ -34,6 +38,8 @@ public class ProjectService {
     public ProjectDto findById(String projectId) {
         Project project = projectRepository.findById(projectId).orElse(null);
         if (project == null) return null;
+        List<UserDto> usersList = usersFeignClient.findAllUsersByIds(project.getUsers().stream().map((ProjectUser pu) -> pu.getUser()).collect(Collectors.toList()));
+        System.out.println("usersList: " + usersList);
         return new ProjectDto(project.getId(), project.getName(), project.getDescription(), project.getImage(), project.getUsers().stream().map((ProjectUser pu) -> pu.getUser()).collect(Collectors.toList()),
             project.getCreationDate(), project.getUpdateDate());
     }

@@ -6,20 +6,24 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "users")
 @Data
+@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -41,21 +45,8 @@ public class User {
     private String fullname;
 
     @NonNull
-    @Column(name = "password")
-    private String password;
-
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "FK_ROLE_USER", nullable = false, updatable = false)
-    private Role role;
-
-    @NonNull
     @Column(name = "active")
     private Boolean active;
-
-    @NonNull
-    @Column(name = "last_login")
-    private Date lastLogin;
     
     @CreationTimestamp
     @Column(name = "creation_date")

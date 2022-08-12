@@ -20,5 +20,9 @@ spring:
         uri: lb://user-service
         predicates:
           - Path=/users/**
+      - id: project-service
+        uri: lb://project-service
+        predicates:
+          - Path=/projects/**
 server:
   port: 8080

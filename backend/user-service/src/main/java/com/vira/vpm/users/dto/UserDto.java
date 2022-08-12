@@ -4,13 +4,13 @@ import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     @NonNull
     private String id;
@@ -24,16 +24,8 @@ public class UserDto {
     @NonNull
     private String fullname;
 
-    private String password;
-
-    @NonNull
-    private String role;
-    
     @NonNull
     private Boolean active;
-
-    @NonNull
-    private Date lastLogin;
 
     @NonNull
     private Date creationDate;
