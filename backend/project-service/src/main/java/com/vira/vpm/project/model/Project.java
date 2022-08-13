@@ -3,6 +3,7 @@ package com.vira.vpm.project.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +15,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "projects")
-@Data
+@Getter @Setter
 public class Project {
     
     @Id
@@ -28,19 +29,17 @@ public class Project {
     @Column(name = "id")
     public String id;
 
-    @NonNull
     @Column(name = "name")
     private String name;
 
-    @NonNull
     @Column(name = "description")
     private String description;
 
-    @NonNull
     @Column(name = "image")
     private String image;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", orphanRemoval = true,
+        cascade = CascadeType.ALL)
     private List<ProjectUser> users;
 
     @CreationTimestamp
@@ -50,4 +49,10 @@ public class Project {
     @UpdateTimestamp
     @Column(name = "update_date")
     private Date updateDate;
+
+    public Project(String name, String description, String image) {
+        this.name = name;
+        this.description = description;
+        this.image = image;
+    }
 }

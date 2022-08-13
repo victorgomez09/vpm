@@ -44,7 +44,6 @@ public class ProjectService {
             project.getCreationDate(), project.getUpdateDate());
     }
 
-
     public ProjectDto save(ProjectDto projectData) {
         Project projectToSave = projectRepository.findByName(projectData.getName());
         if (projectToSave == null) {
@@ -52,7 +51,7 @@ public class ProjectService {
             
             List<ProjectUser> projectUserSet = new ArrayList<>();
             for (String user : projectData.getUsers()) {
-                ProjectUser projectUser = projectUserService.save(projectToSave, user);
+                ProjectUser projectUser = new ProjectUser(projectToSave, user);
                 projectUserSet.add(projectUser);
             }
             projectToSave.setUsers(projectUserSet);
