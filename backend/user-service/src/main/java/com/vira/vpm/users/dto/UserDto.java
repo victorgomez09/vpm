@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
@@ -16,16 +17,10 @@ public class UserDto {
     private String id;
 
     @NonNull
-    private String username;
-
-    @NonNull
     private String email;
 
     @NonNull
     private String fullname;
-
-    @NonNull
-    private Boolean active;
 
     @NonNull
     private Date creationDate;

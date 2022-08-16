@@ -33,10 +33,6 @@ public class User {
     public String id;
 
     @NonNull
-    @Column(name = "username")
-    private String username;
-
-    @NonNull
     @Column(name = "email")
     private String email;
 
@@ -44,10 +40,6 @@ public class User {
     @Column(name = "fullname")
     private String fullname;
 
-    @NonNull
-    @Column(name = "active")
-    private Boolean active;
-    
     @CreationTimestamp
     @Column(name = "creation_date")
     private Date creationDate;

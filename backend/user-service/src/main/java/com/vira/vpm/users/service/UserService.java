@@ -17,28 +17,26 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<UserDto> findAll() {
-        return userRepository.findAll().stream().map((User user) -> new UserDto(user.getId(), user.getUsername(), user.getEmail(),
-            user.getFullname(), user.getActive(),
-            user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
+        return userRepository.findAll().stream().map((User user) -> new UserDto(user.getId(), user.getEmail(),
+                user.getFullname(), user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
     }
-    
+
     public UserDto findById(String userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            return new UserDto(user.getId(), user.getUsername(), user.getEmail(),
-                user.getFullname(), user.getActive(),
-                user.getCreationDate(), user.getUpdateDate());
+            return new UserDto(user.getId(), user.getEmail(), user.getFullname(),
+                    user.getCreationDate(), user.getUpdateDate());
         }
         return null;
     }
 
     public UserDto save(UserDto userData) {
-        User userToCreate = userRepository.findByUsername(userData.getUsername());
+        User userToCreate = userRepository.findByEmail(userData.getEmail());
         if (userToCreate == null) {
-            userToCreate = userRepository.save(new User(userData.getUsername(), userData.getEmail(), userData.getFullname(),
-                false));
-            return new UserDto(userToCreate.getId(), userToCreate.getUsername(), userToCreate.getEmail(), userToCreate.getFullname(), 
-                userToCreate.getActive(), userToCreate.getCreationDate(), userToCreate.getUpdateDate());
+            userToCreate = userRepository
+                    .save(new User(userData.getEmail(), userData.getFullname()));
+            return new UserDto(userToCreate.getId(), userToCreate.getEmail(), userToCreate.getFullname(),
+                    userToCreate.getCreationDate(), userToCreate.getUpdateDate());
         }
         return null;
     }
@@ -49,8 +47,8 @@ public class UserService {
             userToUpdate.setFullname(userData.getFullname());
             userToUpdate.setEmail(userData.getEmail());
             userRepository.save(userToUpdate);
-            return new UserDto(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail(), userToUpdate.getFullname(), 
-                userToUpdate.getActive(), userToUpdate.getCreationDate(), userToUpdate.getUpdateDate());
+            return new UserDto(userToUpdate.getId(), userToUpdate.getEmail(), userToUpdate.getFullname(),
+                    userToUpdate.getCreationDate(), userToUpdate.getUpdateDate());
         }
         return null;
     }

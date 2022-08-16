@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vira.vpm.authservice.dto.LoginDto;
 import com.vira.vpm.authservice.dto.RegisterDto;
 import com.vira.vpm.authservice.dto.TokenDto;
-import com.vira.vpm.authservice.entity.AuthUser;
 import com.vira.vpm.authservice.service.AuthUserService;
 
 @RestController
@@ -30,7 +29,7 @@ public class AuthUserController {
   }
 
   @PostMapping("/validate")
-  public ResponseEntity<TokenDto> validate(@RequestParam String token) {
+  public ResponseEntity<TokenDto> validate(@RequestParam(name = "token") String token) {
     TokenDto tokenDto = authUserService.validate(token);
     if (tokenDto == null)
       return ResponseEntity.badRequest().build();
@@ -38,8 +37,8 @@ public class AuthUserController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<AuthUser> create(@RequestBody RegisterDto registerDto) {
-    AuthUser authUser = authUserService.save(registerDto);
+  public ResponseEntity<RegisterDto> create(@RequestBody RegisterDto registerDto) {
+    RegisterDto authUser = authUserService.save(registerDto);
     if (authUser == null)
       return ResponseEntity.badRequest().build();
     return ResponseEntity.ok(authUser);

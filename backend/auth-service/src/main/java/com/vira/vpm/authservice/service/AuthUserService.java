@@ -10,7 +10,7 @@ import com.vira.vpm.authservice.dto.TokenDto;
 import com.vira.vpm.authservice.entity.AuthUser;
 import com.vira.vpm.authservice.repository.AuthUserRepository;
 import com.vira.vpm.authservice.security.JwtProvider;
-import com.vira.vpm.authservice.feign.UserFeignController;
+import com.vira.vpm.authservice.feign.UserFeignClient;
 
 @Service
 public class AuthUserService {
@@ -22,19 +22,20 @@ public class AuthUserService {
   @Autowired
   private PasswordEncoder passwordEncoder;
   @Autowired
-  private UserFeignController userFeignController;
+  private UserFeignClient userFeignController;
 
-  public AuthUser save(RegisterDto registerDto) {
+  public RegisterDto save(RegisterDto registerDto) {
     AuthUser user = authUserRepository.findByEmail(registerDto.getEmail());
     if (user != null)
       return null;
-    userFeignController.save(userData);
+    userFeignController.save(registerDto);
     String password = passwordEncoder.encode(registerDto.getPassword());
     AuthUser authUser = AuthUser.builder()
         .email(registerDto.getEmail())
         .password(password)
         .build();
-    return authUserRepository.save(authUser);
+    authUserRepository.save(authUser);
+    return registerDto;
   }
 
   public TokenDto login(LoginDto loginDto) {
@@ -49,8 +50,8 @@ public class AuthUserService {
   public TokenDto validate(String token) {
     if (!jwtProvider.validate(token))
       return null;
-    String username = jwtProvider.getUserEmailFromToken(token);
-    if (authUserRepository.findByEmail(username) != null)
+    String email = jwtProvider.getUserEmailFromToken(token);
+    if (authUserRepository.findByEmail(email) == null)
       return null;
     return new TokenDto(token);
   }
