@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -9,6 +10,8 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { map } from 'rxjs';
+import { apiURL } from 'src/app/shared/constants/api.constant';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +21,7 @@ import {
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -68,6 +71,19 @@ export class RegisterComponent implements OnInit {
       }
     };
   };
+
+  onSubmit(): void {
+    const userData = {
+      email: this.registerForm.value['email'],
+      fullname: this.registerForm.value['fullname'],
+      password: this.registerForm.value['password'],
+    };
+    console.log('sending form to backend', userData);
+
+    this.http
+      .post(`${apiURL}/auth/create`, userData)
+      .subscribe((data) => console.log('data', data));
+  }
 
   get f() {
     return this.registerForm.controls;

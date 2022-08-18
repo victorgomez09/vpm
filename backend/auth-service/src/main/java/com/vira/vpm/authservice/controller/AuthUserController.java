@@ -2,6 +2,7 @@ package com.vira.vpm.authservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.vira.vpm.authservice.dto.RegisterDto;
 import com.vira.vpm.authservice.dto.TokenDto;
 import com.vira.vpm.authservice.service.AuthUserService;
 
+@CrossOrigin(origins = "https://victin09-vpm-jwj4xqr63597r-4200.githubpreview.dev")
 @RestController
 @RequestMapping("/auth")
 public class AuthUserController {
