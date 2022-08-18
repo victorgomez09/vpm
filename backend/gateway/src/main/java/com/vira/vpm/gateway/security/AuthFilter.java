@@ -26,17 +26,12 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
   @Override
   public GatewayFilter apply(Config config) {
     return (((exchange, chain) -> {
-      if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-        System.out.println("Running onError if exhange not contains Auth header");
+      if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
         return onError(exchange, HttpStatus.BAD_REQUEST);
-      }
       String tokenHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
       String[] chunks = tokenHeader.split(" ");
-      if (chunks.length != 2 || !chunks[0].equals("Bearer")) {
-        System.out.println("return onError: " + chunks.length + " / " + chunks[0] + " - " + chunks[1]);
+      if (chunks.length != 2 || !chunks[0].equals("Bearer"))
         return onError(exchange, HttpStatus.BAD_REQUEST);
-      }
-      System.out.println("chunks[1]: " + chunks[1]);
       return webClient.build()
           .post()
           .uri("http://auth-service/auth/validate?token=" + chunks[1])
