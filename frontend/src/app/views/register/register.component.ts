@@ -2,15 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
-  AbstractControlOptions,
   FormBuilder,
   FormControl,
   FormGroup,
   ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { map } from 'rxjs';
 import { apiURL } from 'src/app/shared/constants/api.constant';
 
 @Component({
@@ -20,11 +17,15 @@ import { apiURL } from 'src/app/shared/constants/api.constant';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  registered?: boolean;
+  registeredError?: boolean;
+  registeredErrorCode?: number;
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.registered = false;
   }
 
   initForm(): void {
@@ -63,7 +64,6 @@ export class RegisterComponent implements OnInit {
 
       if (input.value !== matchingInput.value) {
         matchingInput.setErrors({ confirmedValidator: true });
-        console.log('matching', matchingInput.errors);
         return { confirmedValidator: true };
       } else {
         matchingInput.setErrors(null);
@@ -80,9 +80,13 @@ export class RegisterComponent implements OnInit {
     };
     console.log('sending form to backend', userData);
 
-    this.http
-      .post(`${apiURL}/auth/create`, userData)
-      .subscribe((data) => console.log('data', data));
+    this.http.post(`${apiURL}/auth/create`, userData).subscribe({
+      complete: () => (this.registered = true),
+      error: (error) => {
+        this.registeredError = true;
+        this.registeredErrorCode = error.status;
+      },
+    });
   }
 
   get f() {

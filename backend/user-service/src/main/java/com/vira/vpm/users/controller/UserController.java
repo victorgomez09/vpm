@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vira.vpm.users.dto.UserDto;
@@ -35,6 +36,18 @@ public class UserController {
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<UserDto> findByEmail(@RequestParam("email") String email) {
+        try {
+            UserDto user = userService.findByEmail(email);
+            if (user == null)
+                return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

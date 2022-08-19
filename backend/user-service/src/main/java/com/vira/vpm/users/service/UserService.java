@@ -30,6 +30,13 @@ public class UserService {
         return null;
     }
 
+    public UserDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null)
+            return null;
+        return new UserDto(user.getId(), user.getEmail(), user.getFullname(), user.getCreationDate(), user.getUpdateDate());
+    }
+
     public UserDto save(UserDto userData) {
         User userToCreate = userRepository.findByEmail(userData.getEmail());
         if (userToCreate == null) {
