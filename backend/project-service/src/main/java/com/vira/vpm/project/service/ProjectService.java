@@ -26,11 +26,13 @@ public class ProjectService {
 
     public List<ProjectDto> findAllByUser(String userId) {
         List<ProjectUser> projectUserList = projectUserService.findAllByUser(userId);
+        System.out.println("projectUserList: " + projectUserList.size());
         if (projectUserList.isEmpty()) return null;
 
         List<ProjectDto> projects = projectRepository.findByUsersIn(projectUserList).stream().map((Project project) -> new ProjectDto(project.getId(), 
             project.getName(), project.getDescription(), project.getImage(), project.getUsers().stream().map((ProjectUser pu) -> pu.getUser()).collect(Collectors.toList()), 
             project.getCreationDate(), project.getUpdateDate())).collect(Collectors.toList());
+        System.out.println("projects: " + projects.size());
 
         return projects;
     }

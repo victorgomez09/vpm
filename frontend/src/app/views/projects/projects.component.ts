@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth/auth.service';
+import { IUser } from 'src/app/core/models/auth.model';
+import { IProject } from 'src/app/core/models/project.model';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { ProjectsService } from 'src/app/core/services/projects/projects.service';
 
 @Component({
   selector: 'app-projects',
@@ -7,12 +10,22 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-  user?: any;
+  user?: IUser;
+  projects?: IProject[]
+  loading: boolean;
 
-  constructor(private authService: AuthService) { }
-
+  constructor(private authService: AuthService, private projectService: ProjectsService) { 
+    this.loading = true;
+  }
+  
   ngOnInit(): void {
-    this.authService.getUser().subscribe((data) => this.user = data);
+    console.log('onInit projects')
+    this.authService.user.subscribe((data) => {
+      console.log('user subscribe')
+      this.user = data!
+      this.projectService.getProjects(data.id).subscribe(data => this.projects = data);
+      this.loading = false
+    });
   }
 
 }

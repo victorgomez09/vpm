@@ -6,6 +6,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { HomeComponent } from './home/home.component';
   imports: [
     CommonModule,
     RouterModule,
+    SharedModule,
     ReactiveFormsModule
   ],
   exports: [HomeComponent, LoginComponent, RegisterComponent, ProjectsComponent]

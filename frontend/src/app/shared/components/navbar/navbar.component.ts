@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+import { IUser } from '../../../core/models/auth.model';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,12 +9,16 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
-  userIsLoggedIn: boolean = false;
+  toggleNavbar: boolean = false;
+  user?: IUser
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.isAuthenticated();
+    this.authService.user.subscribe(data => this.user = data!);
   }
 
+  handleToggleNavbar(): void {
+    this.toggleNavbar = !this.toggleNavbar;
+  }
 }

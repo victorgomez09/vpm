@@ -1,5 +1,6 @@
 package com.vira.vpm.project.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,12 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/list/{userId}")
-    public ResponseEntity<List<ProjectDto>> findAllByUser(@RequestParam String userId) {
+    @GetMapping("/list")
+    public ResponseEntity<List<ProjectDto>> findAllByUser(@RequestParam("userId") String userId) {
         try {
             List<ProjectDto> projects = projectService.findAllByUser(userId);
             if (projects == null || projects.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
             }
             return new ResponseEntity<>(projects, HttpStatus.OK);
         } catch (Exception e) {

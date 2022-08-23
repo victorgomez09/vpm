@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -8,7 +7,8 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { apiURL } from 'src/app/shared/constants/api.constant';
+import { IRegister } from '../../core/models/auth.model';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
   registeredError?: boolean;
   registeredErrorCode?: number;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -73,20 +73,21 @@ export class RegisterComponent implements OnInit {
   };
 
   onSubmit(): void {
-    const userData = {
+    const userData: IRegister = {
       email: this.registerForm.value['email'],
       fullname: this.registerForm.value['fullname'],
       password: this.registerForm.value['password'],
+      image: ''
     };
     console.log('sending form to backend', userData);
 
-    this.http.post(`${apiURL}/auth/create`, userData).subscribe({
-      complete: () => (this.registered = true),
+    this.authService.register(userData).subscribe({
+      complete: () => this.registered = true,
       error: (error) => {
         this.registeredError = true;
         this.registeredErrorCode = error.status;
       },
-    });
+    })
   }
 
   get f() {
