@@ -3,9 +3,10 @@ import {
   CanActivate,
   Router,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, first, map } from 'rxjs/operators';
 import { AuthService } from '../../services/auth/auth.service';
+import { handleError } from '../../../shared/utils/exception.util';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +15,24 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): Observable<boolean> {
-    return this.authService.isAuthenticated().pipe(
-      map((response: any) => {
-        if (response.token) {
-          return true;
-        }
-        this.router.navigate(['/login']);
-        return false;
-      }),
-      catchError(() => {
-        this.router.navigate(['/login']);
-        return of(false);
-      })
-    );
+    return this.authService.isAuthenticated().pipe(map(data => {
+      console.log('data from guard', data);
+      if (data && data.token) { 
+        this.authService.getLoggedUser()
+        return true; 
+      }
+      this.router.navigate(['/login'])
+      return false
+    }))
+    // return this.authService.user$.pipe(map((data) => {
+    //   console.log('data from user$', data)
+    //   if (data && data.id) return true
+    //   this.router.navigate(['/login']);
+    //   return false;
+    // }), catchError(() => {
+    //   handleError<boolean>('authGuard', false)
+    //   this.router.navigate(['/login']);
+    //   return of(false);
+    // }))
   }
 }

@@ -1,5 +1,5 @@
 <nav class="sticky top-0 z-50 bg-white shadow dark:bg-gray-800">
-  <div class="container px-6 py-2 mx-auto">
+  <div class="container px-6 py-3 mx-auto">
     <div class="md:flex md:items-center md:justify-between">
       <div class="flex items-center justify-between">
         <div class="text-xl font-semibold text-gray-700">
@@ -35,24 +35,9 @@
       >
         <div class="flex flex-col -mx-4 md:flex-row md:items-center md:mx-8">
           <a
-            href="#"
+            routerLink="/projects"
             class="px-2 py-1 mx-2 mt-2 text-sm font-medium text-gray-700 transition-colors duration-200 transform rounded-md md:mt-0 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-            >Join Slack</a
-          >
-          <a
-            href="#"
-            class="px-2 py-1 mx-2 mt-2 text-sm font-medium text-gray-700 transition-colors duration-200 transform rounded-md md:mt-0 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-            >Browse Topics</a
-          >
-          <a
-            href="#"
-            class="px-2 py-1 mx-2 mt-2 text-sm font-medium text-gray-700 transition-colors duration-200 transform rounded-md md:mt-0 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-            >Random Item</a
-          >
-          <a
-            href="#"
-            class="px-2 py-1 mx-2 mt-2 text-sm font-medium text-gray-700 transition-colors duration-200 transform rounded-md md:mt-0 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-            >Experts</a
+            >Projects</a
           >
         </div>
 
@@ -98,19 +83,6 @@
               {{user.fullname}}
             </h3>
           </button>
-        </div>
-
-        <div *ngIf="!user" class="flex items-center space-x-4">
-          <a
-            routerLink="/login"
-            class="px-2 py-1 mx-2 mt-2 text-sm font-medium text-gray-700 transition-colors duration-200 transform rounded-md md:mt-0 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700"
-            >Sign in</a
-          >
-          <a
-            routerLink="/register"
-            class="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
-            >Sign up</a
-          >
         </div>
       </div>
     </div>

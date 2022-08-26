@@ -9,15 +9,18 @@ import { ILogin, IRegister, IUser } from '../../models/auth.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject: Subject<IUser>;
-  public user: Observable<IUser>;
+  private userSubject: BehaviorSubject<IUser | null>;
+  public user$: Observable<IUser | null>;
 
   constructor(private http: HttpClient) {
     // this.userSubject = new BehaviorSubject<IUser>(
     //   JSON.parse(localStorage.getItem('currentUser')!)
     // );
-    this.userSubject = new Subject<IUser>();
-    this.user = this.userSubject.asObservable();
+    console.log('auth service constructor')
+    this.userSubject = new BehaviorSubject<IUser | null>(null);
+    this.user$ = this.userSubject.asObservable();
+    // Fetch user from database
+    // this.getUser();
   }
   
   setTokenToStorage(token: string): void {
@@ -30,7 +33,7 @@ export class AuthService {
     return token
   }
 
-  isAuthenticated(): Observable<any> {
+  isAuthenticated(): Observable<{token: string}> {
     //TODO: Temporaly solution, need to change in backend 
     // this.getUser();
     return this.http.post<{token: string}>(`${apiURL}/auth/validate?token=${this.getTokenFromStorage()}`, null).pipe(
@@ -38,12 +41,21 @@ export class AuthService {
     );
   }
 
-  getUser(): void {
-    this.http.get<IUser>(`${apiURL}/auth/get-user?token=${this.getTokenFromStorage()}`, {
-      headers: {
-        'Authorization': `Bearer ${this.getTokenFromStorage()}`
-      }
-    }).subscribe(data => this.userSubject.next(data));
+  getLoggedUser(): void {
+    if (this.getTokenFromStorage()) {
+      console.log('fetching user');
+      this.http.get<IUser>(`${apiURL}/auth/get-user?token=${this.getTokenFromStorage()}`, {
+        headers: {
+          'Authorization': `Bearer ${this.getTokenFromStorage()}`
+        }
+      }).subscribe(data => {
+        this.userSubject.next(data)
+        console.log('next called');
+      });
+    } else {
+      console.log('setting null subject');
+      this.userSubject.next(null);
+    }
   }
 
   login(data: ILogin): Observable<{token: string}> {
@@ -57,8 +69,4 @@ export class AuthService {
       catchError(handleError<IUser>('register', {id: '', email: '', fullname: '', image: ''}))
     );
   }
-
-  // get userValue(): IUser {
-  //   return this.userSubject.asObservable();
-  // }
 }

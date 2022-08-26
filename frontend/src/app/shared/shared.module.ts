@@ -5,18 +5,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { LandingTemplateComponent } from './templates/landing-template/landing-template.component';
+import { AppTemplateComponent } from './templates/app-template/app-template.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
     ButtonComponent,
-    LoadingComponent
+    LoadingComponent,
+    LandingTemplateComponent,
+    AppTemplateComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     HttpClientModule
   ],
-  exports: [NavbarComponent, ButtonComponent, LoadingComponent]
+  exports: [LandingTemplateComponent, AppTemplateComponent, NavbarComponent, ButtonComponent, LoadingComponent]
 })
 export class SharedModule { }

@@ -15,7 +15,11 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.user.subscribe(data => this.user = data!);
+    this.authService.user$.subscribe(data => {
+      if (data) {
+        this.user = data
+      }
+    });
   }
 
   handleToggleNavbar(): void {

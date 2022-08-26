@@ -1,2 +1,145 @@
-{{user | json}}
+<div *ngIf="!loading && user" class="p-2">
+  <div class="flex items-center justify-between">
+    <input
+      type="text"
+      name="search"
+      placeholder="Search a project"
+      class="block w-52 px-4 py-2 mt-2 text-gray-700 bg-white border rounded dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+    />
+    <app-button [text]="'+'"></app-button>
+  </div>
+  <div class="overflow-x-auto">
+    <table
+      *ngIf="projects && projects.length; else elseBlock"
+      class="min-w-full text-sm divide-y divide-gray-200"
+    >
+      <thead>
+        <tr>
+          <th class="p-4 font-medium text-left text-gray-900 whitespace-nowrap">
+            <div class="flex items-center">
+              Code
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 ml-1.5 text-gray-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </th>
+          <th class="p-4 font-medium text-left text-gray-900 whitespace-nowrap">
+            <div class="flex items-center">
+              Name
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 ml-1.5 text-gray-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </th>
+          <th class="p-4 font-medium text-left text-gray-900 whitespace-nowrap">
+            <div class="flex items-center">
+              Tag
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 ml-1.5 text-gray-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </th>
+          <th class="p-4 font-medium text-left text-gray-900 whitespace-nowrap">
+            <div class="flex items-center">
+              Description
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 ml-1.5 text-gray-700"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-100">
+        <tr>
+          <td class="p-4 font-medium text-gray-900 whitespace-nowrap">
+            John Doe
+          </td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">
+            john.doe@email.com
+          </td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">
+            <strong
+              class="bg-red-100 text-red-700 px-3 py-1.5 rounded text-xs font-medium"
+            >
+              Cancelled
+            </strong>
+          </td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">(+44) 2198 450650</td>
+        </tr>
+
+        <tr>
+          <td class="p-4 font-medium whitespace-nowrap">Jane Doe</td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">
+            jane.doe@email.com
+          </td>
+          <td class="p-4 whitespace-nowrap">
+            <strong
+              class="bg-green-100 text-green-700 px-3 py-1.5 rounded text-xs font-medium"
+            >
+              Paid
+            </strong>
+          </td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">(+44) 1928 450650</td>
+        </tr>
+
+        <tr>
+          <td class="p-4 font-medium whitespace-nowrap">Gary Barlow</td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">
+            gary.barlow@email.com
+          </td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">
+            <strong
+              class="bg-amber-100 text-amber-700 px-3 py-1.5 rounded text-xs font-medium"
+            >
+              Partially Refunded
+            </strong>
+          </td>
+          <td class="p-4 text-gray-700 whitespace-nowrap">(+44) 2819 450650</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #elseBlock>
+      <div class="flex justify-center mt-10">
+        <span class="text-center">Not projects found, maybe you want to create one.</span>
+      </div>
+    </ng-template>
+  </div>
+</div>
 <app-loading *ngIf="loading"></app-loading>
