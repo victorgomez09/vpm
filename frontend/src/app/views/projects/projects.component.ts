@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { IUser } from 'src/app/core/models/auth.model';
 import { IProject } from 'src/app/core/models/project.model';
@@ -14,9 +15,13 @@ export class ProjectsComponent implements OnInit {
   user?: IUser;
   projects?: IProject[]
   loading?: boolean;
+  showModal!: boolean;
+  newProjectForm!: FormGroup;
 
-  constructor(private authService: AuthService, private projectService: ProjectsService) { 
+  constructor(private fb: FormBuilder, private authService: AuthService, private projectService: ProjectsService) { 
     this.loading = true;
+    this.showModal = false;
+    this.initForm();
   }
   
   ngOnInit(): void {
@@ -30,4 +35,19 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
+  initForm() {
+    this.newProjectForm = this.fb.group({
+      title: ['', Validators.required],
+      description: [''],
+      image: ['']
+    })
+  }
+
+  submitForm(): void {
+    console.log('values', this.newProjectForm.value)
+  }
+
+  get f() {
+    return this.newProjectForm.controls;
+  }
 }

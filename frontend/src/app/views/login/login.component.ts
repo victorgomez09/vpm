@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   handleLogin(token: string) {
-    this.router.navigate(['/app/projects']);
+    this.router.navigate(['/projects']);
     this.authService.setTokenToStorage(token)
   }
 

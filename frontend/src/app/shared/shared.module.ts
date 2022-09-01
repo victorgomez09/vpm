@@ -7,6 +7,7 @@ import { ButtonComponent } from './components/button/button.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { LandingTemplateComponent } from './templates/landing-template/landing-template.component';
 import { AppTemplateComponent } from './templates/app-template/app-template.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -14,13 +15,17 @@ import { AppTemplateComponent } from './templates/app-template/app-template.comp
     ButtonComponent,
     LoadingComponent,
     LandingTemplateComponent,
-    AppTemplateComponent
+    AppTemplateComponent,
+    ModalComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    HttpClientModule
+  imports: [CommonModule, RouterModule, HttpClientModule],
+  exports: [
+    LandingTemplateComponent,
+    AppTemplateComponent,
+    NavbarComponent,
+    ButtonComponent,
+    ModalComponent,
+    LoadingComponent,
   ],
-  exports: [LandingTemplateComponent, AppTemplateComponent, NavbarComponent, ButtonComponent, LoadingComponent]
 })
-export class SharedModule { }
+export class SharedModule {}
