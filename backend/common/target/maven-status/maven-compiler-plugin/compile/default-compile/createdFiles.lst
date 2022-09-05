@@ -1,0 +1,5 @@
+com/vira/vpm/common/dto/MessageDto.class
+com/vira/vpm/common/dto/MessageDto$MessageDtoBuilder.class
+com/vira/vpm/common/exception/NotFoundException.class
+com/vira/vpm/common/global/GlobalException.class
+com/vira/vpm/common/exception/AttributeException.class

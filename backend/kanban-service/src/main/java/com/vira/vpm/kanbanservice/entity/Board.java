@@ -16,15 +16,19 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.With;
 
 @Entity
 @Table(name = "boards")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@With
 public class Board {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -32,7 +36,7 @@ public class Board {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "description")
@@ -45,7 +49,7 @@ public class Board {
     private List<String> users;
 
     @OneToMany(mappedBy = "columns", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Column> columns;
+    private List<com.vira.vpm.kanbanservice.entity.Column> columns;
 
     @CreationTimestamp
     @Column(name = "creation_date")

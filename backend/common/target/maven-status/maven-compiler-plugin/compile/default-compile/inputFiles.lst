@@ -1,0 +1,4 @@
+/workspaces/vpm/backend/common/src/main/java/com/vira/vpm/common/dto/MessageDto.java
+/workspaces/vpm/backend/common/src/main/java/com/vira/vpm/common/exception/NotFoundException.java
+/workspaces/vpm/backend/common/src/main/java/com/vira/vpm/common/exception/AttributeException.java
+/workspaces/vpm/backend/common/src/main/java/com/vira/vpm/common/global/GlobalException.java

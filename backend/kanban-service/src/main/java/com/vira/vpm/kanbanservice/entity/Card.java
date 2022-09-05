@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,15 +21,19 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.With;
 
 @Entity
 @Table(name = "cards")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@With
 public class Card {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -41,6 +46,9 @@ public class Card {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "order")
+    private int order;
 
     @Column(name = "users")
     private List<String> users;
@@ -61,6 +69,10 @@ public class Card {
 
     @OneToMany(mappedBy = "comments", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+    @ManyToOne
+    @JoinColumn(name = "board")
+    private com.vira.vpm.kanbanservice.entity.Column column;
 
     @CreationTimestamp
     @Column(name = "creation_date")
