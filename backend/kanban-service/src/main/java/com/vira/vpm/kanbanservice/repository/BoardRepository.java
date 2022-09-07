@@ -11,5 +11,5 @@ import com.vira.vpm.kanbanservice.entity.Board;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, String> {
     Optional<Board> findByName(String name);
-    List<Board> findByUsersIn(String userId);
+    List<Board> findByUsersIn(List<String> userId);
 }

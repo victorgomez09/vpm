@@ -37,7 +37,7 @@ public class Tag {
     @Column(name = "color")
     private String color;
 
-    @ManyToMany(mappedBy = "cards")
+    @ManyToMany(mappedBy = "tags")
     private Set<Card> cards;
 
     @CreationTimestamp

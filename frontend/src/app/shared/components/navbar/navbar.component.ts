@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from '../../../core/models/auth.model';
+import { User } from '../../../core/models/auth.model';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 export class NavbarComponent implements OnInit {
 
   toggleNavbar: boolean = false;
-  user?: IUser
+  user?: User
 
   constructor(private authService: AuthService) {}
 

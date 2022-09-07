@@ -1,0 +1,13 @@
+.column {
+    width: 17em;
+}
+
+.column-body {
+    height: calc(100vh - 12.5em);
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+textarea {
+    resize: none;
+}

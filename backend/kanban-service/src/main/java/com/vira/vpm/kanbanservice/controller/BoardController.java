@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +29,8 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("/")
-    public ResponseEntity<List<BoardDto>> findAllByUser(@RequestParam("userId") String userId) {
-       return ResponseEntity.ok().body(boardService.findAllByUser(userId));
+    public ResponseEntity<List<BoardDto>> findAllByUser(@RequestParam("user") String user) {
+       return ResponseEntity.ok().body(boardService.findAllByUser(user));
     }
 
     @GetMapping("/{boardId}")
@@ -42,17 +43,17 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.create(data));
     }
 
-    @PutMapping("/{boardId}")
+    @PutMapping("/{boardId}/update")
     public ResponseEntity<BoardDto> update(@RequestParam("boardId") String boardId, @RequestBody UpdateBoardDto data) throws NotFoundException {
         return ResponseEntity.ok().body(boardService.update(boardId, data));
     }
 
-    @PutMapping("/{boardId}")
+    @PutMapping("/{boardId}/update-users")
     public ResponseEntity<BoardDto> updateUsers(@RequestParam("boardId") String boardId, @RequestBody List<String> data) throws NotFoundException {
         return ResponseEntity.ok().body(boardService.updateUsers(boardId, data));
     }
 
-    @PutMapping("/{boardId}")
+    @DeleteMapping("/{boardId}")
     public ResponseEntity<Boolean> delete(@RequestParam("boardId") String boardId) throws NotFoundException {
         return ResponseEntity.ok().body(boardService.delete(boardId));
     }

@@ -4,16 +4,19 @@ import { AuthGuard } from './core/guards/auth/auth.guard';
 import { SharedModule } from './shared/shared.module';
 import { AppTemplateComponent } from './shared/templates/app-template/app-template.component';
 import { LandingTemplateComponent } from './shared/templates/landing-template/landing-template.component';
-import { HomeComponent } from './views/home/home.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { LandingComponent } from './views/landing/landing.component';
+import { BoardComponent } from './views/kanban/board/board.component';
+import { KanbanComponent } from './views/kanban/kanban/kanban.component';
 import { LoginComponent } from './views/login/login.component';
-import { ProjectsComponent } from './views/projects/projects.component';
+import { NotFoundComponent } from './views/not-found/not-found.component';
 import { RegisterComponent } from './views/register/register.component';
 
 
 const landingRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: LandingComponent
   },
   {
     path: 'login',
@@ -27,8 +30,18 @@ const landingRoutes: Routes = [
 
 const appRoutes: Routes = [
   {
-    path: 'projects',
-    component: ProjectsComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'kanban',
+    component: KanbanComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'kanban/board/:id',
+    component: BoardComponent,
     canActivate: [AuthGuard]
   }
 ]
@@ -43,7 +56,11 @@ const routes: Routes = [
     path: '',
     component: AppTemplateComponent,
     children: appRoutes
-  }
+  },
+  {
+    path: '**',
+    component: NotFoundComponent
+  },
 ];
 
 @NgModule({

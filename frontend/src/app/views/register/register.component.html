@@ -1,4 +1,4 @@
-<div class="w-full h-full flex items-center justify-center">
+<!-- <div class="w-full h-full flex items-center justify-center">
   <div class="w-80 p-6 bg-white rounded-md shadow-md dark:bg-gray-800">
     <a
       routerLink="/"
@@ -193,7 +193,7 @@
       </div>
     </form>
 
-    <!-- <div class="flex items-center justify-between mt-4">
+    <div class="flex items-center justify-between mt-4">
       <span class="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
 
       <a
@@ -229,7 +229,7 @@
           ></path>
         </svg>
       </a>
-    </div> -->
+    </div>
 
     <p class="mt-8 text-xs font-light text-center text-gray-400">
       Already have an account?
@@ -241,4 +241,98 @@
       >
     </p>
   </div>
-</div>
+</div> -->
+
+
+<section class="h-100">
+  <div class="container h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
+        <!-- <div class="text-center my-5">
+          <h1>VPM</h1>
+        </div> -->
+        <div class="card shadow mt-2">
+          <div class="card-body p-4">
+            <h1 class="fs-4 card-title text-center fw-bold mb-4">Sign in</h1>
+            <form [formGroup]="registerForm">
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="fullname">Fullname</label>
+                <input id="fullname" type="fullname" class="form-control" name="text" formControlName="fullname"
+                  [ngClass]="{
+                    'is-invalid': f['fullname'].touched && f['fullname'].errors
+                  }"
+                >
+                <div class="invalid-feedback">
+                  Fullname is invalid
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="email">E-Mail Address</label>
+                <input id="email" type="email" class="form-control" name="email" formControlName="email"
+                  [ngClass]="{
+                    'is-invalid': f['email'].touched && f['email'].errors
+                  }"
+                >
+                <div class="invalid-feedback">
+                  Email is invalid
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="password">Password</label>
+                <input id="password" type="password" class="form-control" name="password" formControlName="password"
+                  [ngClass]="{
+                    'is-invalid': f['password'].touched && f['password'].errors
+                  }"
+                />
+                  <div class="invalid-feedback">
+                    {{ f["password"].errors!["required"] && "Password cannot be empty" }}
+                    {{
+                      f["password"].errors!["minlength"] &&
+                        "Password must be longer than " +
+                          f["password"].errors!["minlength"].requiredLength +
+                          " characteres"
+                    }}
+                  </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="mb-2 text-muted" for="confirmPassword">Confirm password</label>
+                <input id="confirmPassword" type="password" class="form-control" name="confirmPassword" formControlName="confirmPassword"
+                  [ngClass]="{
+                    'is-invalid': f['confirmPassword'].touched && f['confirmPassword'].errors
+                  }"
+                />
+                  <div class="invalid-feedback">
+                    {{
+                      f["confirmPassword"].errors!["required"] &&
+                        "Confirm password cannot be empty"
+                    }}
+                    {{
+                      f["confirmPassword"].errors!["confirmedValidator"] &&
+                        "Passwords must be the same"
+                    }}
+                  </div>
+              </div>
+
+              <div class="align-items-center d-flex">
+                <button type="submit" class="btn btn-primary ms-auto"
+                  [disabled]="registerForm.invalid"
+                  (click)="onSubmit()"
+                >
+                  Sign in
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer py-3 border-0">
+            <div class="text-center">
+              Don't have an account? <a routerLink="/register" class="text-dark">Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

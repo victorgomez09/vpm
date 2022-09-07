@@ -1,6 +1,7 @@
 package com.vira.vpm.kanbanservice.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 
 import java.util.Date;
 
@@ -38,7 +39,7 @@ public class Comment {
     @Column(name = "user")
     private String user;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card")
     private Card card;
 

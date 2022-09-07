@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -46,9 +47,10 @@ public class Board {
     private String image;
 
     @Column(name = "users")
+    @ElementCollection
     private List<String> users;
 
-    @OneToMany(mappedBy = "columns", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<com.vira.vpm.kanbanservice.entity.Column> columns;
 
     @CreationTimestamp

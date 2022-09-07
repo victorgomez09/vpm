@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,8 +30,8 @@ public class Priority {
     @Column(name = "color")
     private String color;
 
-    @ManyToOne()
-    @JoinColumn(name = "tag")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card")
     private Card card;
 
     @CreationTimestamp

@@ -29,13 +29,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submitForm() {
+  submit() {
     const user = this.loginForm.value;
     this.authService.login(user).subscribe((data) => this.handleLogin(data.token));
   }
 
   handleLogin(token: string) {
-    this.router.navigate(['/projects']);
+    this.router.navigate(['/dashboard']);
     this.authService.setTokenToStorage(token)
   }
 

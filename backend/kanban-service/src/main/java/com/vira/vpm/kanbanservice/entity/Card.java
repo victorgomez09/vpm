@@ -6,7 +6,9 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -51,6 +53,7 @@ public class Card {
     private int order;
 
     @Column(name = "users")
+    @ElementCollection
     private List<String> users;
 
     @ManyToMany(cascade = {
@@ -58,20 +61,20 @@ public class Card {
         CascadeType.MERGE
     })
     @JoinTable(
-        name = "cards",
-        joinColumns = {@JoinColumn(name = "card")},
-        inverseJoinColumns = {@JoinColumn(name = "tag")}
+        name = "card_tags",
+        joinColumns = {@JoinColumn(name = "cards_id")},
+        inverseJoinColumns = {@JoinColumn(name = "tags_id")}
     )
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "priority", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Priority> priorities;
 
-    @OneToMany(mappedBy = "comments", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @ManyToOne
-    @JoinColumn(name = "board")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "column")
     private com.vira.vpm.kanbanservice.entity.Column column;
 
     @CreationTimestamp

@@ -2,30 +2,31 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { ButtonComponent } from './components/button/button.component';
-import { LoadingComponent } from './components/loading/loading.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { LandingTemplateComponent } from './templates/landing-template/landing-template.component';
 import { AppTemplateComponent } from './templates/app-template/app-template.component';
-import { ModalComponent } from './components/modal/modal.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { ColumnComponent } from './components/kanban/column/column.component';
+import { CardComponent } from './components/kanban/card/card.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    ButtonComponent,
-    LoadingComponent,
     LandingTemplateComponent,
     AppTemplateComponent,
-    ModalComponent,
+    LoadingComponent,
+    ColumnComponent,
+    CardComponent,
   ],
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, HttpClientModule, DragDropModule],
   exports: [
     LandingTemplateComponent,
     AppTemplateComponent,
     NavbarComponent,
-    ButtonComponent,
-    ModalComponent,
     LoadingComponent,
+    ColumnComponent,
+    CardComponent
   ],
 })
 export class SharedModule {}

@@ -7,7 +7,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { IRegister } from '../../core/models/auth.model';
+import { Register } from '../../core/models/auth.model';
 import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit {
   };
 
   onSubmit(): void {
-    const userData: IRegister = {
+    const userData: Register = {
       email: this.registerForm.value['email'],
       fullname: this.registerForm.value['fullname'],
       password: this.registerForm.value['password'],

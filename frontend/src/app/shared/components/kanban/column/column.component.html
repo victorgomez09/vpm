@@ -1,0 +1,39 @@
+<!-- <div cdkDropList cdkDropListOrientation="horizontal" class="boards" (cdkDropListDropped)="drop($event)">
+   <app-board cdkDrag *ngFor="let board of boards" [board]="board">
+      <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
+  </app-board>
+
+  <div class="board-button">
+      <button mat-raised-button color="accent" cdkDragDisabled (click)="openBoardDialog()">
+          New Board
+      </button>
+  </div>
+</div> -->
+
+<div class="bg-light p-2 px-3 rounded mb-5 me-3 col-12 column" cdkDropList
+cdkDropListOrientation="vertical"
+(cdkDropListDropped)="taskDrop($event)">
+  <h3 class="h5 mb-2 pb-2">Backlog</h3>
+  <div class="column-body">
+    <app-card cdkDrag></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+    <app-card></app-card>
+  </div>
+  <div *ngIf="!addNewTask; else elseBlock" class="cursor-pointer" (click)="addNewTask = !addNewTask">
+    <span class="fw-semibold">Add task</span>
+  </div>
+  <ng-template #elseBlock>
+    <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="2"></textarea>
+  </ng-template>
+</div>

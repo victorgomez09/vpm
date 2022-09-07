@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -43,14 +45,15 @@ public class Column {
     @javax.persistence.Column(name = "order")
     private int order;
 
-    @javax.persistence.Column(name = "order")
+    @ElementCollection
+    @javax.persistence.Column(name = "users")
     private List<String> users;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board")
     private Board board;
 
-    @OneToMany(mappedBy = "cards", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Card> cards;
 
     @CreationTimestamp

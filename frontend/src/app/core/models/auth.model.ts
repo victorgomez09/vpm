@@ -1,16 +1,16 @@
-export interface ILogin {
+export interface Login {
   email: string;
   password: string;
 };
 
-export interface IRegister {
+export interface Register {
   email: string;
   password: string;
   fullname: string;
   image: string;
 };
 
-export interface IUser {
+export interface User {
   id: string;
   email: string;
   fullname: string;

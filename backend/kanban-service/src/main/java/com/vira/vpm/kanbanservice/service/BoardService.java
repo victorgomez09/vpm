@@ -1,5 +1,6 @@
 package com.vira.vpm.kanbanservice.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class BoardService {
     }
 
     public List<BoardDto> findAllByUser(String userId) {
-        List<Board> boards = boardRepository.findByUsersIn(userId);
+        List<Board> boards = boardRepository.findByUsersIn(Arrays.asList(userId));
         return boards.stream().map(b -> BoardDto.builder()
             .id(b.getId())
             .name(b.getName())
