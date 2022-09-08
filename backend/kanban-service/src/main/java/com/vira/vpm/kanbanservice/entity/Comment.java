@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "card_comments")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,10 +33,10 @@ public class Comment {
     @Column(name = "id")
     private String id;
 
-    @Column(name = "text")
+    @Column(name = "comment_content")
     private String text;
 
-    @Column(name = "user")
+    @Column(name = "user_id")
     private String user;
 
     @ManyToOne(fetch = FetchType.LAZY)

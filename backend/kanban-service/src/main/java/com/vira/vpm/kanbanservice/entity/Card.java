@@ -49,7 +49,7 @@ public class Card {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "order")
+    @Column(name = "position")
     private int order;
 
     @Column(name = "users")
@@ -74,7 +74,7 @@ public class Card {
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "column")
+    @JoinColumn(name = "board_column")
     private com.vira.vpm.kanbanservice.entity.Column column;
 
     @CreationTimestamp

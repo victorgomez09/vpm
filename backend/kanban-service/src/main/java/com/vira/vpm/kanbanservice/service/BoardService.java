@@ -45,10 +45,6 @@ public class BoardService {
             .description(result.getDescription())
             .image(result.getImage())
             .users(users)
-            // .columns(result.getColumns().stream().map(c -> ColumnDto.builder()
-            //     .name(c.getName())
-            //     .order(c.getOrder())
-            //     .build()).collect(Collectors.toList()))
             .creationDate(result.getCreationDate())
             .updateDate(result.getUpdateDate())
             .build();
@@ -77,6 +73,7 @@ public class BoardService {
 
     public List<BoardDto> findAllByUser(String userId) {
         List<Board> boards = boardRepository.findByUsersIn(Arrays.asList(userId));
+        System.out.println("boards: " + boards.size());
         return boards.stream().map(b -> BoardDto.builder()
             .id(b.getId())
             .name(b.getName())

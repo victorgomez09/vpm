@@ -42,7 +42,7 @@ public class Column {
     @javax.persistence.Column(name = "name")
     private String name;
 
-    @javax.persistence.Column(name = "order")
+    @javax.persistence.Column(name = "position")
     private int order;
 
     @ManyToOne(fetch = FetchType.LAZY)

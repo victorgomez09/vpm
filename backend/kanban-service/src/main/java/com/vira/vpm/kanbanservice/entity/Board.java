@@ -50,7 +50,7 @@ public class Board {
     @ElementCollection
     private List<String> users;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<com.vira.vpm.kanbanservice.entity.Column> columns;
 
     @CreationTimestamp
