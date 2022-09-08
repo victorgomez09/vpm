@@ -89,20 +89,20 @@ public class ColumnService {
         }
     }
 
-    public ColumnDto updateUsers(String id, List<String> usersId) {
-        Optional<Column> column = columnRepository.findById(id);
-        if (column.isPresent()) {
-            Column updated = columnRepository.save(column.get().withUsers(usersId));
-            return ColumnDto.builder().name(updated.getName())
-                .order(updated.getOrder())
-                .board(updated.getBoard().getId())
-                .creationDate(updated.getCreationDate())
-                .updateDate(updated.getUpdateDate())
-                .build();
-        } else {
-            return null;
-        }
-    }
+    // public ColumnDto updateUsers(String id, List<String> usersId) {
+    //     Optional<Column> column = columnRepository.findById(id);
+    //     if (column.isPresent()) {
+    //         Column updated = columnRepository.save(column.get().withUsers(usersId));
+    //         return ColumnDto.builder().name(updated.getName())
+    //             .order(updated.getOrder())
+    //             .board(updated.getBoard().getId())
+    //             .creationDate(updated.getCreationDate())
+    //             .updateDate(updated.getUpdateDate())
+    //             .build();
+    //     } else {
+    //         return null;
+    //     }
+    // }
 
     // public List<ColumnDto> updateCardListAndOrder(List<ColumnDto> data) {
     //     List<ColumnDto> result = new ArrayList<>();
