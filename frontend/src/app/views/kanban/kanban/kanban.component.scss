@@ -1,3 +1,11 @@
 textarea {
     resize: none;
 }
+.card {
+    // width: 11em;
+    height: 6em;
+}
+.card:hover {
+    transform: scale(1.05) rotate(2deg);
+    z-index: 2;
+}

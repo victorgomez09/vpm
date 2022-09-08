@@ -73,7 +73,6 @@ public class BoardService {
 
     public List<BoardDto> findAllByUser(String userId) {
         List<Board> boards = boardRepository.findByUsersIn(Arrays.asList(userId));
-        System.out.println("boards: " + boards.size());
         return boards.stream().map(b -> BoardDto.builder()
             .id(b.getId())
             .name(b.getName())

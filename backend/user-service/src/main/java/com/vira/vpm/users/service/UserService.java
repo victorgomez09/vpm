@@ -1,5 +1,6 @@
 package com.vira.vpm.users.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,11 @@ public class UserService {
     public List<UserDto> findAll() {
         return userRepository.findAll().stream().map((User user) -> new UserDto(user.getId(), user.getEmail(),
                 user.getFullname(), user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
+    }
+
+    public List<UserDto> findAllByIds(List<String> users) {
+        return userRepository.findAllById(users).stream().map((User user) -> new UserDto(user.getId(), user.getEmail(),
+            user.getFullname(), user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
     }
 
     public UserDto findById(String userId) {

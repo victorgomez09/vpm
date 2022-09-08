@@ -83,7 +83,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- VIRA dependencies -->
+		<!-- VIRA DEPENDENCIES -->
 		<dependency>
 			<groupId>com.vira.vpm</groupId>
 			<artifactId>common</artifactId>

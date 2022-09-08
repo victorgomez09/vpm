@@ -1,20 +1,49 @@
-<div class="d-flex flex-column h-100 w-100">
-  <h5>You have {{boards.length}} boards:</h5>
+<div class="d-flex flex-column" *ngIf="boards && !loading; else renderLoading">
+  <div class="row align-items-center">
+    <div class="d-flex flex-column col-sm-12 col-md-8">
+      <span class="fs-5 mb-1"
+        >Welcome <span class="fw-semibold">{{firstName}}</span> to Kanban
+        module:</span
+      >
+      <span class="text-muted"
+        >A visualization tool that enables you to optimize the flow of your
+        work.</span
+      >
+    </div>
+    <div class="col-sm-12 col-md-4 d-flex justify-content-end">
+      <input
+        class="form-control me-2"
+        type="text"
+        placeholder="Search..."
+        [(ngModel)]="filterText"
+        (input)="search()"
+      />
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#createBoardModal"
+      >
+        +
+      </button>
+    </div>
+  </div>
 
-  <div class="align-items-center mt-3">
-    <div *ngIf="boards; else renderLoading"></div>
-
+  <div class="row align-items-start mt-5 row-boards">
     <div
-      class="card shadow-sm cursor-pointer"
-      style="width: 11rem"
-      data-bs-toggle="modal"
-      data-bs-target="#createBoardModal"
+      class="col-xs-12 col-md-3 col-lg-2 pe-2 ps-2"
+      *ngFor="let board of filteredBoards"
     >
-      <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted">Create a new board</h6>
-        <p class="card-text text-center text-muted">
-          {{boards.length}} in total
-        </p>
+      <div
+        class="card bg-light border-0 shadow-sm mb-2 w-100 cursor-pointer"
+        style="width: 11rem"
+        routerLink="board/{{board.id}}"
+      >
+        <div class="card-body">
+          <h5 class="card-title">{{board.name}}</h5>
+          <p class="card-text text-muted">
+            {{board.description}}
+          </p>
+        </div>
       </div>
     </div>
   </div>
