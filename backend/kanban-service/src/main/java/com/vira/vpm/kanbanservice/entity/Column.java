@@ -45,10 +45,6 @@ public class Column {
     @javax.persistence.Column(name = "order")
     private int order;
 
-    @ElementCollection
-    @javax.persistence.Column(name = "users")
-    private List<String> users;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board")
     private Board board;

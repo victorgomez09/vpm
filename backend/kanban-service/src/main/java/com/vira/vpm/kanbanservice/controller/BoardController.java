@@ -22,13 +22,13 @@ import com.vira.vpm.kanbanservice.dto.UpdateBoardDto;
 import com.vira.vpm.kanbanservice.service.BoardService;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/boards")
 public class BoardController {
-    
+
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public ResponseEntity<List<BoardDto>> findAllByUser(@RequestParam("user") String user) {
        return ResponseEntity.ok().body(boardService.findAllByUser(user));
     }
@@ -38,7 +38,7 @@ public class BoardController {
        return ResponseEntity.ok().body(boardService.findById(boardId));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<BoardDto> create(@RequestBody CreateBoardDto data) throws AttributeException {
         return ResponseEntity.ok().body(boardService.create(data));
     }

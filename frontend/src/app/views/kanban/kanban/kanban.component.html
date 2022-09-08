@@ -1,7 +1,96 @@
-<div *ngIf="boards; else renderLoading">
-    asdfasdfa
+<div class="d-flex flex-column h-100 w-100">
+  <h5>You have {{boards.length}} boards:</h5>
+
+  <div class="align-items-center mt-3">
+    <div *ngIf="boards; else renderLoading"></div>
+
+    <div
+      class="card shadow-sm cursor-pointer"
+      style="width: 11rem"
+      data-bs-toggle="modal"
+      data-bs-target="#createBoardModal"
+    >
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">Create a new board</h6>
+        <p class="card-text text-center text-muted">
+          {{boards.length}} in total
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="createBoardModal"
+  data-bs-backdrop="static"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create new board</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="boardForm">
+          <div class="mb-3">
+            <label class="mb-2 text-muted" for="name">Name</label>
+            <input
+              id="name"
+              type="text"
+              class="form-control"
+              name="name"
+              formControlName="name"
+              [ngClass]="{
+                'is-invalid': f['name'].touched && f['name'].errors
+              }"
+            />
+            <div class="invalid-feedback">Name is required</div>
+          </div>
+          <div class="mb-3">
+            <label class="mb-2 text-muted" for="description">Description</label>
+            <textarea
+              id="description"
+              class="form-control"
+              name="description"
+              rows="3"
+              formControlName="description"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="mb-2 text-muted" for="image">Image</label>
+            <input
+              id="name"
+              type="file"
+              class="form-control"
+              name="image"
+              formControlName="image"
+            />
+          </div>
+          <div class="mt-4">
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="boardForm.invalid"
+              (click)="createBoard()"
+            >
+              Create
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ng-template #renderLoading>
-    <app-loading></app-loading>
+  <app-loading></app-loading>
 </ng-template>

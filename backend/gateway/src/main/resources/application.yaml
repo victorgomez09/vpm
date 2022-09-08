@@ -22,10 +22,10 @@ spring:
           - Path=/users/**
         filters:
           - AuthFilter
-      - id: project-service
-        uri: lb://project-service
+      - id: kanban-service
+        uri: lb://kanban-service
         predicates:
-          - Path=/projects/**
+          - Path=/boards/**
         filters:
           - AuthFilter
       - id: auth-service

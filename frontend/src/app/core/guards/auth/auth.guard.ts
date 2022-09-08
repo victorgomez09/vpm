@@ -16,7 +16,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this.authService.isAuthenticated().pipe(map(data => {
-      console.log('data from guard', data);
       if (data && data.token) { 
         this.authService.getLoggedUser()
         return true; 

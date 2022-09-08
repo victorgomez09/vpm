@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, ReplaySubject, Subject } from 'rxjs';
 import { handleError } from '../../../shared/utils/exception.util';
 import { apiURL } from '../../constants/api.constant';
 import { Login, Register, User } from '../../models/auth.model';
@@ -9,15 +9,15 @@ import { Login, Register, User } from '../../models/auth.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private userSubject: BehaviorSubject<User | null>;
-  public user$: Observable<User | null>;
+  private userSubject: ReplaySubject<User>;
+  public user$: Observable<User>;
 
   constructor(private http: HttpClient) {
     // this.userSubject = new BehaviorSubject<IUser>(
     //   JSON.parse(localStorage.getItem('currentUser')!)
     // );
     console.log('auth service constructor')
-    this.userSubject = new BehaviorSubject<User | null>(null);
+    this.userSubject = new ReplaySubject<User>();
     this.user$ = this.userSubject.asObservable();
     // Fetch user from database
     // this.getUser();
@@ -41,16 +41,19 @@ export class AuthService {
 
   getLoggedUser(): void {
     if (this.getTokenFromStorage()) {
+      console.log('getting user from auth service');
       this.http.get<User>(`${apiURL}/auth/get-user?token=${this.getTokenFromStorage()}`, {
         headers: {
           'Authorization': `Bearer ${this.getTokenFromStorage()}`
         }
-      }).subscribe(data => {
+      })
+      .pipe(catchError(handleError<User>('getLoggedUser', { id: '', email: '', fullname: '', image: '' })))
+      .subscribe(data => {
         console.log('getLoggedUser', data)
         this.userSubject.next(data)
       });
     } else {
-      this.userSubject.next(null);
+      // this.userSubject.next();
     }
   }
 

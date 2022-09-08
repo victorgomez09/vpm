@@ -12,6 +12,6 @@ import com.vira.vpm.kanbanservice.dto.UserDto;
 @FeignClient(name = "user-service", path = "/users")
 public interface UserFeign {
     
-    @GetMapping("/list/{usersList}")
+    @GetMapping("/list")
     public List<UserDto> findAllUsersByIds(@RequestParam("usersList") List<String> usersList);
 }

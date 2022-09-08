@@ -55,7 +55,7 @@ const routes: Routes = [
   {
     path: '',
     component: AppTemplateComponent,
-    children: appRoutes
+    children: appRoutes,
   },
   {
     path: '**',
