@@ -20,6 +20,7 @@ export class KanbanComponent implements OnInit {
   firstName!: string;
   boardForm: FormGroup;
   filterText: string;
+  createdBoard: boolean;
 
   constructor(private fb: FormBuilder, private kanbanService: KanbanService, private authService: AuthService) {
     this.loading = true;
@@ -31,6 +32,7 @@ export class KanbanComponent implements OnInit {
       image: ""
     })
     this.filterText = "";
+    this.createdBoard = false;
   }
   
   ngOnInit(): void {
@@ -53,10 +55,16 @@ export class KanbanComponent implements OnInit {
     }
     this.kanbanService.createBoard(this.user?.id, data).subscribe(data => {
       this.boards.push(data);
+      this.createdBoard = true;
     })
   }
 
-  search() {
+  resetForm(): void {
+    this.createdBoard = false;
+    this.boardForm.reset();
+  }
+
+  search(): void {
     this.filteredBoards = this.filterText === "" ? this.boards : this.boards.filter((element) => {
       return element.name.toLowerCase().includes(this.filterText.toLowerCase());
     });

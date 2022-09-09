@@ -1,34 +1,47 @@
-<div
-  class="d-flex flex-row flex-md-row py-3 kanban"
-  cdkDropList
-  cdkDropListOrientation="horizontal"
-  class="boards"
-  (cdkDropListDropped)="drop($event)"
->
-  <app-column cdkDrag cdkDragHandle *ngFor="let column of columns"></app-column>
+<div class="row mb-1">
+  <div class="col-sm-12 col-md-8">
+    <span class="fs-3">{{board?.name}}</span>
+  </div>
+</div>
 
-  <div class="text-center bg-light p-2 px-3 rounded mb-5 me-3 add-column">
-    <span
-      class="cursor-pointer"
-      *ngIf="!addNewColumn; else showNewColumnForm"
-      (click)="addNewColumn = !addNewColumn"
-      >Add new column</span
+<div class="row">
+  <div class="col-12 d-flex flex-row flex-md-row align-items-start">
+    <div
+      class="d-flex py-3"
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="drop($event)"
     >
-    <ng-template #showNewColumnForm>
-      <form [formGroup]="columnForm">
-        <textarea
-          class="form-control"
-          rows="3"
-          formControlName="name"
-          (keyup.enter)="submit($event)"
-          [ngClass]="{
-            'is-invalid': f['name'].touched && f['name'].errors
-          }"
-        ></textarea>
-        <div class="invalid-feedback">
-          Name is required
-        </div>
-      </form>
-    </ng-template>
+      <app-column
+        cdkDrag
+        cdkDragHandle
+        *ngFor="let column of columns"
+        [column]="column"
+      ></app-column>
+    </div>
+    <div class="py-3">
+      <div class="text-center bg-light p-4 px-3 rounded mb-5 me-3 add-column">
+        <span
+          class="cursor-pointer"
+          *ngIf="!addNewColumn; else showNewColumnForm"
+          (click)="addNewColumn = !addNewColumn"
+          >Add new column</span
+        >
+        <ng-template #showNewColumnForm>
+          <form [formGroup]="columnForm">
+            <textarea
+              class="form-control"
+              rows="3"
+              formControlName="name"
+              (keyup.enter)="submit($event)"
+              [ngClass]="{
+                'is-invalid': f['name'].touched && f['name'].errors
+              }"
+            ></textarea>
+            <div class="invalid-feedback">Name is required</div>
+          </form>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>

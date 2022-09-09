@@ -21,7 +21,10 @@ export class RegisterComponent implements OnInit {
   registeredError?: boolean;
   registeredErrorCode?: number;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -77,17 +80,16 @@ export class RegisterComponent implements OnInit {
       email: this.registerForm.value['email'],
       fullname: this.registerForm.value['fullname'],
       password: this.registerForm.value['password'],
-      image: ''
+      image: '',
     };
-    console.log('sending form to backend', userData);
 
     this.authService.register(userData).subscribe({
-      complete: () => this.registered = true,
+      complete: () => (this.registered = true),
       error: (error) => {
         this.registeredError = true;
         this.registeredErrorCode = error.status;
       },
-    })
+    });
   }
 
   get f() {

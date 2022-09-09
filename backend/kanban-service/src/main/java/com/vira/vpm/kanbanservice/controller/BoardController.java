@@ -33,7 +33,7 @@ public class BoardController {
        return ResponseEntity.ok().body(boardService.findAllByUser(user));
     }
 
-    @GetMapping("/{boardId}")
+    @GetMapping("{boardId}")
     public ResponseEntity<BoardDto> findById(@PathVariable("boardId") String boardId) throws NotFoundException {
        return ResponseEntity.ok().body(boardService.findById(boardId));
     }

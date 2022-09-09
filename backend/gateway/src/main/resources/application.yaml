@@ -16,21 +16,21 @@ spring:
         locator:
           enabled: true
       routes:
-      - id: user-service
-        uri: lb://user-service
-        predicates:
-          - Path=/users/**
-        filters:
-          - AuthFilter
-      - id: kanban-service
-        uri: lb://kanban-service
-        predicates:
-          - Path=/boards/**
-        filters:
-          - AuthFilter
-      - id: auth-service
-        uri: lb://auth-service
-        predicates:
-          - Path=/auth/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+          filters:
+            - AuthFilter
+        - id: kanban-service
+          uri: lb://kanban-service
+          predicates:
+            - Path=/boards/**
+          filters:
+            - AuthFilter
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
 server:
   port: 8080

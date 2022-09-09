@@ -9,6 +9,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { ColumnComponent } from './components/kanban/column/column.component';
 import { CardComponent } from './components/kanban/card/card.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { LoadingComponent } from './components/loading/loading.component';
     ColumnComponent,
     CardComponent,
   ],
-  imports: [CommonModule, RouterModule, HttpClientModule, DragDropModule],
+  imports: [CommonModule, RouterModule, HttpClientModule, DragDropModule, ReactiveFormsModule],
   exports: [
     LandingTemplateComponent,
     AppTemplateComponent,

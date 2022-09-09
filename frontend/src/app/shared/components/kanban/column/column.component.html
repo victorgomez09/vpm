@@ -10,30 +10,35 @@
   </div>
 </div> -->
 
-<div class="bg-light p-2 px-3 rounded mb-5 me-3 col-12 column" cdkDropList
-cdkDropListOrientation="vertical"
-(cdkDropListDropped)="taskDrop($event)">
-  <h3 class="h5 mb-2 pb-2">Backlog</h3>
+<div
+  class="bg-light p-2 px-3 rounded me-3 column"
+  cdkDropList
+  cdkDropListOrientation="vertical"
+  (cdkDropListDropped)="taskDrop($event)"
+>
+  <h3 class="h5 mb-2 pb-2">{{ column.name.toUpperCase() }}</h3>
   <div class="column-body">
-    <app-card cdkDrag></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
-    <app-card></app-card>
+    <app-card *ngFor="let card for cards" cdkDrag [card]="card"></app-card>
   </div>
-  <div *ngIf="!addNewTask; else elseBlock" class="cursor-pointer" (click)="addNewTask = !addNewTask">
+  <div
+    *ngIf="!addNewTask; else elseBlock"
+    class="cursor-pointer"
+    (click)="addNewTask = !addNewTask"
+  >
     <span class="fw-semibold">Add task</span>
   </div>
   <ng-template #elseBlock>
-    <textarea class="form-control mt-2" id="exampleFormControlTextarea1" rows="2"></textarea>
+    <form [formGroup]="cardForm">
+      <textarea
+        class="form-control"
+        rows="3"
+        formControlName="name"
+        (keyup.enter)="submit($event)"
+        [ngClass]="{
+          'is-invalid': f['name'].touched && f['name'].errors
+        }"
+      ></textarea>
+      <div class="invalid-feedback">Name is required</div>
+    </form>
   </ng-template>
 </div>
