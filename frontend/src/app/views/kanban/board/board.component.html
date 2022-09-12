@@ -1,46 +1,111 @@
-<div class="row mb-1">
-  <div class="col-sm-12 col-md-8">
-    <span class="fs-3">{{board?.name}}</span>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12 d-flex flex-row flex-md-row align-items-start">
-    <div
-      class="d-flex py-3"
-      cdkDropList
-      cdkDropListOrientation="horizontal"
-      (cdkDropListDropped)="drop($event)"
-    >
-      <app-column
-        cdkDrag
-        cdkDragHandle
-        *ngFor="let column of columns"
-        [column]="column"
-      ></app-column>
-    </div>
-    <div class="py-3">
-      <div class="text-center bg-light p-4 px-3 rounded mb-5 me-3 add-column">
-        <span
-          class="cursor-pointer"
-          *ngIf="!addNewColumn; else showNewColumnForm"
-          (click)="addNewColumn = !addNewColumn"
-          >Add new column</span
+<div *ngIf="board">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-2 px-1 d-none d-md-block position-fixed sidebar">
+        <app-sidebar
+          [title]="board!.name.toUpperCase()"
+          [subtitle]="board!.description"
         >
-        <ng-template #showNewColumnForm>
-          <form [formGroup]="columnForm">
-            <textarea
-              class="form-control"
-              rows="3"
-              formControlName="name"
-              (keyup.enter)="submit($event)"
-              [ngClass]="{
-                'is-invalid': f['name'].touched && f['name'].errors
-              }"
-            ></textarea>
-            <div class="invalid-feedback">Name is required</div>
-          </form>
-        </ng-template>
+          <div class="d-flex flex-column mb-4">
+            <label for="addUser" class="form-label">Add user:</label>
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#showUsersModal"
+            >
+              +
+            </button>
+          </div>
+          <div class="d-flex flex-column mb-4">
+            <label for="displaySelect" class="form-label">Show users:</label>
+            <button
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#showUsersModal"
+            >
+              +
+            </button>
+          </div>
+        </app-sidebar>
+      </div>
+      <div class="col-sm-12 col-md-10 offset-md-2">
+        <div class="d-flex flex-row flex-md-row align-items-start h-100">
+          <div
+            class="d-flex py-3"
+            cdkDropList
+            cdkDropListOrientation="horizontal"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <app-column
+              cdkDrag
+              cdkDragHandle
+              *ngFor="let column of columns"
+              [column]="column"
+            ></app-column>
+          </div>
+          <div class="py-3">
+            <div
+              class="text-center bg-light p-4 px-3 rounded mb-5 me-3 add-column"
+            >
+              <span
+                class="cursor-pointer"
+                *ngIf="!addNewColumn; else showNewColumnForm"
+                (click)="addNewColumn = !addNewColumn"
+                >Add new column</span
+              >
+              <ng-template #showNewColumnForm>
+                <form [formGroup]="columnForm">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    formControlName="name"
+                    (keyup.enter)="submit($event)"
+                    [ngClass]="{
+                      'is-invalid': f['name'].touched && f['name'].errors
+                    }"
+                  ></textarea>
+                  <div class="invalid-feedback">Name is required</div>
+                </form>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="showUsersModal"
+    tabindex="-1"
+    aria-labelledby="showUsersModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="showUsersModalLabel">Users in board</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <ol class="list-group list-group-numbered">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-start"
+              *ngFor="let user of board!.users"
+            >
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">{{user.fullname}}</div>
+                {{user.email}}
+              </div>
+              <span class="badge bg-primary rounded-pill">14</span>
+            </li>
+          </ol>
+        </div>
       </div>
     </div>
   </div>

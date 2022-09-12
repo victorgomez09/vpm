@@ -1,48 +1,122 @@
-<div class="d-flex flex-column" *ngIf="boards && !loading; else renderLoading">
-  <div class="row align-items-center">
-    <div class="d-flex flex-column col-sm-12 col-md-8">
-      <span class="fs-5 mb-1"
-        >Welcome <span class="fw-semibold">{{firstName}}</span> to Kanban
-        module:</span
+<div class="container-fluid h-100">
+  <div class="row">
+    <div class="col-2 px-1 d-none d-md-block position-fixed sidebar">
+      <app-sidebar
+        [title]="'Kanban'"
+        [subtitle]="
+          'A visualization tool that enables you to optimize the flow of
+      your work'
+        "
       >
-      <span class="text-muted"
-        >A visualization tool that enables you to optimize the flow of your
-        work.</span
-      >
+        <div class="mb-4">
+          <label for="displaySelect" class="form-label">Display:</label>
+          <select
+            class="form-select form-select-sm"
+            aria-label="Default select example"
+            (change)="handleDisplayType($event)"
+          >
+            <option value="GRID" selected>Grid</option>
+            <option value="TABLE">Table</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="flexSwitchCheckDefault" class="form-label"
+            >Search field:</label
+          >
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+              [value]="hideSearchInput"
+              (change)="handleHideSearchInput($event)"
+            />
+            <label class="form-check-label" for="flexSwitchCheckDefault">
+              {{ hideSearchInput ? 'Hidden' : 'Not hidden' }}
+            </label>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-4">
+          <label for="displaySelect" class="form-label">Add board:</label>
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#createBoardModal"
+            (click)="resetForm()"
+          >
+            +
+          </button>
+        </div>
+      </app-sidebar>
     </div>
-    <div class="col-sm-12 col-md-4 d-flex justify-content-end">
-      <input
-        class="form-control me-2"
-        type="text"
-        placeholder="Search..."
-        [(ngModel)]="filterText"
-        (input)="search()"
-      />
-      <button
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#createBoardModal"
-        (click)="resetForm()"
-      >
-        +
-      </button>    </div>
-  </div>
-
-  <div class="row align-items-start mt-5 row-boards">
-    <div
-      class="col-xs-12 col-md-3 col-lg-2 pe-2 ps-2"
-      *ngFor="let board of filteredBoards"
-    >
+    <div class="col-sm-12 col-md-10 offset-md-2">
       <div
-        class="card bg-light border-0 shadow-sm mb-2 w-100 cursor-pointer"
-        style="width: 11rem"
-        routerLink="board/{{board.id}}"
+        class="d-flex flex-column"
+        *ngIf="boards && !loading; else renderLoading"
       >
-        <div class="card-body">
-          <h5 class="card-title">{{board.name}}</h5>
-          <p class="card-text text-muted">
-            {{board.description}}
-          </p>
+        <div class="row col-12">
+          <span class="fs-3">Your boards:</span>
+        </div>
+        <div class="row align-items-center mt-3" *ngIf="!hideSearchInput">
+          <div class="col-sm-12 col-md-4 d-flex justify-content-end">
+            <input
+              class="form-control me-2"
+              type="text"
+              placeholder="Search..."
+              [(ngModel)]="filterText"
+              (input)="search()"
+            />
+          </div>
+        </div>
+
+        <div class="row align-items-start mt-4 row-boards">
+          <div *ngIf="displayType === 'GRID'; else displayTable">
+            <div class="d-flex flex-wrap">
+              <div
+                class="col-xs-12 col-md-3 col-lg-2 pe-2 ps-2"
+                *ngFor="let board of filteredBoards"
+              >
+                <div
+                  class="card bg-light border-0 shadow-sm mb-2 w-100 cursor-pointer"
+                  style="width: 11rem"
+                  routerLink="board/{{board.id}}"
+                >
+                  <div class="card-body">
+                    <h5 class="card-title">{{board.name}}</h5>
+                    <p class="card-text text-muted">
+                      {{board.description}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #displayTable>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Creation date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let board of filteredBoards; let i = index">
+                  <th scope="row">{{i + 1}}</th>
+                  <td
+                    class="text-primary cursor-pointer"
+                    routerLink="board/{{board.id}}"
+                  >
+                    {{board.name}}
+                  </td>
+                  <td class="text-truncate">{{board.description}}</td>
+                  <td>{{board.creationDate | date}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -69,7 +143,11 @@
         ></button>
       </div>
       <div class="modal-body">
-        <div *ngIf="createdBoard" class="alert alert-success fade show" role="alert">
+        <div
+          *ngIf="createdBoard"
+          class="alert alert-success fade show"
+          role="alert"
+        >
           <strong>Board created!</strong> You can close this window.
         </div>
         <form [formGroup]="boardForm">

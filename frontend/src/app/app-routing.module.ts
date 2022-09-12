@@ -11,46 +11,53 @@ import { KanbanComponent } from './views/kanban/kanban/kanban.component';
 import { LoginComponent } from './views/login/login.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
 import { RegisterComponent } from './views/register/register.component';
-
+import { KanbanTemplateComponent } from './shared/templates/kanban-template/kanban-template.component';
 
 const landingRoutes: Routes = [
   {
     path: '',
-    component: LandingComponent
+    component: LandingComponent,
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
-]
+];
 
 const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
-    path: 'kanban',
-    component: KanbanComponent,
-    canActivate: [AuthGuard]
+    path: '',
+    component: KanbanTemplateComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'kanban',
+        component: KanbanComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'kanban/board/:id',
+        component: BoardComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
   },
-  {
-    path: 'kanban/board/:id',
-    component: BoardComponent,
-    canActivate: [AuthGuard]
-  }
-]
+];
 
 const routes: Routes = [
   {
     path: '',
     component: LandingTemplateComponent,
-    children: landingRoutes
+    children: landingRoutes,
   },
   {
     path: '',
@@ -59,12 +66,12 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: NotFoundComponent
+    component: NotFoundComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes), SharedModule],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

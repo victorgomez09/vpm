@@ -31,7 +31,10 @@ export class LoginComponent implements OnInit {
 
   submit() {
     const user = this.loginForm.value;
-    this.authService.login(user).subscribe((data) => this.handleLogin(data.token));
+    this.authService.login(user).subscribe({
+      next: (data) => this.handleLogin(data.token),
+      error: () => this.loginError = true
+    });
   }
 
   handleLogin(token: string) {

@@ -16,7 +16,7 @@
   cdkDropListOrientation="vertical"
   (cdkDropListDropped)="taskDrop($event)"
 >
-  <h3 class="h5 mb-2 pb-2">{{ column.name.toUpperCase() }}</h3>
+  <span class="fs-6 fw-semibold mb-2 pb-2">{{ column.name.toUpperCase() }}</span>
   <div class="column-body">
     <app-card *ngFor="let card for cards" cdkDrag [card]="card"></app-card>
   </div>

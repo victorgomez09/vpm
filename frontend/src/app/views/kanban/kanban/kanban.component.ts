@@ -9,10 +9,9 @@ import { getFirstWordOfString } from 'src/app/shared/utils/text.util';
 @Component({
   selector: 'app-kanban',
   templateUrl: './kanban.component.html',
-  styleUrls: ['./kanban.component.scss']
+  styleUrls: ['./kanban.component.scss'],
 })
 export class KanbanComponent implements OnInit {
-
   loading: boolean;
   boards: Board[];
   filteredBoards: Board[];
@@ -21,42 +20,50 @@ export class KanbanComponent implements OnInit {
   boardForm: FormGroup;
   filterText: string;
   createdBoard: boolean;
+  displayType: 'GRID' | 'TABLE';
+  hideSearchInput: boolean;
 
-  constructor(private fb: FormBuilder, private kanbanService: KanbanService, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private kanbanService: KanbanService,
+    private authService: AuthService
+  ) {
     this.loading = true;
     this.boards = [];
     this.filteredBoards = [];
     this.boardForm = fb.group({
-      name: ["", Validators.required],
-      description: "",
-      image: ""
-    })
-    this.filterText = "";
+      name: ['', Validators.required],
+      description: '',
+      image: '',
+    });
+    this.filterText = '';
     this.createdBoard = false;
+    this.displayType = 'GRID';
+    this.hideSearchInput = false;
   }
-  
+
   ngOnInit(): void {
-    this.authService.user$.subscribe(data => {
+    this.authService.user$.subscribe((data) => {
       this.user = data;
       this.firstName = getFirstWordOfString(data.fullname);
-      this.kanbanService.getBoards(data.id).subscribe(data => {
-        this.boards = data
+      this.kanbanService.getBoards(data.id).subscribe((data) => {
+        this.boards = data;
         this.filteredBoards = data;
         this.loading = false;
       });
-    })
+    });
   }
 
   createBoard(): void {
     const data = {
       name: this.boardForm.value.name,
       description: this.boardForm.value.description,
-      image: this.boardForm.value.image
-    }
-    this.kanbanService.createBoard(this.user?.id, data).subscribe(data => {
+      image: this.boardForm.value.image,
+    };
+    this.kanbanService.createBoard(this.user?.id, data).subscribe((data) => {
       this.boards.push(data);
       this.createdBoard = true;
-    })
+    });
   }
 
   resetForm(): void {
@@ -65,9 +72,24 @@ export class KanbanComponent implements OnInit {
   }
 
   search(): void {
-    this.filteredBoards = this.filterText === "" ? this.boards : this.boards.filter((element) => {
-      return element.name.toLowerCase().includes(this.filterText.toLowerCase());
-    });
+    this.filteredBoards =
+      this.filterText === ''
+        ? this.boards
+        : this.boards.filter((element) => {
+            return element.name
+              .toLowerCase()
+              .includes(this.filterText.toLowerCase());
+          });
+  }
+
+  handleDisplayType(event: Event): void {
+    this.displayType =
+      (event.target as HTMLInputElement).value === 'GRID' ? 'GRID' : 'TABLE';
+    console.log('displayType', this.displayType);
+  }
+
+  handleHideSearchInput(event: Event): void {
+    this.hideSearchInput = (event.target as HTMLInputElement).checked;
   }
 
   get f() {
