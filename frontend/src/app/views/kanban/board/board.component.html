@@ -1,7 +1,7 @@
 <div *ngIf="board">
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <div class="col-2 px-1 d-none d-md-block position-fixed sidebar">
+      <div class="col-2 p-0 d-none d-lg-block position-fixed sidebar">
         <app-sidebar
           [title]="board!.name.toUpperCase()"
           [subtitle]="board!.description"
@@ -28,10 +28,11 @@
           </div>
         </app-sidebar>
       </div>
-      <div class="col-sm-12 col-md-10 offset-md-2">
+      <div class="col-md-12 col-lg-10 offset-lg-2">
         <div class="d-flex flex-row flex-md-row align-items-start h-100">
           <div
             class="d-flex py-3"
+            cdkDropListGroup
             cdkDropList
             cdkDropListOrientation="horizontal"
             (cdkDropListDropped)="drop($event)"

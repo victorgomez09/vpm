@@ -2,12 +2,15 @@
     width: 17em;
 }
 
-.column-body {
-    height: calc(100vh - 16em);
-    max-height: calc(100vh - 16em);
+.column-dnd {
+    max-height: calc(100vh - 10em);
     overflow-y: auto;
 }
 
-textarea {
-    resize: none;
+.column-body {
+    min-height: 1.5em;
+}
+
+input:focus {
+    box-shadow: none;
 }

@@ -30,4 +30,6 @@ export interface CreateColumn {
   boardId: string;
 }
 
-export interface Card {}
+export interface Card {
+  name: string;
+}

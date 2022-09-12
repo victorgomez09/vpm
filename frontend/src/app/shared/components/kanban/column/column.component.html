@@ -1,44 +1,37 @@
-<!-- <div cdkDropList cdkDropListOrientation="horizontal" class="boards" (cdkDropListDropped)="drop($event)">
-   <app-board cdkDrag *ngFor="let board of boards" [board]="board">
-      <mat-icon cdkDragHandle class="handle">drag_indicator</mat-icon>
-  </app-board>
-
-  <div class="board-button">
-      <button mat-raised-button color="accent" cdkDragDisabled (click)="openBoardDialog()">
-          New Board
-      </button>
-  </div>
-</div> -->
-
-<div
-  class="bg-light p-2 px-3 rounded me-3 column"
-  cdkDropList
-  cdkDropListOrientation="vertical"
-  (cdkDropListDropped)="taskDrop($event)"
->
-  <span class="fs-6 fw-semibold mb-2 pb-2">{{ column.name.toUpperCase() }}</span>
-  <div class="column-body">
-    <app-card *ngFor="let card for cards" cdkDrag [card]="card"></app-card>
-  </div>
-  <div
-    *ngIf="!addNewTask; else elseBlock"
-    class="cursor-pointer"
-    (click)="addNewTask = !addNewTask"
+<div class="bg-light p-2 px-3 rounded me-3 column">
+  <span
+    class="fs-6 fw-semibold mb-2 pb-2"
+    >{{ column.name.toUpperCase() }}</span
   >
-    <span class="fw-semibold">Add task</span>
+  <div class="mt-2 column-dnd">
+    <div
+      class="column-body"
+      cdkDropList
+      [cdkDropListData]="cards"
+      (cdkDropListDropped)="taskDrop($event)"
+    >
+      <app-card *ngFor="let card of cards" cdkDrag [card]="card"></app-card>
+    </div>
+    <div
+      *ngIf="!addNewTask; else elseBlock"
+      class="cursor-pointer"
+      (click)="addNewTask = !addNewTask"
+    >
+      <span class="fw-semibold">Add task</span>
+    </div>
+    <ng-template #elseBlock>
+      <form [formGroup]="cardForm">
+        <input
+          class="form-control"
+          autofocus
+          formControlName="name"
+          (keyup.enter)="submit($event)"
+          [ngClass]="{
+            'is-invalid': f['name'].touched && f['name'].errors
+          }"
+        />
+        <div class="invalid-feedback">Name is required</div>
+      </form>
+    </ng-template>
   </div>
-  <ng-template #elseBlock>
-    <form [formGroup]="cardForm">
-      <textarea
-        class="form-control"
-        rows="3"
-        formControlName="name"
-        (keyup.enter)="submit($event)"
-        [ngClass]="{
-          'is-invalid': f['name'].touched && f['name'].errors
-        }"
-      ></textarea>
-      <div class="invalid-feedback">Name is required</div>
-    </form>
-  </ng-template>
 </div>

@@ -1,4 +1,8 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Card, Column } from 'src/app/core/models/kanban.model';
@@ -19,19 +23,36 @@ export class ColumnComponent implements OnInit {
     this.addNewTask = false;
     this.cards = [];
     this.cardForm = this.fb.group({
-      name: ["", Validators.required]
-    })
+      name: ['', Validators.required],
+    });
   }
 
   ngOnInit(): void {}
 
-  taskDrop(event: CdkDragDrop<string[]>) {
-    // moveItemInArray(this.board.tasks, event.previousIndex, event.currentIndex);
+  taskDrop(event: CdkDragDrop<Card[]>) {
+    if (event.container.id !== event.previousContainer.id) {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
+    }
     // this.boardService.updateTasks(this.board.id, this.board.tasks);
   }
 
   submit(event: Event): void {
     event.preventDefault();
+    this.addNewTask = false;
+
+    const payload: Card = {
+      name: (event.target as HTMLTextAreaElement).value,
+    };
+    this.cards.push(payload);
+    console.log('card added to cards', payload);
+    console.log('cards with push', this.cards);
   }
 
   get f() {
