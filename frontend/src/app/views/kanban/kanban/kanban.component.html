@@ -33,7 +33,7 @@
               (change)="handleHideSearchInput($event)"
             />
             <label class="form-check-label" for="flexSwitchCheckDefault">
-              {{ hideSearchInput ? 'Hidden' : 'Not hidden' }}
+              {{ hideSearchInput ? "Hidden" : "Not hidden" }}
             </label>
           </div>
         </div>
@@ -80,12 +80,12 @@
                 <div
                   class="card bg-light border-0 shadow-sm mb-2 w-100 cursor-pointer"
                   style="width: 11rem"
-                  routerLink="board/{{board.id}}"
+                  routerLink="board/{{ board.id }}"
                 >
                   <div class="card-body">
-                    <h5 class="card-title">{{board.name}}</h5>
+                    <h5 class="card-title">{{ board.name }}</h5>
                     <p class="card-text text-muted">
-                      {{board.description}}
+                      {{ board.description }}
                     </p>
                   </div>
                 </div>
@@ -104,15 +104,15 @@
               </thead>
               <tbody>
                 <tr *ngFor="let board of filteredBoards; let i = index">
-                  <th scope="row">{{i + 1}}</th>
+                  <th scope="row">{{ i + 1 }}</th>
                   <td
                     class="text-primary cursor-pointer"
-                    routerLink="board/{{board.id}}"
+                    routerLink="board/{{ board.id }}"
                   >
-                    {{board.name}}
+                    {{ board.name }}
                   </td>
-                  <td class="text-truncate">{{board.description}}</td>
-                  <td>{{board.creationDate | date}}</td>
+                  <td class="text-truncate">{{ board.description }}</td>
+                  <td>{{ board.creationDate | date }}</td>
                 </tr>
               </tbody>
             </table>

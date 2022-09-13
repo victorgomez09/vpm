@@ -9,7 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class CardDto {
     private List<TagDto> tags;
     private List<PriorityDto> priorities;
     private List<CommentDto> comments;
-    private ColumnDto columnDto;
+    private String columnId;
     private Date creationDate;
     private Date updateDate;
 }

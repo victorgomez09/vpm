@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import org.springframework.stereotype.Service;
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.BoardDto;
+import com.vira.vpm.kanbanservice.dto.CardDto;
 import com.vira.vpm.kanbanservice.dto.ColumnDto;
 import com.vira.vpm.kanbanservice.dto.CreateBoardDto;
 import com.vira.vpm.kanbanservice.dto.UpdateBoardDto;
 import com.vira.vpm.kanbanservice.dto.UserDto;
 import com.vira.vpm.kanbanservice.entity.Board;
+import com.vira.vpm.kanbanservice.entity.Card;
 import com.vira.vpm.kanbanservice.entity.Column;
 import com.vira.vpm.kanbanservice.feign.UserFeign;
 import com.vira.vpm.kanbanservice.repository.BoardRepository;
@@ -64,14 +67,20 @@ public class BoardService {
                 .description(board.get().getDescription())
                 .image(board.get().getImage())
                 .users(users)
-                .columns(board.get().getColumns().stream().sorted(Comparator.comparingInt(Column::getOrder)).map(c -> ColumnDto.builder()
-                        .id(c.getId())
-                        .name(c.getName())
-                        .order(c.getOrder())
-                        .board(c.getBoard().getId())
-                        .creationDate(c.getCreationDate())
-                        .updateDate(c.getUpdateDate())
-                        .build()).collect(Collectors.toList()))
+                .columns(board.get().getColumns().stream().sorted(Comparator.comparingInt(Column::getOrder))
+                        .map(c -> ColumnDto.builder()
+                                .id(c.getId())
+                                .name(c.getName())
+                                .order(c.getOrder())
+                                .cards(c.getCards().stream()
+                                        .sorted(Comparator.comparingInt(Card::getOrder))
+                                        .map(card -> CardDto.builder().name(card.getName()).columnId(c.getId()).build())
+                                        .collect(Collectors.toList()))
+                                .board(c.getBoard().getId())
+                                .creationDate(c.getCreationDate())
+                                .updateDate(c.getUpdateDate())
+                                .build())
+                        .collect(Collectors.toList()))
                 .creationDate(board.get().getCreationDate())
                 .updateDate(board.get().getUpdateDate())
                 .build();

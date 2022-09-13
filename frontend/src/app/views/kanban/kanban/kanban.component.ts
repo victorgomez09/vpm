@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/core/models/auth.model';
-import { Board } from 'src/app/core/models/kanban.model';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { KanbanService } from 'src/app/core/services/kanban/kanban.service';
-import { getFirstWordOfString } from 'src/app/shared/utils/text.util';
+import { User } from 'src/app/models/auth.model';
+import { Board } from 'src/app/models/kanban.model';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { KanbanService } from 'src/app/services/kanban/kanban.service';
+import { getFirstWordOfString } from 'src/app/utils/text.util';
 
 @Component({
   selector: 'app-kanban',

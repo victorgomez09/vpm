@@ -2,9 +2,9 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Board, Column, CreateColumn } from 'src/app/core/models/kanban.model';
-import { KanbanService } from 'src/app/core/services/kanban/kanban.service';
-import { sortColumns } from 'src/app/shared/utils/kanban.util';
+import { Board, Column, CreateColumn } from 'src/app/models/kanban.model';
+import { KanbanService } from 'src/app/services/kanban/kanban.service';
+import { sortColumns } from 'src/app/utils/kanban.util';
 
 @Component({
   selector: 'app-board',

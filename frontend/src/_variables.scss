@@ -63,6 +63,7 @@ $box-shadow:                  0 1px 2px rgba($black, .05) !default;
 $box-shadow-lg:               0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06) !default;
 $input-btn-focus-width:         .10rem !default;
 $input-btn-focus-color-opacity: .25 !default;
+$border-width: 1px;
 
 // Tables
 
@@ -154,6 +155,7 @@ $toast-header-color:                $headings-color !default;
 
 $modal-content-border-color:        $gray-300 !default;
 $modal-header-border-width:         0 !default;
+$border-radius-lg: .15em;
 
 // List group
 

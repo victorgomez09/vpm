@@ -1,6 +1,5 @@
 package com.vira.vpm.users.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ public class UserService {
 
     public List<UserDto> findAllByIds(List<String> users) {
         return userRepository.findAllById(users).stream().map((User user) -> new UserDto(user.getId(), user.getEmail(),
-            user.getFullname(), user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
+                user.getFullname(), user.getCreationDate(), user.getUpdateDate())).collect(Collectors.toList());
     }
 
     public UserDto findById(String userId) {
@@ -40,7 +39,8 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         if (user == null)
             return null;
-        return new UserDto(user.getId(), user.getEmail(), user.getFullname(), user.getCreationDate(), user.getUpdateDate());
+        return new UserDto(user.getId(), user.getEmail(), user.getFullname(), user.getCreationDate(),
+                user.getUpdateDate());
     }
 
     public UserDto save(UserDto userData) {

@@ -7,8 +7,8 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Register } from '../../core/models/auth.model';
-import { AuthService } from '../../core/services/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { Register } from '../../models/auth.model';
 
 @Component({
   selector: 'app-register',

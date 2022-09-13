@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -33,13 +33,13 @@ export class LoginComponent implements OnInit {
     const user = this.loginForm.value;
     this.authService.login(user).subscribe({
       next: (data) => this.handleLogin(data.token),
-      error: () => this.loginError = true
+      error: () => (this.loginError = true),
     });
   }
 
   handleLogin(token: string) {
     this.router.navigate(['/dashboard']);
-    this.authService.setTokenToStorage(token)
+    this.authService.setTokenToStorage(token);
   }
 
   get f() {

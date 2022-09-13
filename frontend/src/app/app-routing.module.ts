@@ -1,52 +1,42 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './core/guards/auth/auth.guard';
-import { SharedModule } from './shared/shared.module';
-import { AppTemplateComponent } from './shared/templates/app-template/app-template.component';
-import { LandingTemplateComponent } from './shared/templates/landing-template/landing-template.component';
-import { DashboardComponent } from './views/dashboard/dashboard.component';
-import { LandingComponent } from './views/landing/landing.component';
-import { BoardComponent } from './views/kanban/board/board.component';
-import { KanbanComponent } from './views/kanban/kanban/kanban.component';
-import { LoginComponent } from './views/login/login.component';
-import { NotFoundComponent } from './views/not-found/not-found.component';
-import { RegisterComponent } from './views/register/register.component';
-import { KanbanTemplateComponent } from './shared/templates/kanban-template/kanban-template.component';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 const landingRoutes: Routes = [
   {
     path: '',
-    component: LandingComponent,
+    loadChildren: () => import('./views').then((m) => m.LandingModule),
   },
   {
     path: 'login',
-    component: LoginComponent,
+    loadChildren: () => import('./views').then((m) => m.LoginModule),
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    loadChildren: () => import('./views').then((m) => m.RegisterModule),
   },
 ];
 
 const appRoutes: Routes = [
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    loadChildren: () => import('./views').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },
   {
     path: '',
-    component: KanbanTemplateComponent,
+    loadComponent: () =>
+      import('./components/templates').then((m) => m.KanbanTemplateComponent),
     canActivate: [AuthGuard],
     children: [
       {
         path: 'kanban',
-        component: KanbanComponent,
+        loadChildren: () => import('./views').then((m) => m.KanbanModule),
         canActivate: [AuthGuard],
       },
       {
         path: 'kanban/board/:id',
-        component: BoardComponent,
+        loadChildren: () => import('./views').then((m) => m.BoardModule),
         canActivate: [AuthGuard],
       },
     ],
@@ -56,22 +46,25 @@ const appRoutes: Routes = [
 const routes: Routes = [
   {
     path: '',
-    component: LandingTemplateComponent,
+    loadComponent: () =>
+      import('./components/templates').then((m) => m.LandingTemplateComponent),
     children: landingRoutes,
   },
   {
     path: '',
-    component: AppTemplateComponent,
+    loadComponent: () =>
+      import('./components/templates').then((m) => m.AppTemplateComponent),
     children: appRoutes,
   },
   {
     path: '**',
-    component: NotFoundComponent,
+    loadChildren: () => import('./views').then((m) => m.NotFoundModule),
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), SharedModule],
+  imports: [RouterModule.forRoot(routes)],
+  providers: [AuthGuard],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
