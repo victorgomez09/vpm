@@ -122,20 +122,6 @@ export class KanbanService {
       .pipe(catchError(handleError('sortColumns', [])));
   }
 
-  sortCardsAndUpdateColumn(data: Card[]): Observable<Column[]> {
-    return this.http
-      .put<Column[]>(
-        `${environment.apiUrl}/boards/cards/sort-and-update`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-          },
-        }
-      )
-      .pipe(catchError(handleError('sortColumnsAndCards', [])));
-  }
-
   createCard(data: CreateCard): Observable<Card> {
     return this.http
       .post<Card>(
@@ -164,5 +150,48 @@ export class KanbanService {
           })
         )
       );
+  }
+
+  getCardById(cardId: string): Observable<Card> {
+    return this.http
+      .get<Card>(`${environment.apiUrl}/boards/card/${cardId}`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+      })
+      .pipe(
+        catchError(
+          handleError<Card>('getCardById', {
+            id: '',
+            name: '',
+            order: 0,
+            description: '',
+            columnId: '',
+            users: [],
+            creationDate: new Date(),
+            updateDate: new Date(),
+          })
+        )
+      );
+  }
+
+  sortCards(data: Card[]): Observable<Card[]> {
+    return this.http
+      .put<Card[]>(`${environment.apiUrl}/boards/card/sort`, data, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+      })
+      .pipe(catchError(handleError('sortCards', [])));
+  }
+
+  sortCardsAndUpdateColumn(data: Card[]): Observable<Card[]> {
+    return this.http
+      .put<Card[]>(`${environment.apiUrl}/boards/card/sortWithColumns`, data, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+      })
+      .pipe(catchError(handleError('sortCardsAndUpdateColumn', [])));
   }
 }

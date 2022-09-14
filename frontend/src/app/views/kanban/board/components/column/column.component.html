@@ -1,20 +1,23 @@
-<div class="bg-light p-2 px-3 rounded me-3 column">
-  <span class="fs-6 fw-semibold mb-2 pb-2">
+<div class="bg-light p-2 px-3 rounded me-3 column" id="test">
+  <span class="fs-6 fw-semibold mb-2 pb-2 cursor-pointer">
     {{ column.name.toUpperCase() }}
   </span>
   <div class="mt-2 column-dnd">
     <div
       class="column-body"
       cdkDropList
+      id="{{column.id}}"
       [cdkDropListData]="cards"
       (cdkDropListDropped)="taskDrop($event)"
     >
-      <app-card
+      <div
         *ngFor="let card of cards"
         cdkDrag
+        cdkDragHandle
         [cdkDragData]="card"
-        [card]="card"
-      ></app-card>
+      >
+        <app-card [card]="card"></app-card>
+      </div>
     </div>
     <div
       *ngIf="!addNewTask; else elseBlock"

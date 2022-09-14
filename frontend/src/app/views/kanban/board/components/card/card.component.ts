@@ -1,4 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Card } from 'src/app/models/kanban.model';
 import { KanbanService } from 'src/app/services/kanban/kanban.service';
 
@@ -7,12 +10,19 @@ import { KanbanService } from 'src/app/services/kanban/kanban.service';
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class CardComponent implements OnInit {
   @Input()
   card!: Card;
+  editDescription: boolean;
+  description!: string;
 
-  constructor(private kanbanService: KanbanService) {}
+  constructor(private kanbanService: KanbanService) {
+    this.editDescription = false;
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.description = this.card.description;
+  }
 }

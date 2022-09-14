@@ -12,9 +12,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Card, Column, CreateCard } from 'src/app/models/kanban.model';
 import { KanbanService } from 'src/app/services/kanban/kanban.service';
-import { sortCards, updateColumForCard } from 'src/app/utils/kanban.util';
+import {
+  sortCards,
+  sortColumns,
+  updateColumForCard,
+} from 'src/app/utils/kanban.util';
 import { CardComponent } from '../card';
 
 @Component({
@@ -22,7 +27,13 @@ import { CardComponent } from '../card';
   selector: 'app-column',
   templateUrl: './column.component.html',
   styleUrls: ['./column.component.scss'],
-  imports: [CommonModule, DragDropModule, ReactiveFormsModule, CardComponent],
+  imports: [
+    CommonModule,
+    DragDropModule,
+    RouterModule,
+    ReactiveFormsModule,
+    CardComponent,
+  ],
 })
 export class ColumnComponent implements OnInit {
   @Input()
@@ -45,29 +56,44 @@ export class ColumnComponent implements OnInit {
 
   taskDrop(event: CdkDragDrop<Card[]>) {
     if (event.container.id !== event.previousContainer.id) {
+      let prevTmp: Card[] = event.previousContainer.data;
+      let currTmp: Card[] = event.container.data;
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
-      updateColumForCard(event.container.data, event.item.data);
       sortCards(event.previousContainer.data);
       sortCards(event.container.data);
+      updateColumForCard(
+        event.container.data,
+        event.item.data,
+        event.currentIndex,
+        event.container.id
+      );
       const payload = [
         ...event.previousContainer.data,
         ...event.container.data,
       ];
-      console.log('payload', payload);
-      this.kanbanService
-        .sortCardsAndUpdateColumn(payload)
-        .subscribe((data) => console.log('data', data));
+      console.log({ payload });
+      this.kanbanService.sortCardsAndUpdateColumn(payload).subscribe({
+        // next: () => {
+        //   prevTmp = [];
+        //   currTmp = [];
+        // },
+        error: () => {
+          event.previousContainer.data = prevTmp;
+          event.container.data = currTmp;
+        },
+      });
     } else {
       moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
-      console.log('this.cards', this.cards);
+      sortCards(this.cards);
+      this.kanbanService.sortCards(this.cards).subscribe({
+        error: () => console.log('something goes wrong'),
+      });
     }
-    // this.kanbanService.sortCards()
-    // this.boardService.updateTasks(this.board.id, this.board.tasks);
   }
 
   submit(event: Event): void {

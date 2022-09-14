@@ -12,13 +12,15 @@ export const sortCards = (array: Card[]): Card[] => {
 
 export const updateColumForCard = (
   newItemList: Card[],
-  itemToMove: Card
+  itemToMove: Card,
+  newIndex: number,
+  newColumn: string
 ): Card[] => {
   newItemList.splice(
     newItemList.findIndex((item) => item.columnId === itemToMove.columnId),
     1
   );
-  itemToMove.columnId = newItemList[0].columnId;
-  newItemList.push(itemToMove);
+  itemToMove.columnId = newColumn;
+  newItemList.splice(newIndex, 0, itemToMove);
   return newItemList;
 };

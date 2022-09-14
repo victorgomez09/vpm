@@ -35,17 +35,16 @@ export class BoardComponent implements OnInit {
       this.kanbanService.getBoardById(id).subscribe((data) => {
         this.board = data;
         this.columns = data.columns;
-        console.log('data', data);
       });
     });
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<Column[]>) {
     moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-    this.columns = sortColumns(this.columns);
     console.log('columns', this.columns);
-    this.kanbanService.sortColumns(this.columns).subscribe((data) => {
-      console.log('data from sort', data);
+    sortColumns(this.columns);
+    this.kanbanService.sortColumns(this.columns).subscribe({
+      error: () => console.log('something goes wrong'),
     });
   }
 

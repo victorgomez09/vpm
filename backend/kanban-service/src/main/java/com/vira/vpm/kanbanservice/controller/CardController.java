@@ -37,7 +37,12 @@ public class CardController {
     }
 
     @PutMapping("/sort")
-    public ResponseEntity<List<CardDto>> sortColumns(@RequestBody List<CardDto> data) throws NotFoundException {
+    public ResponseEntity<List<CardDto>> sortCards(@RequestBody List<CardDto> data) throws NotFoundException {
         return ResponseEntity.ok().body(cardService.updateOrder(data));
+    }
+
+    @PutMapping("/sortWithColumns")
+    public ResponseEntity<List<CardDto>> sortCardsAndColumns(@RequestBody List<CardDto> data) throws NotFoundException {
+        return ResponseEntity.ok().body(cardService.updateOrderAndColumn(data));
     }
 }

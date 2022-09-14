@@ -1,18 +1,10 @@
-<div class="card border-0 shadow-sm mb-3 cursor-grab">
-  <div class="card-body">
-    <p class="mb-0">{{card.name}}</p>
-    <div class="text-right">
-      <small class="text-muted mb-1 d-inline-block">25%</small>
-    </div>
-    <div class="progress" style="height: 5px">
-      <div
-        class="progress-bar"
-        role="progressbar"
-        style="width: 25%"
-        aria-valuenow="25"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
-    </div>
+<div
+  class="card border-0 shadow-sm mb-3 cursor-pointer"
+  [routerLink]="[{ outlets: { card: ['card-details', card.id] } }]"
+>
+  <div class="card-body px-3 py-2">
+    <p class="mb-0">
+      {{card.name}}
+    </p>
   </div>
 </div>

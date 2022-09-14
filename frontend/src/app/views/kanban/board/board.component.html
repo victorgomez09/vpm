@@ -37,12 +37,14 @@
             cdkDropListOrientation="horizontal"
             (cdkDropListDropped)="drop($event)"
           >
-            <app-column
+            <div
+              *ngFor="let column of columns"
               cdkDrag
               cdkDragHandle
-              *ngFor="let column of columns"
-              [column]="column"
-            ></app-column>
+              [cdkDragData]="column"
+            >
+              <app-column [column]="column"></app-column>
+            </div>
           </div>
           <div class="py-3">
             <div
@@ -111,3 +113,5 @@
     </div>
   </div>
 </div>
+
+<router-outlet name="card"></router-outlet>

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.CardDto;
-import com.vira.vpm.kanbanservice.dto.ColumnDto;
 import com.vira.vpm.kanbanservice.dto.CreateCardDto;
 import com.vira.vpm.kanbanservice.entity.Card;
 import com.vira.vpm.kanbanservice.entity.Column;
@@ -116,6 +115,29 @@ public class CardService {
                 throw new NotFoundException("Card with id '" + element.getId() + "' not found");
             }
             Card updated = cardRepository.save(card.get().withOrder(element.getOrder()));
+            result.add(CardDto.builder().name(updated.getName())
+                    .order(updated.getOrder())
+                    .columnId(card.get().getColumn().getId())
+                    .creationDate(updated.getCreationDate())
+                    .updateDate(updated.getUpdateDate())
+                    .build());
+        }
+        result.sort(Comparator.comparingInt(CardDto::getOrder));
+        return result;
+    }
+
+    public List<CardDto> updateOrderAndColumn(List<CardDto> data) throws NotFoundException {
+        List<CardDto> result = new ArrayList<>();
+        for (CardDto element : data) {
+            Optional<Card> card = cardRepository.findById(element.getId());
+            if (!card.isPresent()) {
+                throw new NotFoundException("Card with id '" + element.getId() + "' not found");
+            }
+            Optional<Column> column = columnRepository.findById(element.getColumnId());
+            if (!column.isPresent()) {
+                throw new NotFoundException("Column with id '" + element.getColumnId() + "' not found");
+            }
+            Card updated = cardRepository.save(card.get().withOrder(element.getOrder()).withColumn(column.get()));
             result.add(CardDto.builder().name(updated.getName())
                     .order(updated.getOrder())
                     .columnId(card.get().getColumn().getId())
