@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,11 @@ import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.CardDto;
 import com.vira.vpm.kanbanservice.dto.CreateCardDto;
+import com.vira.vpm.kanbanservice.dto.UpdateCardDto;
+import com.vira.vpm.kanbanservice.dto.UserDto;
 import com.vira.vpm.kanbanservice.entity.Card;
 import com.vira.vpm.kanbanservice.entity.Column;
+import com.vira.vpm.kanbanservice.feign.UserFeign;
 import com.vira.vpm.kanbanservice.repository.CardRepository;
 import com.vira.vpm.kanbanservice.repository.ColumnRepository;
 
@@ -24,6 +28,8 @@ public class CardService {
     private CardRepository cardRepository;
     @Autowired
     private ColumnRepository columnRepository;
+    @Autowired
+    private UserFeign userFeign;
 
     public CardDto create(CreateCardDto data) throws NotFoundException, AttributeException {
         Optional<Column> column = columnRepository.findById(data.getColumnId());
@@ -50,6 +56,7 @@ public class CardService {
                     .columnId(card.get().getColumn().getId())
                     .description(card.get().getDescription())
                     .order(card.get().getOrder())
+                    .users(userFeign.findAllUsersByIds(card.get().getUsers()))
                     .creationDate(card.get().getCreationDate())
                     .updateDate(card.get().getUpdateDate())
                     .build();
@@ -58,14 +65,17 @@ public class CardService {
         }
     }
 
-    public CardDto update(String id, String name, String description) {
+    public CardDto update(String id, UpdateCardDto data) {
         Optional<Card> card = cardRepository.findById(id);
         if (card.isPresent()) {
-            Card updateCard = cardRepository.save(card.get().withName(name).withDescription(description));
+            Card updateCard = cardRepository
+                    .save(card.get().withName(data.getName()).withDescription(data.getDescription())
+                            .withUsers(data.getUsers().stream().map(UserDto::getId).collect(Collectors.toList())));
             return CardDto.builder().id(updateCard.getId()).name(updateCard.getName())
                     .columnId(card.get().getColumn().getId())
                     .description(updateCard.getDescription())
                     .order(updateCard.getOrder())
+                    .users(userFeign.findAllUsersByIds(updateCard.getUsers()))
                     .creationDate(updateCard.getCreationDate())
                     .updateDate(updateCard.getUpdateDate())
                     .build();

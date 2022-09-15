@@ -7,10 +7,26 @@
   data-bs-keyboard="false"
   aria-hidden="true"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content" *ngIf="card && card.id; else loadingBlock">
       <div class="modal-header">
-        <h5 class="modal-title" id="cardModalLabel">{{card.name}}</h5>
+        <h5
+          class="modal-title cursor-pointer"
+          id="cardModalLabel"
+          *ngIf="!editName; else editNameBlock"
+          (click)="handleEditName()"
+        >
+          {{card.name}}
+        </h5>
+        <ng-template #editNameBlock>
+          <input
+            class="form-control w-50"
+            type="text"
+            name="name"
+            [(ngModel)]="name"
+            (keyup.enter)="submitName()"
+          />
+        </ng-template>
         <button
           type="button"
           class="btn-close"
@@ -20,35 +36,87 @@
         ></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3">
-          <span class="fw-semibold fs-5">Description</span>
-          <p
-            class="text-muted fst-italic"
-            *ngIf="!editDescription; else editDescriptionBlock"
-            (click)="handleEditDescription()"
-          >
-            {{!card.description ? 'Click here to add description' : card.description}}
-          </p>
-          <ng-template #editDescriptionBlock>
-            <textarea class="form-control" name="" rows="3"></textarea>
-            <div class="d-flex justify-content-end mt-1">
-              <button class="btn btn-primary">Save</button>
-              <button
-                class="btn btn-light ms-1"
+        <div class="row">
+          <div class="col-8">
+            <div class="mb-3" *ngIf="card.users.length">
+              <span class="fw-semibold fs-5">Users</span>
+              <div class="d-flex flex-wrap">
+                <div
+                  class="bg-primary rounded p-2 mb-1 me-1"
+                  *ngFor="let user of card.users"
+                >
+                  <span
+                    class="text-light fw-semibold"
+                    >{{getInitials(user.fullname)}}</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <span class="fw-semibold fs-5">Description</span>
+              <p
+                class="text-muted fst-italic cursor-pointer"
+                *ngIf="!editDescription; else editDescriptionBlock"
                 (click)="handleEditDescription()"
               >
-                Cancel
-              </button>
+                {{!card.description ? 'Click here to add description' : card.description}}
+              </p>
+              <ng-template #editDescriptionBlock>
+                <textarea
+                  class="form-control"
+                  name="description"
+                  rows="3"
+                  [(ngModel)]="description"
+                ></textarea>
+                <div class="d-flex justify-content-end mt-1">
+                  <button class="btn btn-primary" (click)="submitDescription()">
+                    Save
+                  </button>
+                  <button
+                    class="btn btn-light ms-1"
+                    (click)="handleEditDescription()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </ng-template>
             </div>
-          </ng-template>
+          </div>
+          <div class="col-4">
+            <div class="mb-3">
+              <!-- <span class="fw-semibold fs-5">Users</span> -->
+              <!-- <div class="d-flex flex-wrap">
+                <div *ngFor="let user of card.users">
+                  <div class="d-inline-flex position-relative">
+                    <span
+                      class="position-absolute top-0 translate-middle p-1 bg-danger border border-light rounded-circle"
+                      style="left: 85%"
+                    >
+                      <span class="visually-hidden">New alerts</span>
+                    </span>
+                    <div class="rounded bg-primary px-2 py-1 me-1 mb-1">
+                      <span
+                        class="fw-semibold text-light"
+                        >{{getInitials(user.fullname)}}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+              <app-users-dropdown
+                [excludeUsers]="card.users"
+                (newItemEvent)="addUser($event)"
+              ></app-users-dropdown>
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" (click)="onClose()">
+              Close
+            </button>
+          </div> -->
         </div>
       </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" (click)="onClose()">
-          Close
-        </button>
-      </div> -->
     </div>
     <ng-template #loadingBlock>
       <div class="d-flex align-items-center justify-content-center h-100">

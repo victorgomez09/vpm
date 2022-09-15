@@ -46,3 +46,9 @@ export interface CreateCard {
   name: string;
   columnId: string;
 }
+
+export interface UpdateCard {
+  name: string;
+  description: string;
+  users: User[];
+}

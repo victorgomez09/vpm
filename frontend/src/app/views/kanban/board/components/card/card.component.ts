@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Card } from 'src/app/models/kanban.model';
 import { KanbanService } from 'src/app/services/kanban/kanban.service';
+import { getInitials } from 'src/app/utils/text.util';
 
 @Component({
   standalone: true,
@@ -24,5 +25,10 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
     this.description = this.card.description;
+    console.log('card', this.card);
+  }
+
+  getInitials(text: string): string {
+    return getInitials(text);
   }
 }

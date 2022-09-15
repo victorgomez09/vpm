@@ -1,0 +1,49 @@
+<div class="dropdown w-100">
+  <span
+    class="bg-light fw-semibold px-2 py-1 rounded w-100"
+    type="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Users
+  </span>
+  <div class="dropdown-menu">
+    <div class="bg-white sticky-top top-0 p-1">
+      <h6 class="dropdown-header text-center fw-semibold p-1">Users</h6>
+      <hr class="dropdown-divider" />
+      <input
+        class="form-control"
+        type="text"
+        [(ngModel)]="filteredText"
+        (input)="search()"
+      />
+    </div>
+
+    <div class="list-group p-1">
+      <div
+        class="list-group-item list-group-item-action p-2 rounded cursor-pointer"
+        aria-current="true"
+        *ngFor="let user of filteredUsers"
+        (click)="addNewUser(user)"
+      >
+        <div class="d-flex w-100 justify-content-between">
+          <span class="mb-1 fw-semibold">{{user.fullname}}</span>
+          <small class="text-muted fst-italic" *ngIf="isUserSelected(user)"
+            >selected</small
+          >
+        </div>
+        <p class="mb-1 text-muted">{{user.email}}</p>
+      </div>
+    </div>
+
+    <!-- <li>
+      <span
+        class="d-flex justify-content-between dropdown-item rounded cursor-pointer"
+        *ngFor="let user of filteredUsers"
+        (click)="addNewUser(user)"
+      >
+        {{user.fullname}} {{isUserSelected(user) ? 'X' : ''}}
+      </span>
+    </li> -->
+  </div>
+</div>

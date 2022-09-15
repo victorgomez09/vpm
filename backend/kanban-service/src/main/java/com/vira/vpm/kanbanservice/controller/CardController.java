@@ -16,6 +16,7 @@ import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.CardDto;
 import com.vira.vpm.kanbanservice.dto.CreateCardDto;
+import com.vira.vpm.kanbanservice.dto.UpdateCardDto;
 import com.vira.vpm.kanbanservice.service.CardService;
 
 @RestController
@@ -34,6 +35,11 @@ public class CardController {
     public ResponseEntity<CardDto> create(@RequestBody CreateCardDto data)
             throws NotFoundException, AttributeException {
         return ResponseEntity.ok().body(cardService.create(data));
+    }
+
+    @PutMapping("{cardId}")
+    public ResponseEntity<CardDto> update(@PathVariable("cardId") String cardId, @RequestBody UpdateCardDto data) {
+        return ResponseEntity.ok().body(cardService.update(cardId, data));
     }
 
     @PutMapping("/sort")

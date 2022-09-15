@@ -79,6 +79,8 @@ public class BoardService {
                                                                                                 .id(card.getId())
                                                                                                 .name(card.getName())
                                                                                                 .columnId(c.getId())
+                                                                                                .users(userFeign.findAllUsersByIds(
+                                                                                                                card.getUsers()))
                                                                                                 .build())
                                                                                 .collect(Collectors.toList()))
                                                                 .board(c.getBoard().getId())

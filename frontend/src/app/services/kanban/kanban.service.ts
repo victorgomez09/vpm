@@ -10,6 +10,7 @@ import {
   CreateBoard,
   CreateCard,
   CreateColumn,
+  UpdateCard,
 } from '../../models/kanban.model';
 import { AuthService } from '../auth/auth.service';
 
@@ -182,7 +183,7 @@ export class KanbanService {
           Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
         },
       })
-      .pipe(catchError(handleError('sortCards', [])));
+      .pipe(catchError(handleError<Card[]>('sortCards', [])));
   }
 
   sortCardsAndUpdateColumn(data: Card[]): Observable<Card[]> {
@@ -192,6 +193,29 @@ export class KanbanService {
           Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
         },
       })
-      .pipe(catchError(handleError('sortCardsAndUpdateColumn', [])));
+      .pipe(catchError(handleError<Card[]>('sortCardsAndUpdateColumn', [])));
+  }
+
+  updateCard(id: string, data: UpdateCard): Observable<Card> {
+    return this.http
+      .put<Card>(`${environment.apiUrl}/boards/card/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+      })
+      .pipe(
+        catchError(
+          handleError<Card>('updateCard', {
+            id: '',
+            name: '',
+            order: 0,
+            description: '',
+            columnId: '',
+            users: [],
+            creationDate: new Date(),
+            updateDate: new Date(),
+          })
+        )
+      );
   }
 }
