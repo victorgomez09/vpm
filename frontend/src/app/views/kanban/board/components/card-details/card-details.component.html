@@ -10,14 +10,19 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content" *ngIf="card && card.id; else loadingBlock">
       <div class="modal-header">
-        <h5
-          class="modal-title cursor-pointer"
-          id="cardModalLabel"
-          *ngIf="!editName; else editNameBlock"
-          (click)="handleEditName()"
-        >
-          {{card.name}}
-        </h5>
+        <div class="d-flex flex-column">
+          <h5
+            class="modal-title cursor-pointer"
+            id="cardModalLabel"
+            *ngIf="!editName; else editNameBlock"
+            (click)="handleEditName()"
+          >
+            {{card.name}}
+          </h5>
+          <span class="text-muted fst" style="font-size: 0.75em">
+            Created {{card.creationDate | date}}
+          </span>
+        </div>
         <ng-template #editNameBlock>
           <input
             class="form-control w-50"
@@ -29,7 +34,7 @@
         </ng-template>
         <button
           type="button"
-          class="btn-close"
+          class="btn-close d-flex align-self-start"
           aria-label="Close"
           [routerLink]="['board', { outlets: { card: null } }]"
           (click)="onClose()"

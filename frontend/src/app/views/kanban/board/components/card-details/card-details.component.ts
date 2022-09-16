@@ -51,11 +51,9 @@ export class CardDetailsComponent implements OnInit {
         this.description = data.description;
       });
     });
-    this.kanbanService.columns$.subscribe(
-      (data) =>
-        // console.log('columns from modal', data)
-        (this.columnsSubject = data)
-    );
+    this.kanbanService.columns$.subscribe((data) => {
+      this.columnsSubject = data;
+    });
   }
 
   onClose(): void {
@@ -79,6 +77,7 @@ export class CardDetailsComponent implements OnInit {
     };
     this.kanbanService.updateCard(this.card.id, payload).subscribe((data) => {
       this.updateCardFromSubject(data);
+      this.card.name = data.name;
       this.editName = false;
     });
   }
@@ -92,6 +91,7 @@ export class CardDetailsComponent implements OnInit {
     };
     this.kanbanService.updateCard(this.card.id, payload).subscribe((data) => {
       this.updateCardFromSubject(data);
+      this.card.description = data.description;
       this.editDescription = false;
     });
   }
@@ -121,6 +121,7 @@ export class CardDetailsComponent implements OnInit {
     };
     this.kanbanService.updateCard(this.card.id, payload).subscribe((data) => {
       this.updateCardFromSubject(data);
+      this.card.priority = data.priority;
       this.editName = false;
     });
   }

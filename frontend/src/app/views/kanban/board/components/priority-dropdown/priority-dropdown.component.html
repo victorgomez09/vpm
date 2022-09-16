@@ -15,20 +15,20 @@
 
     <div class="list-group border-0">
       <span
-        class="list-group-item p-3 list-group-item-action list-group-item-success fw-bold cursor-pointer"
+        class="list-group-item p-2 list-group-item-action border-0 rounded text-success fw-bold cursor-pointer"
         [ngClass]="{ 'active disabled': priority?.name === 'LOW' }"
         (click)="changePriority('LOW')"
       >
         Low
       </span>
       <span
-        class="list-group-item p-3 list-group-item-action list-group-item-info fw-bold cursor-pointer"
+        class="list-group-item p-2 list-group-item-action border-0 rounded text-info fw-bold cursor-pointer"
         [ngClass]="{ 'active disabled': priority?.name === 'MEDIUM' }"
         (click)="changePriority('MEDIUM')"
         >Medium
       </span>
       <span
-        class="list-group-item p-3 list-group-item-action list-group-item-danger fw-bold cursor-pointer"
+        class="list-group-item p-2 list-group-item-action border-0 rounded text-warning fw-bold cursor-pointer"
         [ngClass]="{ 'active disabled': priority?.name === 'HIGH' }"
         (click)="changePriority('HIGH')"
       >
