@@ -103,10 +103,18 @@
                   </div>
                 </div>
               </div> -->
-              <app-users-dropdown
-                [excludeUsers]="card.users"
-                (newItemEvent)="addUser($event)"
-              ></app-users-dropdown>
+              <div class="mb-1">
+                <app-users-dropdown
+                  [excludeUsers]="card.users"
+                  (newItemEvent)="addUser($event)"
+                ></app-users-dropdown>
+              </div>
+              <div class="mb-1">
+                <app-priority-dropdown
+                  [priority]="card.priority"
+                  (newPriorityEvent)="changePriority($event)"
+                ></app-priority-dropdown>
+              </div>
             </div>
           </div>
           <!-- <div class="modal-footer">

@@ -1,20 +1,66 @@
 <div
   class="card border-0 shadow-sm mb-3 cursor-pointer"
   [routerLink]="[{ outlets: { card: ['card-details', card.id] } }]"
+  [ngClass]="{
+    'border-start border-3': card.priority,
+    'border-success': card.priority.name === 'LOW',
+    'border-info': card.priority.name === 'MEDIUM',
+    'border-warning': card.priority.name === 'HIGH'
+  }"
 >
   <div class="card-body px-3 py-2">
     <p class="mb-0">
       {{card.name}}
     </p>
-    <div class="d-flex justify-content-end">
-      <div
-        class="bg-primary rounded p-2 mb-1 me-1"
-        *ngFor="let user of card.users"
-      >
-        <span
-          class="text-light fw-semibold"
-          >{{getInitials(user.fullname)}}</span
-        >
+    <div class="mt-2">
+      <div class="row">
+        <div class="col-6">
+          <div class="d-flex justify-content-start">
+            <div *ngIf="card.description && card.description !== ''">
+              <i class="bi bi-text-left"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+          <div class="d-flex flex-wrap" *ngIf="card.users && card.users.length">
+            <div
+              class="d-flex align-items-center justify-content-end"
+              *ngIf="card.users.length <= 2; else drawUsersBlock"
+            >
+              <div
+                class="d-flex align-items-center justify-content-center bg-primary rounded p-1 mb-1 me-1"
+                *ngFor="let user of card.users"
+              >
+                <span class="text-light user-initials">
+                  {{getInitials(user.fullname)}}
+                </span>
+              </div>
+            </div>
+            <ng-template #drawUsersBlock>
+              <div
+                class="d-flex align-items-center justify-content-center bg-primary rounded p-1 mb-1 me-1"
+              >
+                <span class="text-light user-initials">
+                  {{getInitials(card.users[0].fullname)}}
+                </span>
+              </div>
+              <div
+                class="d-flex align-items-center justify-content-center bg-primary rounded p-1 mb-1 me-1"
+              >
+                <span class="text-light user-initials">
+                  {{getInitials(card.users[1].fullname)}}
+                </span>
+              </div>
+              <div
+                class="d-flex align-items-center justify-content-center bg-primary rounded p-1 mb-1 me-1"
+              >
+                <span class="text-light user-initials">
+                  +{{card.users.length - 2}}
+                </span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
       </div>
     </div>
   </div>

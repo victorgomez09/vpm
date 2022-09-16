@@ -1,6 +1,7 @@
 package com.vira.vpm.kanbanservice.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -13,13 +14,18 @@ import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.CardDto;
 import com.vira.vpm.kanbanservice.dto.CreateCardDto;
+import com.vira.vpm.kanbanservice.dto.PriorityDto;
 import com.vira.vpm.kanbanservice.dto.UpdateCardDto;
 import com.vira.vpm.kanbanservice.dto.UserDto;
 import com.vira.vpm.kanbanservice.entity.Card;
 import com.vira.vpm.kanbanservice.entity.Column;
+import com.vira.vpm.kanbanservice.entity.Priority;
+import com.vira.vpm.kanbanservice.enums.PriorityNameEnum;
 import com.vira.vpm.kanbanservice.feign.UserFeign;
 import com.vira.vpm.kanbanservice.repository.CardRepository;
 import com.vira.vpm.kanbanservice.repository.ColumnRepository;
+import com.vira.vpm.kanbanservice.repository.PriorityRepository;
+import com.vira.vpm.kanbanservice.util.EnumUtil;
 
 @Service
 public class CardService {
@@ -29,7 +35,11 @@ public class CardService {
     @Autowired
     private ColumnRepository columnRepository;
     @Autowired
+    private PriorityRepository priorityRepository;
+    @Autowired
     private UserFeign userFeign;
+    @Autowired
+    private EnumUtil enumUtil;
 
     public CardDto create(CreateCardDto data) throws NotFoundException, AttributeException {
         Optional<Column> column = columnRepository.findById(data.getColumnId());
@@ -44,8 +54,12 @@ public class CardService {
                 .column(column.get())
                 .order(order)
                 .build());
-        return CardDto.builder().id(card.getId()).name(card.getName())
-                .columnId(card.getColumn().getId())
+        Priority priority = priorityRepository
+                .save(Priority.builder().name(PriorityNameEnum.MEDIUM).cards(Arrays.asList(card)).build());
+        Card created = cardRepository.save(card.withPriority(priority));
+        return CardDto.builder().id(created.getId()).name(created.getName())
+                .columnId(created.getColumn().getId())
+                .priority(PriorityDto.builder().id(priority.getId()).name(priority.getName().name()).build())
                 .build();
     }
 
@@ -57,6 +71,8 @@ public class CardService {
                     .description(card.get().getDescription())
                     .order(card.get().getOrder())
                     .users(userFeign.findAllUsersByIds(card.get().getUsers()))
+                    .priority(PriorityDto.builder().id(card.get().getPriority().getId())
+                            .name(card.get().getPriority().getName().name()).build())
                     .creationDate(card.get().getCreationDate())
                     .updateDate(card.get().getUpdateDate())
                     .build();
@@ -68,13 +84,18 @@ public class CardService {
     public CardDto update(String id, UpdateCardDto data) {
         Optional<Card> card = cardRepository.findById(id);
         if (card.isPresent()) {
+            Priority priority = priorityRepository.save(
+                    card.get().getPriority().withName(enumUtil.parsePriorityStringToEnum(data.getPriorityName())));
             Card updateCard = cardRepository
                     .save(card.get().withName(data.getName()).withDescription(data.getDescription())
+                            .withPriority(priority)
                             .withUsers(data.getUsers().stream().map(UserDto::getId).collect(Collectors.toList())));
             return CardDto.builder().id(updateCard.getId()).name(updateCard.getName())
                     .columnId(card.get().getColumn().getId())
                     .description(updateCard.getDescription())
                     .order(updateCard.getOrder())
+                    .priority(PriorityDto.builder().id(updateCard.getPriority().getId())
+                            .name(updateCard.getPriority().getName().name()).build())
                     .users(userFeign.findAllUsersByIds(updateCard.getUsers()))
                     .creationDate(updateCard.getCreationDate())
                     .updateDate(updateCard.getUpdateDate())

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BoardComponent } from './board.component';
-import { ModalComponent } from './components/modal/modal.component';
+import { CardDetailsComponent } from './components/card-details/card-details.component';
 
 const routes: Routes = [
   {
@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: 'card-details/:id',
-        component: ModalComponent,
+        component: CardDetailsComponent,
         outlet: 'card',
       },
     ],

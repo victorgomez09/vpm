@@ -2,7 +2,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Board, Column, CreateColumn } from 'src/app/models/kanban.model';
+import { map, Observable } from 'rxjs';
+import { Board, Card, Column, CreateColumn } from 'src/app/models/kanban.model';
 import { KanbanService } from 'src/app/services/kanban/kanban.service';
 import { sortColumns } from 'src/app/utils/kanban.util';
 
@@ -13,7 +14,7 @@ import { sortColumns } from 'src/app/utils/kanban.util';
 })
 export class BoardComponent implements OnInit {
   board?: Board;
-  columns: Column[];
+  columns$: Observable<Column[]>;
   addNewColumn: boolean;
   columnForm: FormGroup;
 
@@ -22,7 +23,7 @@ export class BoardComponent implements OnInit {
     private route: ActivatedRoute,
     private kanbanService: KanbanService
   ) {
-    this.columns = [];
+    this.columns$ = this.kanbanService.columns$;
     this.addNewColumn = false;
     this.columnForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -34,17 +35,18 @@ export class BoardComponent implements OnInit {
       const id = params.get('id')!;
       this.kanbanService.getBoardById(id).subscribe((data) => {
         this.board = data;
-        this.columns = data.columns;
+        this.kanbanService.setColumnArraySubject(data.columns);
       });
     });
   }
 
   drop(event: CdkDragDrop<Column[]>) {
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-    console.log('columns', this.columns);
-    sortColumns(this.columns);
-    this.kanbanService.sortColumns(this.columns).subscribe({
-      error: () => console.log('something goes wrong'),
+    this.columns$.subscribe((data) => {
+      moveItemInArray(data, event.previousIndex, event.currentIndex);
+      sortColumns(data);
+      this.kanbanService.sortColumns(data).subscribe({
+        error: () => console.log('something goes wrong'),
+      });
     });
   }
 
@@ -57,7 +59,8 @@ export class BoardComponent implements OnInit {
       boardId: this.board!.id,
     };
     this.kanbanService.createColumn(data).subscribe((data) => {
-      this.columns.push(data);
+      console.log('created column', data);
+      this.kanbanService.addColumnToArraySubject(data);
     });
   }
 

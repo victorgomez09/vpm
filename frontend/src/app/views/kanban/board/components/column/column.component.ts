@@ -5,7 +5,13 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -38,20 +44,27 @@ import { CardComponent } from '../card';
 export class ColumnComponent implements OnInit {
   @Input()
   column!: Column;
-  cards: Card[];
+  @Input()
+  cards!: Card[];
   addNewTask: boolean;
   cardForm: FormGroup;
 
   constructor(private fb: FormBuilder, private kanbanService: KanbanService) {
     this.addNewTask = false;
-    this.cards = [];
     this.cardForm = this.fb.group({
       name: ['', Validators.required],
     });
   }
 
   ngOnInit(): void {
-    this.cards = this.column.cards;
+    // this.cards = this.column.cards ?? [];
+    // console.log('CARDS ARRAY FROM COLUMN', this.cards);
+    // console.log('this.cards', this.cards);
+    // this.kanbanService.columns$.subscribe((data) =>
+    //   console.log('cards from subject', [...data])
+    // );
+    // this.kanbanService.setColumnArraySubject(this.cards);
+    // console.log('--------------');
   }
 
   taskDrop(event: CdkDragDrop<Card[]>) {

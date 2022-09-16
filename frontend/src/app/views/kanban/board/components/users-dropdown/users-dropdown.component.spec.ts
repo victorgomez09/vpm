@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsersDropdown } from './users-dropdown.component';
+import { UsersDropdownComponent } from './users-dropdown.component';
 
 describe('SearchUsersComponent', () => {
-  let component: UsersDropdown;
-  let fixture: ComponentFixture<UsersDropdown>;
+  let component: UsersDropdownComponent;
+  let fixture: ComponentFixture<UsersDropdownComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UsersDropdown],
+      declarations: [UsersDropdownComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(UsersDropdown);
+    fixture = TestBed.createComponent(UsersDropdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

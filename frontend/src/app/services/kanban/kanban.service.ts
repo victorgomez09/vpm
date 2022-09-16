@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, Subject } from 'rxjs';
 import { handleError } from 'src/app/utils/exception.util';
 import { environment } from 'src/environments/environment';
 import {
@@ -18,7 +18,13 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root',
 })
 export class KanbanService {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  private columnArraySubject: BehaviorSubject<Column[]>;
+  columns$: Observable<Column[]>;
+
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.columnArraySubject = new BehaviorSubject<Column[]>([]);
+    this.columns$ = this.columnArraySubject.asObservable();
+  }
 
   getBoards(userId: string): Observable<Board[]> {
     return this.http
@@ -145,6 +151,11 @@ export class KanbanService {
             description: '',
             order: 0,
             users: [],
+            priority: {
+              id: '',
+              name: '',
+              columnId: '',
+            },
             columnId: '',
             creationDate: new Date(),
             updateDate: new Date(),
@@ -169,6 +180,11 @@ export class KanbanService {
             description: '',
             columnId: '',
             users: [],
+            priority: {
+              id: '',
+              name: '',
+              columnId: '',
+            },
             creationDate: new Date(),
             updateDate: new Date(),
           })
@@ -212,10 +228,25 @@ export class KanbanService {
             description: '',
             columnId: '',
             users: [],
+            priority: {
+              id: '',
+              name: '',
+              columnId: '',
+            },
             creationDate: new Date(),
             updateDate: new Date(),
           })
         )
       );
+  }
+
+  setColumnArraySubject(data: Column[]): void {
+    this.columnArraySubject.next(data);
+  }
+
+  addColumnToArraySubject(data: Column): void {
+    const columns = this.columnArraySubject.getValue();
+    columns.push(data);
+    this.columnArraySubject.next(columns);
   }
 }

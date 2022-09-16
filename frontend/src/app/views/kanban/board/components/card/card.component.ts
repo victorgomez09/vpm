@@ -1,7 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Card } from 'src/app/models/kanban.model';
 import { KanbanService } from 'src/app/services/kanban/kanban.service';
 import { getInitials } from 'src/app/utils/text.util';
@@ -13,19 +19,22 @@ import { getInitials } from 'src/app/utils/text.util';
   styleUrls: ['./card.component.scss'],
   imports: [CommonModule, FormsModule, RouterModule],
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnChanges {
   @Input()
   card!: Card;
-  editDescription: boolean;
-  description!: string;
 
-  constructor(private kanbanService: KanbanService) {
-    this.editDescription = false;
+  constructor(private kanbanService: KanbanService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes', changes);
+    // throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
-    this.description = this.card.description;
-    console.log('card', this.card);
+    // this.kanbanService.card$.subscribe((data) => {
+    //   console.log('cardData', data);
+    //   this.card = data;
+    // });
   }
 
   getInitials(text: string): string {

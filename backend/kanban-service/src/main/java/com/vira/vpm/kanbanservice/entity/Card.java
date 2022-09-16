@@ -31,7 +31,8 @@ import lombok.With;
 
 @Entity
 @Table(name = "cards")
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -57,18 +58,16 @@ public class Card {
     private List<String> users;
 
     @ManyToMany(cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE
+            CascadeType.PERSIST,
+            CascadeType.MERGE
     })
-    @JoinTable(
-        name = "card_tags",
-        joinColumns = {@JoinColumn(name = "cards_id")},
-        inverseJoinColumns = {@JoinColumn(name = "tags_id")}
-    )
+    @JoinTable(name = "card_tags", joinColumns = { @JoinColumn(name = "cards_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "tags_id") })
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Priority> priorities;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "priority")
+    private Priority priority;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;

@@ -38,12 +38,12 @@
             (cdkDropListDropped)="drop($event)"
           >
             <div
-              *ngFor="let column of columns"
+              *ngFor="let column of columns$ | async"
               cdkDrag
               cdkDragHandle
               [cdkDragData]="column"
             >
-              <app-column [column]="column"></app-column>
+              <app-column [column]="column" [cards]="column.cards"></app-column>
             </div>
           </div>
           <div class="py-3">

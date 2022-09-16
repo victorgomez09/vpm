@@ -7,7 +7,7 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ColumnComponent } from './components/column/column.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ModalComponent } from './components/modal/modal.component';
+import { CardDetailsComponent } from './components/card-details/card-details.component';
 
 @NgModule({
   declarations: [BoardComponent],
@@ -18,7 +18,7 @@ import { ModalComponent } from './components/modal/modal.component';
     BoardRoutingModule,
     SidebarComponent,
     ColumnComponent,
-    ModalComponent,
+    CardDetailsComponent,
   ],
 })
 export class BoardModule {}

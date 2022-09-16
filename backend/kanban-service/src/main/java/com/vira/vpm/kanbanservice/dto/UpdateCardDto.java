@@ -11,4 +11,5 @@ public class UpdateCardDto {
     private String name;
     private String description;
     private List<UserDto> users;
+    private String priorityName;
 }

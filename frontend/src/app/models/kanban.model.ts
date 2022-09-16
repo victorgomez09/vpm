@@ -37,6 +37,7 @@ export interface Card {
   description: string;
   order: number;
   users: User[];
+  priority: Priority;
   columnId: string;
   creationDate: Date;
   updateDate: Date;
@@ -51,4 +52,11 @@ export interface UpdateCard {
   name: string;
   description: string;
   users: User[];
+  priorityName: string;
+}
+
+export interface Priority {
+  id: string;
+  name: string;
+  columnId: string;
 }

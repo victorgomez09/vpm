@@ -21,7 +21,7 @@ public class CardDto {
     private int order;
     private List<UserDto> users;
     private List<TagDto> tags;
-    private List<PriorityDto> priorities;
+    private PriorityDto priority;
     private List<CommentDto> comments;
     private String columnId;
     private Date creationDate;

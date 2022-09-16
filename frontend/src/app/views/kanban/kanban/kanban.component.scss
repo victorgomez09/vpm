@@ -6,7 +6,8 @@ textarea {
     height: 6em;
 }
 .card:hover {
-    transform: scale(1.05) rotate(2deg);
+    // transform: scale(1.05) rotate(2deg);
+    transform: scale(1.05);
     z-index: 2;
 }
 .sidebar {

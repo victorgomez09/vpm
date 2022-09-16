@@ -15,6 +15,7 @@ import com.vira.vpm.kanbanservice.dto.BoardDto;
 import com.vira.vpm.kanbanservice.dto.CardDto;
 import com.vira.vpm.kanbanservice.dto.ColumnDto;
 import com.vira.vpm.kanbanservice.dto.CreateBoardDto;
+import com.vira.vpm.kanbanservice.dto.PriorityDto;
 import com.vira.vpm.kanbanservice.dto.UpdateBoardDto;
 import com.vira.vpm.kanbanservice.dto.UserDto;
 import com.vira.vpm.kanbanservice.entity.Board;
@@ -78,9 +79,21 @@ public class BoardService {
                                                                                 .map(card -> CardDto.builder()
                                                                                                 .id(card.getId())
                                                                                                 .name(card.getName())
+                                                                                                .description(card
+                                                                                                                .getDescription())
                                                                                                 .columnId(c.getId())
                                                                                                 .users(userFeign.findAllUsersByIds(
                                                                                                                 card.getUsers()))
+                                                                                                .priority(PriorityDto
+                                                                                                                .builder()
+                                                                                                                .id(card.getPriority()
+                                                                                                                                .getId())
+                                                                                                                .name(card.getPriority()
+                                                                                                                                .getName()
+                                                                                                                                .name())
+                                                                                                                .cardId(card.getPriority()
+                                                                                                                                .getId())
+                                                                                                                .build())
                                                                                                 .build())
                                                                                 .collect(Collectors.toList()))
                                                                 .board(c.getBoard().getId())

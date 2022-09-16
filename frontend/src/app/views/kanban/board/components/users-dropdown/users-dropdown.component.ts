@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/users/user.service';
   styleUrls: ['./users-dropdown.component.scss'],
   imports: [CommonModule, FormsModule],
 })
-export class UsersDropdown implements OnInit {
+export class UsersDropdownComponent implements OnInit {
   @Input()
   excludeUsers: User[];
   @Output()
