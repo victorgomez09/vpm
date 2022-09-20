@@ -57,14 +57,7 @@ export class ColumnComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.cards = this.column.cards ?? [];
-    // console.log('CARDS ARRAY FROM COLUMN', this.cards);
-    // console.log('this.cards', this.cards);
-    // this.kanbanService.columns$.subscribe((data) =>
-    //   console.log('cards from subject', [...data])
-    // );
-    // this.kanbanService.setColumnArraySubject(this.cards);
-    // console.log('--------------');
+    this.cards = this.column.cards ?? [];
   }
 
   taskDrop(event: CdkDragDrop<Card[]>) {

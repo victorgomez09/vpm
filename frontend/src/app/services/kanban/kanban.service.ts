@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, Subject } from 'rxjs';
+import { User } from 'src/app/models/auth.model';
 import { handleError } from 'src/app/utils/exception.util';
 import { environment } from 'src/environments/environment';
 import {
@@ -10,6 +11,7 @@ import {
   CreateBoard,
   CreateCard,
   CreateColumn,
+  UpdateBoardDto,
   UpdateCard,
 } from '../../models/kanban.model';
 import { AuthService } from '../auth/auth.service';
@@ -78,6 +80,30 @@ export class KanbanService {
       .pipe(
         catchError(
           handleError<Board>('getBoardById', {
+            id: '',
+            name: '',
+            description: '',
+            image: '',
+            columns: [],
+            users: [],
+            creationDate: new Date(),
+            updateDate: new Date(),
+          })
+        )
+      );
+  }
+
+  updateBoard(boardId: string, data: UpdateBoardDto): Observable<Board> {
+    console.log('boardId', boardId);
+    return this.http
+      .put<Board>(`${environment.apiUrl}/boards/${boardId}`, data, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+      })
+      .pipe(
+        catchError(
+          handleError<Board>('addUserToBoard', {
             id: '',
             name: '',
             description: '',

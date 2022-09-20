@@ -131,7 +131,8 @@ public class BoardService {
                 Board updated = board.get()
                                 .withName(data.getName())
                                 .withDescription(data.getDescription())
-                                .withImage(data.getImage());
+                                .withImage(data.getImage())
+                                .withUsers(data.getUsers());
                 Board result = boardRepository.save(updated);
                 List<UserDto> users = userFeign.findAllUsersByIds(result.getUsers());
                 return BoardDto.builder()
@@ -143,6 +144,19 @@ public class BoardService {
                                 .columns(result.getColumns().stream().map(c -> ColumnDto.builder()
                                                 .name(c.getName())
                                                 .order(c.getOrder())
+                                                .cards(c.getCards().stream().map(card -> CardDto.builder()
+                                                                .id(card.getId())
+                                                                .name(card.getName())
+                                                                .description(card.getDescription())
+                                                                .priority(PriorityDto.builder()
+                                                                                .id(card.getPriority().getId())
+                                                                                .name(card.getPriority().getName().name())
+                                                                                .build())
+                                                                .columnId(card.getColumn().getId())
+                                                                .users(userFeign.findAllUsersByIds(card.getUsers()))
+                                                                .creationDate(card.getCreationDate())
+                                                                .updateDate(card.getUpdateDate())
+                                                                .build()).collect(Collectors.toList()))
                                                 .build()).collect(Collectors.toList()))
                                 .creationDate(result.getCreationDate())
                                 .updateDate(result.getUpdateDate())

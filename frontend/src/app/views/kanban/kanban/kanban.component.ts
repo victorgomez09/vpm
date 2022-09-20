@@ -22,6 +22,7 @@ export class KanbanComponent implements OnInit {
   createdBoard: boolean;
   displayType: 'GRID' | 'TABLE';
   hideSearchInput: boolean;
+  newBoardBackgroundColor: string;
 
   constructor(
     private fb: FormBuilder,
@@ -34,12 +35,12 @@ export class KanbanComponent implements OnInit {
     this.boardForm = fb.group({
       name: ['', Validators.required],
       description: '',
-      image: '',
     });
     this.filterText = '';
     this.createdBoard = false;
     this.displayType = 'GRID';
     this.hideSearchInput = false;
+    this.newBoardBackgroundColor = 'bg-light';
   }
 
   ngOnInit(): void {
@@ -58,12 +59,16 @@ export class KanbanComponent implements OnInit {
     const data = {
       name: this.boardForm.value.name,
       description: this.boardForm.value.description,
-      image: this.boardForm.value.image,
+      image: this.newBoardBackgroundColor,
     };
     this.kanbanService.createBoard(this.user?.id, data).subscribe((data) => {
       this.boards.push(data);
       this.createdBoard = true;
     });
+  }
+
+  handleChangeBoardColor(newColor: string): void {
+    this.newBoardBackgroundColor = newColor;
   }
 
   resetForm(): void {

@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ColumnComponent } from './components/column/column.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details/card-details.component';
+import { LoadingComponent } from 'src/app/components/loading/loading.component';
 
 @NgModule({
   declarations: [BoardComponent],
@@ -20,6 +21,7 @@ import { CardDetailsComponent } from './components/card-details/card-details.com
     SidebarComponent,
     ColumnComponent,
     CardDetailsComponent,
+    LoadingComponent,
   ],
 })
 export class BoardModule {}

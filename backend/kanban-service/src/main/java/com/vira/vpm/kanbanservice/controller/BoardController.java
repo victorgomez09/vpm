@@ -30,12 +30,12 @@ public class BoardController {
 
     @GetMapping("/list")
     public ResponseEntity<List<BoardDto>> findAllByUser(@RequestParam("user") String user) {
-       return ResponseEntity.ok().body(boardService.findAllByUser(user));
+        return ResponseEntity.ok().body(boardService.findAllByUser(user));
     }
 
     @GetMapping("{boardId}")
     public ResponseEntity<BoardDto> findById(@PathVariable("boardId") String boardId) throws NotFoundException {
-       return ResponseEntity.ok().body(boardService.findById(boardId));
+        return ResponseEntity.ok().body(boardService.findById(boardId));
     }
 
     @PostMapping
@@ -43,14 +43,10 @@ public class BoardController {
         return ResponseEntity.ok().body(boardService.create(data));
     }
 
-    @PutMapping("/{boardId}/update")
-    public ResponseEntity<BoardDto> update(@RequestParam("boardId") String boardId, @RequestBody UpdateBoardDto data) throws NotFoundException {
+    @PutMapping("/{boardId}")
+    public ResponseEntity<BoardDto> update(@PathVariable("boardId") String boardId, @RequestBody UpdateBoardDto data)
+            throws NotFoundException {
         return ResponseEntity.ok().body(boardService.update(boardId, data));
-    }
-
-    @PutMapping("/{boardId}/update-users")
-    public ResponseEntity<BoardDto> updateUsers(@RequestParam("boardId") String boardId, @RequestBody List<String> data) throws NotFoundException {
-        return ResponseEntity.ok().body(boardService.updateUsers(boardId, data));
     }
 
     @DeleteMapping("/{boardId}")

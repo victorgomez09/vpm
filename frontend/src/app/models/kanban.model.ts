@@ -17,6 +17,13 @@ export interface CreateBoard {
   image: string;
 }
 
+export interface UpdateBoardDto {
+  name: string;
+  description: string;
+  image: string;
+  users: string[]
+}
+
 export interface Column {
   id: string;
   name: string;

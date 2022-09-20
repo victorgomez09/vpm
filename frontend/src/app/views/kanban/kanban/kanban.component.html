@@ -70,23 +70,27 @@
           </div>
         </div>
 
-        <div class="row align-items-start mt-4 row-boards">
+        <div class="row align-items-start mt-4">
           <div *ngIf="displayType === 'GRID'; else displayTable">
-            <div class="d-flex flex-wrap">
-              <div
-                class="col-xs-12 col-md-3 col-lg-2 pe-2 ps-2"
-                *ngFor="let board of filteredBoards"
-              >
+            <div class="kanban-grid">
+              <div class="" *ngFor="let board of filteredBoards">
                 <div
-                  class="card bg-light border-0 shadow-sm mb-2 w-100 cursor-pointer"
-                  style="width: 11rem"
+                  class="card {{board.image}} border-0 shadow-sm mb-2 cursor-pointer"
                   routerLink="board/{{ board.id }}"
                 >
-                  <div class="card-body">
-                    <h5 class="card-title">{{ board.name }}</h5>
-                    <p class="card-text text-muted">
-                      {{ board.description }}
+                  <div
+                    class="card-body text-white p-2"
+                    [ngClass]="{ 'text-dark': board.image === 'bg-light' }"
+                  >
+                    <span class="card-title fs-5 fw-semibold text-truncate">
+                      {{ board.name }}
+                    </span>
+                    <p class="card-text text-truncate">
+                      {{ board.description === '' ? 'No description' : board.description }}
                     </p>
+                    <div class="card-text">
+                      {{board.creationDate | date}}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -176,14 +180,87 @@
             ></textarea>
           </div>
           <div class="mb-3">
-            <label class="mb-2 text-muted" for="image">Image</label>
-            <input
-              id="name"
-              type="file"
-              class="form-control"
-              name="image"
-              formControlName="image"
-            />
+            <label class="mb-2 text-muted" for="color">Color</label>
+            <div class="d-flex flex-wrap">
+              <div
+                class="bg-light cursor-pointer me-1 rounded color-picker"
+                [ngClass]="{
+                  'p-2': newBoardBackgroundColor === 'bg-light',
+                  'p-3': newBoardBackgroundColor !== 'bg-light'
+                }"
+                (click)="handleChangeBoardColor('bg-light')"
+              >
+                <i
+                  class="bi bi-check"
+                  *ngIf="newBoardBackgroundColor === 'bg-light'"
+                ></i>
+              </div>
+              <div
+                class="bg-primary cursor-pointer me-1 rounded text-white color-picker"
+                [ngClass]="{
+                  'p-2': newBoardBackgroundColor === 'bg-primary',
+                  'p-3': newBoardBackgroundColor !== 'bg-primary'
+                }"
+                (click)="handleChangeBoardColor('bg-primary')"
+              >
+                <i
+                  class="bi bi-check"
+                  *ngIf="newBoardBackgroundColor === 'bg-primary'"
+                ></i>
+              </div>
+              <div
+                class="bg-info cursor-pointer me-1 rounded text-white color-picker"
+                [ngClass]="{
+                  'p-2': newBoardBackgroundColor === 'bg-info',
+                  'p-3': newBoardBackgroundColor !== 'bg-info'
+                }"
+                (click)="handleChangeBoardColor('bg-info')"
+              >
+                <i
+                  class="bi bi-check"
+                  *ngIf="newBoardBackgroundColor === 'bg-info'"
+                ></i>
+              </div>
+              <div
+                class="bg-danger cursor-pointer me-1 rounded text-white color-picker"
+                [ngClass]="{
+                  'p-2': newBoardBackgroundColor === 'bg-danger',
+                  'p-3': newBoardBackgroundColor !== 'bg-danger'
+                }"
+                (click)="handleChangeBoardColor('bg-danger')"
+              >
+                <i
+                  class="bi bi-check"
+                  *ngIf="newBoardBackgroundColor === 'bg-danger'"
+                ></i>
+              </div>
+              <div
+                class="bg-warning cursor-pointer me-1 rounded text-white color-picker"
+                [ngClass]="{
+                  'p-2': newBoardBackgroundColor === 'bg-warning',
+                  'p-3': newBoardBackgroundColor !== 'bg-warning'
+                }"
+                (click)="handleChangeBoardColor('bg-warning')"
+              >
+                <i
+                  class="bi bi-check"
+                  *ngIf="newBoardBackgroundColor === 'bg-warning'"
+                ></i>
+              </div>
+              <div
+                class="bg-success cursor-pointer me-1 rounded text-white color-picker"
+                [ngClass]="{
+                  'p-2': newBoardBackgroundColor === 'bg-success',
+                  'p-3': newBoardBackgroundColor !== 'bg-success'
+                }"
+                (click)="handleChangeBoardColor('bg-success')"
+              >
+                <i
+                  class="bi bi-check"
+                  *ngIf="newBoardBackgroundColor === 'bg-success'"
+                ></i>
+              </div>
+            </div>
           </div>
           <div class="mt-4">
             <button
