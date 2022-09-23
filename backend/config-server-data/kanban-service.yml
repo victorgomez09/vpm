@@ -1,7 +1,7 @@
 spring:
   data:
     rest:
-      basePath: /api/issueTracker
+      basePath: /api/issue-tracker
   jpa:
     hibernate:
       ddl-auto: update
