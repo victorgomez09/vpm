@@ -7,9 +7,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,7 +28,8 @@ import lombok.With;
 
 @Entity
 @Table(name = "boards")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -52,6 +56,10 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<com.vira.vpm.kanbanservice.entity.Column> columns;
+
+    @JoinColumn(name = "sprint_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    private Sprint sprint;
 
     @CreationTimestamp
     @Column(name = "creation_date")

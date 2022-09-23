@@ -14,41 +14,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
-import com.vira.vpm.kanbanservice.dto.CardDto;
+import com.vira.vpm.kanbanservice.dto.IssueDto;
 import com.vira.vpm.kanbanservice.dto.CreateCardDto;
 import com.vira.vpm.kanbanservice.dto.UpdateCardDto;
-import com.vira.vpm.kanbanservice.service.CardService;
+import com.vira.vpm.kanbanservice.service.IssueService;
 
 @RestController
 @RequestMapping("/boards/card")
-public class CardController {
+public class IssueController {
 
     @Autowired
-    private CardService cardService;
+    private IssueService cardService;
 
     @GetMapping("{cardId}")
-    public ResponseEntity<CardDto> findById(@PathVariable("cardId") String cardId) {
+    public ResponseEntity<IssueDto> findById(@PathVariable("cardId") String cardId) {
         return ResponseEntity.ok().body(cardService.findById(cardId));
     }
 
     @PostMapping
-    public ResponseEntity<CardDto> create(@RequestBody CreateCardDto data)
+    public ResponseEntity<IssueDto> create(@RequestBody CreateCardDto data)
             throws NotFoundException, AttributeException {
         return ResponseEntity.ok().body(cardService.create(data));
     }
 
     @PutMapping("{cardId}")
-    public ResponseEntity<CardDto> update(@PathVariable("cardId") String cardId, @RequestBody UpdateCardDto data) {
+    public ResponseEntity<IssueDto> update(@PathVariable("cardId") String cardId, @RequestBody UpdateCardDto data) {
         return ResponseEntity.ok().body(cardService.update(cardId, data));
     }
 
     @PutMapping("/sort")
-    public ResponseEntity<List<CardDto>> sortCards(@RequestBody List<CardDto> data) throws NotFoundException {
+    public ResponseEntity<List<IssueDto>> sortCards(@RequestBody List<IssueDto> data) throws NotFoundException {
         return ResponseEntity.ok().body(cardService.updateOrder(data));
     }
 
     @PutMapping("/sortWithColumns")
-    public ResponseEntity<List<CardDto>> sortCardsAndColumns(@RequestBody List<CardDto> data) throws NotFoundException {
+    public ResponseEntity<List<IssueDto>> sortCardsAndColumns(@RequestBody List<IssueDto> data) throws NotFoundException {
         return ResponseEntity.ok().body(cardService.updateOrderAndColumn(data));
     }
 }

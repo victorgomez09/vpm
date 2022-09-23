@@ -1,25 +1,20 @@
 package com.vira.vpm.kanbanservice.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter @Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColumnDto {
+public class CreateSprintDto {
     private String id;
     private String name;
-    private int order;
-    private List<IssueDto> cards;
-    private String board;
-    private Date creationDate;
-    private Date updateDate;
-
+    private Date startDate;
+    private Date endDate;
+    private String objective;
 }

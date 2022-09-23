@@ -37,17 +37,6 @@
             </label>
           </div>
         </div>
-        <div class="d-flex flex-column mb-4">
-          <label for="displaySelect" class="form-label">Add board:</label>
-          <button
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#createBoardModal"
-            (click)="resetForm()"
-          >
-            +
-          </button>
-        </div>
       </app-sidebar>
     </div>
     <div class="col-sm-12 col-md-10 offset-md-2">
@@ -94,6 +83,18 @@
                   </div>
                 </div>
               </div>
+              <div
+                class="card bg-light border-0 shadow mb-2 cursor-pointer"
+                data-bs-toggle="modal"
+                data-bs-target="#createBoardModal"
+                (click)="resetForm()"
+              >
+                <div
+                  class="card-body p-2 d-flex align-items-center justify-content-center"
+                >
+                  <span class="card-title">Create new board</span>
+                </div>
+              </div>
             </div>
           </div>
           <ng-template #displayTable>
@@ -127,6 +128,7 @@
   </div>
 </div>
 
+<!-- Create board modal -->
 <div
   class="modal fade"
   id="createBoardModal"

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
-import com.vira.vpm.kanbanservice.dto.CardDto;
+import com.vira.vpm.kanbanservice.dto.IssueDto;
 import com.vira.vpm.kanbanservice.dto.ColumnDto;
 import com.vira.vpm.kanbanservice.dto.CreateColumnDto;
 import com.vira.vpm.kanbanservice.entity.Board;
@@ -50,7 +50,7 @@ public class ColumnService {
         return columnRepository.findAllByBoard(boardId).stream().map(column -> ColumnDto.builder()
                 .name(column.getName())
                 .order(column.getOrder())
-                .cards(column.getCards().stream().map(c -> CardDto.builder()
+                .cards(column.getCards().stream().map(c -> IssueDto.builder()
                         .name(c.getName())
                         .order(c.getOrder())
                         .build()).collect(Collectors.toList()))
@@ -65,7 +65,7 @@ public class ColumnService {
         if (!column.isPresent()) {
             return ColumnDto.builder().name(column.get().getName())
                     .order(column.get().getOrder())
-                    .cards(column.get().getCards().stream().map(c -> CardDto.builder()
+                    .cards(column.get().getCards().stream().map(c -> IssueDto.builder()
                             .name(c.getName())
                             .order(c.getOrder())
                             .build()).collect(Collectors.toList()))

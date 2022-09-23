@@ -3,8 +3,9 @@ textarea {
 }
 .card:hover {
     // transform: scale(1.05) rotate(2deg);
-    transform: scale(1.05);
-    z-index: 2;
+    // transform: scale(1.05);
+    opacity: 0.75;
+    // z-index: 2;
 }
 .card-text {
     font-size: .75em;

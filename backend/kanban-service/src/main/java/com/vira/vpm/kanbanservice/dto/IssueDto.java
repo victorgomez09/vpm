@@ -9,17 +9,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColumnDto {
+public class IssueDto {
     private String id;
     private String name;
+    private String description;
     private int order;
-    private List<IssueDto> cards;
-    private String board;
+    private List<UserDto> users;
+    private List<TagDto> tags;
+    private PriorityDto priority;
+    private List<CommentDto> comments;
+    private String columnId;
     private Date creationDate;
     private Date updateDate;
-
 }

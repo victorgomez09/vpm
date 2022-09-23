@@ -5,25 +5,22 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CardDto {
+public class SprintDto {
     private String id;
     private String name;
-    private String description;
-    private int order;
     private List<UserDto> users;
-    private List<TagDto> tags;
-    private PriorityDto priority;
-    private List<CommentDto> comments;
-    private String columnId;
+    private List<IssueDto> issues;
+    private BoardDto board;
+    private Date startDate;
+    private Date endDate;
+    private String objective;
     private Date creationDate;
     private Date updateDate;
 }

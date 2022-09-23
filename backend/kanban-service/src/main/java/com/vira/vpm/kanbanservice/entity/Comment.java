@@ -23,7 +23,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "card_comments")
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
@@ -41,7 +42,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card")
-    private Card card;
+    private Issue card;
 
     @CreationTimestamp
     @Column(name = "creation_date")

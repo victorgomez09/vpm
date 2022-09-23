@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.BoardDto;
-import com.vira.vpm.kanbanservice.dto.CardDto;
+import com.vira.vpm.kanbanservice.dto.IssueDto;
 import com.vira.vpm.kanbanservice.dto.ColumnDto;
 import com.vira.vpm.kanbanservice.dto.CreateBoardDto;
 import com.vira.vpm.kanbanservice.dto.PriorityDto;
 import com.vira.vpm.kanbanservice.dto.UpdateBoardDto;
 import com.vira.vpm.kanbanservice.dto.UserDto;
 import com.vira.vpm.kanbanservice.entity.Board;
-import com.vira.vpm.kanbanservice.entity.Card;
+import com.vira.vpm.kanbanservice.entity.Issue;
 import com.vira.vpm.kanbanservice.entity.Column;
 import com.vira.vpm.kanbanservice.feign.UserFeign;
 import com.vira.vpm.kanbanservice.repository.BoardRepository;
@@ -75,8 +75,8 @@ public class BoardService {
                                                                 .order(c.getOrder())
                                                                 .cards(c.getCards().stream()
                                                                                 .sorted(Comparator.comparingInt(
-                                                                                                Card::getOrder))
-                                                                                .map(card -> CardDto.builder()
+                                                                                                Issue::getOrder))
+                                                                                .map(card -> IssueDto.builder()
                                                                                                 .id(card.getId())
                                                                                                 .name(card.getName())
                                                                                                 .description(card
@@ -144,13 +144,14 @@ public class BoardService {
                                 .columns(result.getColumns().stream().map(c -> ColumnDto.builder()
                                                 .name(c.getName())
                                                 .order(c.getOrder())
-                                                .cards(c.getCards().stream().map(card -> CardDto.builder()
+                                                .cards(c.getCards().stream().map(card -> IssueDto.builder()
                                                                 .id(card.getId())
                                                                 .name(card.getName())
                                                                 .description(card.getDescription())
                                                                 .priority(PriorityDto.builder()
                                                                                 .id(card.getPriority().getId())
-                                                                                .name(card.getPriority().getName().name())
+                                                                                .name(card.getPriority().getName()
+                                                                                                .name())
                                                                                 .build())
                                                                 .columnId(card.getColumn().getId())
                                                                 .users(userFeign.findAllUsersByIds(card.getUsers()))

@@ -7,6 +7,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Register } from '../../models/auth.model';
 
@@ -17,18 +18,17 @@ import { Register } from '../../models/auth.model';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
-  registered?: boolean;
   registeredError?: boolean;
   registeredErrorCode?: number;
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
-    this.registered = false;
   }
 
   initForm(): void {
@@ -60,7 +60,8 @@ export class RegisterComponent implements OnInit {
 
       if (
         matchingInput?.errors &&
-        !matchingInput.errors['confirmedValidator']
+        (matchingInput.errors['confirmedValidator'] ||
+          matchingInput.errors['required'])
       ) {
         return null;
       }
@@ -84,7 +85,9 @@ export class RegisterComponent implements OnInit {
     };
 
     this.authService.register(userData).subscribe({
-      complete: () => (this.registered = true),
+      complete: () => {
+        this.router.navigate(['/login']);
+      },
       error: (error) => {
         this.registeredError = true;
         this.registeredErrorCode = error.status;

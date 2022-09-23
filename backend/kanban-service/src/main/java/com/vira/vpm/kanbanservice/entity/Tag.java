@@ -21,7 +21,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "tags")
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tag {
@@ -30,7 +31,7 @@ public class Tag {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "id")
     private String id;
-    
+
     @Column(name = "name")
     private String name;
 
@@ -38,7 +39,7 @@ public class Tag {
     private String color;
 
     @ManyToMany(mappedBy = "tags")
-    private Set<Card> cards;
+    private Set<Issue> cards;
 
     @CreationTimestamp
     @Column(name = "creation_date")

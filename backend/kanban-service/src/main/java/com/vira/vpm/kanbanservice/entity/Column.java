@@ -50,7 +50,7 @@ public class Column {
     private Board board;
 
     @OneToMany(mappedBy = "column", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Card> cards;
+    private List<Issue> cards;
 
     @CreationTimestamp
     @javax.persistence.Column(name = "creation_date")
