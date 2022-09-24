@@ -13,25 +13,30 @@ import org.springframework.stereotype.Service;
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.IssueDto;
-import com.vira.vpm.kanbanservice.dto.CreateCardDto;
+import com.vira.vpm.kanbanservice.dto.CreateIssueDto;
 import com.vira.vpm.kanbanservice.dto.PriorityDto;
+import com.vira.vpm.kanbanservice.dto.ProjectDto;
 import com.vira.vpm.kanbanservice.dto.UpdateCardDto;
 import com.vira.vpm.kanbanservice.dto.UserDto;
 import com.vira.vpm.kanbanservice.entity.Issue;
 import com.vira.vpm.kanbanservice.entity.Column;
 import com.vira.vpm.kanbanservice.entity.Priority;
+import com.vira.vpm.kanbanservice.entity.Project;
 import com.vira.vpm.kanbanservice.enums.PriorityNameEnum;
 import com.vira.vpm.kanbanservice.feign.UserFeign;
 import com.vira.vpm.kanbanservice.repository.IssueRepository;
 import com.vira.vpm.kanbanservice.repository.ColumnRepository;
 import com.vira.vpm.kanbanservice.repository.PriorityRepository;
+import com.vira.vpm.kanbanservice.repository.ProjectRepository;
 import com.vira.vpm.kanbanservice.util.EnumUtil;
 
 @Service
 public class IssueService {
 
     @Autowired
-    private IssueRepository cardRepository;
+    private IssueRepository issueRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
     @Autowired
     private ColumnRepository columnRepository;
     @Autowired
@@ -41,22 +46,48 @@ public class IssueService {
     @Autowired
     private EnumUtil enumUtil;
 
-    public IssueDto create(CreateCardDto data) throws NotFoundException, AttributeException {
+    public IssueDto createFromBacklog(CreateIssueDto data) throws NotFoundException, AttributeException {
+        Optional<Project> project = projectRepository.findById(data.getProjectId());
+        if (!project.isPresent()) {
+            throw new NotFoundException("Project with id '" + data.getProjectId() + "' not exists");
+        }
+        if (issueRepository.findByName(data.getName()).isPresent()) {
+            throw new AttributeException("Issue with name '" + data.getName() + "' exists");
+        }
+        Issue issue = issueRepository.save(Issue.builder().name(data.getName())
+                .project(project.get())
+                .sprint(null)
+                .order(0)
+                .build());
+        Priority priority = priorityRepository
+                .save(Priority.builder().name(PriorityNameEnum.MEDIUM).issues(Arrays.asList(issue)).build());
+        Issue created = issueRepository.save(issue.withPriority(priority));
+        return IssueDto.builder().id(created.getId()).name(created.getName())
+                .creationDate(created.getCreationDate())
+                .updateDate(created.getUpdateDate())
+                .project(ProjectDto.builder().id(created.getProject().getId()).name(created.getProject().getName())
+                        .description(created.getProject().getDescription())
+                        .users(userFeign.findAllUsersByIds(created.getProject().getUsers())).build())
+                .priority(PriorityDto.builder().id(priority.getId()).name(priority.getName().name()).build())
+                .build();
+    }
+
+    public IssueDto createFromBoard(CreateIssueDto data) throws NotFoundException, AttributeException {
         Optional<Column> column = columnRepository.findById(data.getColumnId());
         if (!column.isPresent()) {
             throw new NotFoundException("Column with id '" + data.getColumnId() + "' not found");
         }
-        if (cardRepository.findByNameAndColumn(data.getName(), column.get()).isPresent()) {
+        if (issueRepository.findByNameAndColumn(data.getName(), column.get()).isPresent()) {
             throw new AttributeException("Card with name '" + data.getName() + "' exists");
         }
-        int order = cardRepository.countCardByColumn(column.get());
-        Issue card = cardRepository.save(Issue.builder().name(data.getName())
+        int order = issueRepository.countIssueByColumn(column.get());
+        Issue card = issueRepository.save(Issue.builder().name(data.getName())
                 .column(column.get())
                 .order(order)
                 .build());
         Priority priority = priorityRepository
-                .save(Priority.builder().name(PriorityNameEnum.MEDIUM).cards(Arrays.asList(card)).build());
-        Issue created = cardRepository.save(card.withPriority(priority));
+                .save(Priority.builder().name(PriorityNameEnum.MEDIUM).issues(Arrays.asList(card)).build());
+        Issue created = issueRepository.save(card.withPriority(priority));
         return IssueDto.builder().id(created.getId()).name(created.getName())
                 .columnId(created.getColumn().getId())
                 .priority(PriorityDto.builder().id(priority.getId()).name(priority.getName().name()).build())
@@ -64,7 +95,7 @@ public class IssueService {
     }
 
     public IssueDto findById(String id) {
-        Optional<Issue> card = cardRepository.findById(id);
+        Optional<Issue> card = issueRepository.findById(id);
         if (card.isPresent()) {
             return IssueDto.builder().id(card.get().getId()).name(card.get().getName())
                     .columnId(card.get().getColumn().getId())
@@ -82,11 +113,11 @@ public class IssueService {
     }
 
     public IssueDto update(String id, UpdateCardDto data) {
-        Optional<Issue> card = cardRepository.findById(id);
+        Optional<Issue> card = issueRepository.findById(id);
         if (card.isPresent()) {
             Priority priority = priorityRepository.save(
                     card.get().getPriority().withName(enumUtil.parsePriorityStringToEnum(data.getPriorityName())));
-            Issue updateCard = cardRepository
+            Issue updateCard = issueRepository
                     .save(card.get().withName(data.getName()).withDescription(data.getDescription())
                             .withPriority(priority)
                             .withUsers(data.getUsers().stream().map(UserDto::getId).collect(Collectors.toList())));
@@ -106,9 +137,9 @@ public class IssueService {
     }
 
     public IssueDto updateOrder(String id, int order) {
-        Optional<Issue> card = cardRepository.findById(id);
+        Optional<Issue> card = issueRepository.findById(id);
         if (card.isPresent()) {
-            Issue updateCard = cardRepository.save(card.get().withOrder(order));
+            Issue updateCard = issueRepository.save(card.get().withOrder(order));
             return IssueDto.builder().id(updateCard.getId()).name(updateCard.getName())
                     .columnId(card.get().getColumn().getId())
                     .description(updateCard.getDescription())
@@ -122,10 +153,10 @@ public class IssueService {
     }
 
     public IssueDto updateColumn(String id, String columnId) {
-        Optional<Issue> card = cardRepository.findById(id);
+        Optional<Issue> card = issueRepository.findById(id);
         Optional<Column> column = columnRepository.findById(columnId);
         if (card.isPresent() && column.isPresent()) {
-            Issue updateCard = cardRepository.save(card.get().withColumn(column.get()));
+            Issue updateCard = issueRepository.save(card.get().withColumn(column.get()));
             return IssueDto.builder().id(updateCard.getId()).name(updateCard.getName())
                     .columnId(card.get().getColumn().getId())
                     .description(updateCard.getDescription())
@@ -141,11 +172,11 @@ public class IssueService {
     public List<IssueDto> updateOrder(List<IssueDto> data) throws NotFoundException {
         List<IssueDto> result = new ArrayList<>();
         for (IssueDto element : data) {
-            Optional<Issue> card = cardRepository.findById(element.getId());
+            Optional<Issue> card = issueRepository.findById(element.getId());
             if (!card.isPresent()) {
                 throw new NotFoundException("Card with id '" + element.getId() + "' not found");
             }
-            Issue updated = cardRepository.save(card.get().withOrder(element.getOrder()));
+            Issue updated = issueRepository.save(card.get().withOrder(element.getOrder()));
             result.add(IssueDto.builder().name(updated.getName())
                     .order(updated.getOrder())
                     .columnId(card.get().getColumn().getId())
@@ -160,7 +191,7 @@ public class IssueService {
     public List<IssueDto> updateOrderAndColumn(List<IssueDto> data) throws NotFoundException {
         List<IssueDto> result = new ArrayList<>();
         for (IssueDto element : data) {
-            Optional<Issue> card = cardRepository.findById(element.getId());
+            Optional<Issue> card = issueRepository.findById(element.getId());
             if (!card.isPresent()) {
                 throw new NotFoundException("Card with id '" + element.getId() + "' not found");
             }
@@ -168,7 +199,7 @@ public class IssueService {
             if (!column.isPresent()) {
                 throw new NotFoundException("Column with id '" + element.getColumnId() + "' not found");
             }
-            Issue updated = cardRepository.save(card.get().withOrder(element.getOrder()).withColumn(column.get()));
+            Issue updated = issueRepository.save(card.get().withOrder(element.getOrder()).withColumn(column.get()));
             result.add(IssueDto.builder().name(updated.getName())
                     .order(updated.getOrder())
                     .columnId(card.get().getColumn().getId())

@@ -21,20 +21,20 @@ public class PriorityService {
     @Autowired
     private PriorityRepository priorityRepository;
     @Autowired
-    private IssueRepository cardRepository;
+    private IssueRepository issueRepository;
     @Autowired
     private EnumUtil enumUtil;
 
     public PriorityDto create(CreatePriorityDto data) throws NotFoundException {
-        Optional<Issue> card = cardRepository.findById(data.getCardId());
-        if (!card.isPresent()) {
+        Optional<Issue> issue = issueRepository.findById(data.getCardId());
+        if (!issue.isPresent()) {
             throw new NotFoundException("Card with id '" + data.getCardId() + "' not found");
         }
         Priority priority = priorityRepository
                 .save(Priority.builder().name(enumUtil.parsePriorityStringToEnum(data.getName()))
-                        .cards(Arrays.asList(card.get()))
+                        .issues(Arrays.asList(issue.get()))
                         .build());
         return PriorityDto.builder().id(priority.getId()).name(priority.getName().name())
-                .cardId(card.get().getId()).build();
+                .cardId(issue.get().getId()).build();
     }
 }

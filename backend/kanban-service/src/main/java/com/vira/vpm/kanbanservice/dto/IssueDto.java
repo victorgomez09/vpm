@@ -23,6 +23,8 @@ public class IssueDto {
     private List<TagDto> tags;
     private PriorityDto priority;
     private List<CommentDto> comments;
+    private ProjectDto project;
+    private SprintDto sprint;
     private String columnId;
     private Date creationDate;
     private Date updateDate;

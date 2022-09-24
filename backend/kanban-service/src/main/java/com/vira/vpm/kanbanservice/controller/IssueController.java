@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vira.vpm.common.exception.AttributeException;
 import com.vira.vpm.common.exception.NotFoundException;
 import com.vira.vpm.kanbanservice.dto.IssueDto;
-import com.vira.vpm.kanbanservice.dto.CreateCardDto;
+import com.vira.vpm.kanbanservice.dto.CreateIssueDto;
 import com.vira.vpm.kanbanservice.dto.UpdateCardDto;
 import com.vira.vpm.kanbanservice.service.IssueService;
 
 @RestController
-@RequestMapping("/boards/card")
+@RequestMapping("/issues")
 public class IssueController {
 
     @Autowired
@@ -31,10 +31,16 @@ public class IssueController {
         return ResponseEntity.ok().body(cardService.findById(cardId));
     }
 
-    @PostMapping
-    public ResponseEntity<IssueDto> create(@RequestBody CreateCardDto data)
+    @PostMapping("/create-from-backlog")
+    public ResponseEntity<IssueDto> createFromBacklog(@RequestBody CreateIssueDto data)
             throws NotFoundException, AttributeException {
-        return ResponseEntity.ok().body(cardService.create(data));
+        return ResponseEntity.ok().body(cardService.createFromBacklog(data));
+    }
+
+    @PostMapping("/create-from-board")
+    public ResponseEntity<IssueDto> createFromBoard(@RequestBody CreateIssueDto data)
+            throws NotFoundException, AttributeException {
+        return ResponseEntity.ok().body(cardService.createFromBacklog(data));
     }
 
     @PutMapping("{cardId}")
@@ -48,7 +54,8 @@ public class IssueController {
     }
 
     @PutMapping("/sortWithColumns")
-    public ResponseEntity<List<IssueDto>> sortCardsAndColumns(@RequestBody List<IssueDto> data) throws NotFoundException {
+    public ResponseEntity<List<IssueDto>> sortCardsAndColumns(@RequestBody List<IssueDto> data)
+            throws NotFoundException {
         return ResponseEntity.ok().body(cardService.updateOrderAndColumn(data));
     }
 }

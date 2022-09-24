@@ -13,7 +13,9 @@ import com.vira.vpm.kanbanservice.entity.Column;
 
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, String> {
-    int countCardByColumn(Column column);
+    int countIssueByColumn(Column column);
+
+    Optional<Issue> findByName(String name);
 
     Optional<Issue> findByNameAndColumn(String name, Column column);
 

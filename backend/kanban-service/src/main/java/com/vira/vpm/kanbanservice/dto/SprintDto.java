@@ -3,15 +3,15 @@ package com.vira.vpm.kanbanservice.dto;
 import java.util.Date;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@JsonInclude(Include.NON_NULL)
 public class SprintDto {
     private String id;
     private String name;
@@ -21,6 +21,7 @@ public class SprintDto {
     private Date startDate;
     private Date endDate;
     private String objective;
+    private ProjectDto project;
     private Date creationDate;
     private Date updateDate;
 }

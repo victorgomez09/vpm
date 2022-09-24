@@ -46,7 +46,7 @@ public class Priority {
     private PriorityNameEnum name;
 
     @OneToMany(mappedBy = "priority", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Issue> cards;
+    private List<Issue> issues;
 
     @CreationTimestamp
     @Column(name = "creation_date")

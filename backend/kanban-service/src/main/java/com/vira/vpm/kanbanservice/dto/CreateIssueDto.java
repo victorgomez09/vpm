@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CreateCardDto {
+public class CreateIssueDto {
     private String name;
     private String columnId;
+    private String projectId;
+    private String sprintId;
 }

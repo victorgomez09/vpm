@@ -19,15 +19,21 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.With;
 
 @Entity
 @Table(name = "sprints")
-@Data
 @Builder
 @With
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Sprint {
 
     @Id

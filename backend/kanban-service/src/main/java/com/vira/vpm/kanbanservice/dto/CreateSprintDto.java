@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateSprintDto {
-    private String id;
     private String name;
     private Date startDate;
     private Date endDate;
     private String objective;
+    private String projectId;
 }
