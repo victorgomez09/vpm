@@ -1,7 +1,4 @@
 spring:
-  data:
-    rest:
-      basePath: /api/issue-tracker
   jpa:
     hibernate:
       ddl-auto: update
@@ -26,6 +23,7 @@ spring:
 
 server:
   port: ${PORT:${SERVER_PORT:0}}
+  context-path: /api/issue-tracker
 
 eureka:
   client:
