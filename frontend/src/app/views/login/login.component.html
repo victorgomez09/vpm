@@ -1,69 +1,74 @@
-<section class="h-100">
-  <div class="container h-100">
-    <div class="row justify-content-center align-items-center h-100">
-      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-        <!-- <div class="text-center my-5">
-          <h1>VPM</h1>
-        </div> -->
-        <div class="card border-0 shadow-lg mt-2">
-          <div class="card-body p-4">
-            <h1 class="fs-4 card-title text-center fw-bold mb-4">Sign in</h1>
-            <div class="alert aler-danger" *ngIf="loginError">
-              Something goes wrong, please retry in a moment!
-            </div>
-            <form [formGroup]="loginForm">
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="email"
-                  >E-Mail Address</label
-                >
-                <input
-                  id="email"
-                  type="email"
-                  class="form-control"
-                  name="email"
-                  formControlName="email"
-                  [ngClass]="{
-                    'is-invalid': f['email'].touched && f['email'].errors
-                  }"
-                />
-                <div class="invalid-feedback">Email is invalid</div>
-              </div>
-
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="password">Password</label>
-                <input
-                  id="password"
-                  type="password"
-                  class="form-control"
-                  name="password"
-                  formControlName="password"
-                  [ngClass]="{
-                    'is-invalid': f['password'].touched && f['password'].errors
-                  }"
-                />
-                <div class="invalid-feedback">Password is required</div>
-              </div>
-
-              <div class="align-items-center d-flex">
-                <button
-                  type="submit"
-                  class="btn btn-primary ms-auto"
-                  [disabled]="loginForm.invalid"
-                  (click)="submit()"
-                >
-                  Sign in
-                </button>
-              </div>
-            </form>
-          </div>
-          <div class="card-footer py-3 border-0">
-            <div class="text-center">
-              Don't have an account?
-              <a routerLink="/register" class="text-dark">Register</a>
+<div class="container h-100 w-100">
+  <div class="row mx-0 h-100 w-100">
+    <div class="col-12 h-100 w-100">
+      <div
+        class="d-flex flex-column justify-content-center align-items-center h-100 w-100"
+      >
+        <h3 class="text-center fs-4 fw-semibold">Login</h3>
+        <form class="mt-2" [formGroup]="loginForm">
+          <div class="mb-3">
+            <label for="sign-in-email" class="form-label">Email</label>
+            <div class="relative">
+              <input
+                type="text"
+                id="sign-in-email"
+                name="email"
+                class="form-control shadow-lg"
+                aria-describedby="email-text-input"
+                formControlName="email"
+                [ngClass]="{
+                  'is-invalid': f['email'].touched && f['email'].errors
+                }"
+              />
+              <span
+                class="invalid-feedback fw-light fst-italic"
+                id="email-validation"
+              >
+                Please enter a valid email address.
+              </span>
             </div>
           </div>
-        </div>
+          <div class="mb-3">
+            <label for="sign-in-password" class="form-label">Password</label>
+            <div class="relative">
+              <input
+                type="password"
+                id="sign-in-password"
+                name="password"
+                class="form-control shadow-lg"
+                aria-describedby="password-text-input"
+                formControlName="password"
+                [ngClass]="{
+                  'is-invalid': f['password'].touched && f['password'].errors
+                }"
+              />
+              <span
+                class="invalid-feedback fw-light fst-italic"
+                id="password-validation"
+              >
+                Please enter a password.
+              </span>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+            [disabled]="loginForm.invalid"
+            (click)="submit()"
+          >
+            Send
+          </button>
+        </form>
+        <span
+          class="text-center fst-italic fw-light mt-4"
+          style="font-size: 0.8em"
+        >
+          Don't have an account?
+          <a routerLink="/register" class="text-primary underline"
+            >Register here</a
+          ></span
+        >
       </div>
     </div>
   </div>
-</section>
+</div>

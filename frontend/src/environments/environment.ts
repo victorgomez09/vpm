@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://victin09-vpm-jwj4xqr63597r-8080.githubpreview.dev',
+  // apiUrl: 'https://victin09-vpm-jwj4xqr63597r-8080.githubpreview.dev',
+  apiUrl: 'http://127.0.0.1:8080',
 };
 
 /*

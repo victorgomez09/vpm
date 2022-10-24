@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: kanban-service
-  cloud:
-    config:
-      enabled: true
-      name: kanban-service
-      uri: http://localhost:8081

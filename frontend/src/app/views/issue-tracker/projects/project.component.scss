@@ -1,0 +1,22 @@
+textarea {
+  resize: none;
+}
+.card:hover {
+  // transform: scale(1.05) rotate(2deg);
+  // transform: scale(1.05);
+  opacity: 0.75;
+  cursor: pointer;
+  // z-index: 2;
+}
+
+.sidebar {
+  z-index: 5;
+}
+.color-picker:hover {
+  opacity: 0.5;
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
+  grid-gap: 1em;
+}

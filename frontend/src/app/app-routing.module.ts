@@ -30,12 +30,12 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'kanban',
-        loadChildren: () => import('./views').then((m) => m.KanbanModule),
+        path: 'issue-tracker',
+        loadChildren: () => import('./views').then((m) => m.ProjectModule),
         canActivate: [AuthGuard],
       },
       {
-        path: 'kanban/board/:id',
+        path: 'issue-tracker/board/:id',
         loadChildren: () => import('./views').then((m) => m.BoardModule),
         canActivate: [AuthGuard],
       },

@@ -1,5 +1,5 @@
 export * from './dashboard';
-export * from './kanban';
+export * from './issue-tracker';
 export * from './landing';
 export * from './login';
 export * from './not-found';

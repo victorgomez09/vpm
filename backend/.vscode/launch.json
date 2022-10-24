@@ -1,64 +1,64 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-ConfigServerApplication<config-server>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.vira.vpm.configserver.ConfigServerApplication",
-            "projectName": "config-server",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-EurekaApplication<eureka>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.vira.vpm.eureka.EurekaApplication",
-            "projectName": "eureka",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GatewayApplication<gateway>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.vira.vpm.gateway.GatewayApplication",
-            "projectName": "gateway",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-ProjectServiceApplication<project-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.vira.vpm.project.ProjectServiceApplication",
-            "projectName": "project-service",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-UsersApplication<user-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.vira.vpm.users.UsersApplication",
-            "projectName": "user-service",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-AuthServiceApplication<auth-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.vira.vpm.authservice.AuthServiceApplication",
-            "projectName": "auth-service",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        }
-    ]
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ConfigServerApplication<config-cloud-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.vira.vpm.configserver.ConfigServerApplication",
+      "projectName": "config-cloud-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-EurekaApplication<eureka>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.vira.vpm.eureka.EurekaApplication",
+      "projectName": "eureka",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-GatewayApplication<gateway>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.vira.vpm.gateway.GatewayApplication",
+      "projectName": "gateway",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-ProjectServiceApplication<project-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.vira.vpm.project.ProjectServiceApplication",
+      "projectName": "project-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-UsersApplication<user-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.vira.vpm.users.UsersApplication",
+      "projectName": "user-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-AuthServiceApplication<auth-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.vira.vpm.authservice.AuthServiceApplication",
+      "projectName": "auth-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
 }

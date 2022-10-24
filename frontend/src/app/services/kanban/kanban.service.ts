@@ -11,9 +11,11 @@ import {
   CreateBoard,
   CreateCard,
   CreateColumn,
+  CreateProject,
+  Project,
   UpdateBoardDto,
   UpdateCard,
-} from '../../models/kanban.model';
+} from '../../models/issue-tracker.model';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -21,11 +23,56 @@ import { AuthService } from '../auth/auth.service';
 })
 export class KanbanService {
   private columnArraySubject: BehaviorSubject<Column[]>;
-  columns$: Observable<Column[]>;
+  public columns$: Observable<Column[]>;
+  private subPath: string
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.columnArraySubject = new BehaviorSubject<Column[]>([]);
     this.columns$ = this.columnArraySubject.asObservable();
+    this.subPath = "api/issue-tracker"
+  }
+
+  getProjects(userId: string): Observable<Project[]> {
+    return this.http
+      .get<Project[]>(`${environment.apiUrl}/${this.subPath}/projects?user=${userId}`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+      })
+      .pipe(catchError(handleError<Project[]>('getProjects', [])));
+  }
+
+  createProject(data: CreateProject): Observable<Project> {
+    return this.http
+      .post<Project>(
+        `${environment.apiUrl}/${this.subPath}/projects`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
+      .pipe(
+        catchError(
+          handleError<Project>('createProject', {
+            id: '',
+            name: '',
+            code: '',
+            description: '',
+            color: '',
+            users: [],
+            responsible: {
+              id: '',
+              email: '',
+              fullname: '',
+              image: ''
+            },
+            creationDate: new Date(),
+            updateDate: new Date(),
+          })
+        )
+      );
   }
 
   getBoards(userId: string): Observable<Board[]> {

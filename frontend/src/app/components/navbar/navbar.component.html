@@ -1,65 +1,29 @@
-<nav
-  class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark shadow-lg p-2"
->
+<nav class="navbar navbar-expand-lg shadow-lg">
   <div class="container-fluid">
-    <a class="navbar-brand fw-semibold" routerLink="/dashboard">vira.PM</a>
+    <a class="navbar-brand" routerLink="/dashboard">viraPM</a>
     <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown"
+      data-bs-target="#app-navbar"
+      aria-controls="app-navbar"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav ms-auto d-flex align-items-center">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/kanban" routerLinkActive="active"
-            ><i class="bi bi-kanban"></i
-          ></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" routerLink="/calendar"
-            ><i class="bi bi-calendar-date"></i
-          ></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" routerLink="/chat"
-            ><i class="bi bi-chat-left-dots"></i
-          ></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" routerLink="/docs"
-            ><i class="bi bi-file-earmark-text"></i
-          ></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" routerLink="/drive"
-            ><i class="bi bi-device-hdd"></i
-          ></a>
-        </li>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle d-flex align-items-center"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Hi {{firstName}}
-            <div class="bg-primary rounded p-1 ms-2">{{initials}}</div>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" routerLink="">Action</a></li>
-            <li><a class="dropdown-item" routerLink="">Another action</a></li>
-            <li>
-              <a class="dropdown-item" routerLink="">Something else here</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class="collapse navbar-collapse" id="app-navbar">
+      <div class="navbar-nav">
+        <a
+          class="nav-link"
+          routerLink="/issue-tracker"
+          routerLinkActive="active"
+          >Issue tracker</a
+        >
+        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link" href="#">Pricing</a>
+        <a class="nav-link disabled">Disabled</a>
+      </div>
     </div>
   </div>
 </nav>

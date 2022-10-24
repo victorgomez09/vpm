@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -9,10 +10,10 @@ import { getFirstWordOfString, getInitials } from '../../utils/text.util';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [RouterModule],
+  imports: [CommonModule, RouterModule],
 })
 export class NavbarComponent implements OnInit {
-  toggleNavbar: boolean = false;
+  navbarToggle: boolean = false;
   user?: User;
   firstName?: string;
   initials?: string;
@@ -27,7 +28,7 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  handleToggleNavbar(): void {
-    this.toggleNavbar = !this.toggleNavbar;
+  handleNavbarToggler(): void {
+    this.navbarToggle = !this.navbarToggle;
   }
 }

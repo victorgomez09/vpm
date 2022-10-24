@@ -1,0 +1,259 @@
+<div class="p-4 h-100">
+  <div
+    class="row d-flex flex-column w-100"
+    *ngIf="projects && !loading; else renderLoading"
+  >
+    <div class="col-12 w-100">
+      <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <span class="fs-4">Projects</span>
+        <button
+          type="button"
+          class="btn btn-sm btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createProjectModal"
+        >
+          Create project
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sx-12 col-sm-4 col-md-4">
+      <input
+        type="text"
+        id="search"
+        name="search"
+        class="form-control shadow"
+        placeholder="Search..."
+        [(ngModel)]="filterText"
+        (input)="search()"
+      />
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="d-flex flex-wrap w-100">
+        <div
+          class="card rounded-1 shadow border-0 bg-light"
+          *ngFor="let project of filteredProjects"
+          [ngClass]="['border-start', 'border-4', 'border-' + project.color]"
+          routerLink="/issue-tracker/board/{{project.id}}"
+        >
+          <div class="card-body">
+            <h5 class="card-title">
+              <span
+                class="fw-semibold"
+                style="opacity: 0.7"
+                >{{ project.code }}</span
+              >
+              {{ project.name }}
+            </h5>
+            <p class="truncate">
+              {{
+                !project.description ? "No description" : project.description
+              }}
+            </p>
+            <span
+              class="fw-light text-end d-block"
+              style="opacity: 0.7"
+              >{{project.creationDate | date}}</span
+            >
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Create board modal -->
+  <div
+    class="modal fade"
+    id="createProjectModal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="create-project-modal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create new project</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div
+            *ngIf="createdBoard"
+            class="alert alert-success fade show"
+            role="alert"
+          >
+            <strong>Project created!</strong> You can close this window.
+          </div>
+          <form [formGroup]="projectForm">
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                class="form-control"
+                name="name"
+                formControlName="name"
+                (keyup)="generateCode()"
+                [ngClass]="{
+                  'is-invalid': f['name'].touched && f['name'].errors
+                }"
+              />
+              <div class="invalid-feedback">Name is required</div>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="code">Code</label>
+              <input
+                id="code"
+                type="text"
+                class="form-control"
+                name="code"
+                formControlName="code"
+                [value]="f['code'].value"
+                [ngClass]="{
+                  'is-invalid': f['code'].touched && f['code'].errors
+                }"
+              />
+              <div class="invalid-feedback">Code is required</div>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="description"
+                >Description</label
+              >
+              <textarea
+                id="description"
+                class="form-control"
+                name="description"
+                rows="3"
+                formControlName="description"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="type">Type</label>
+              <select
+                id="type"
+                class="form-select"
+                aria-label="Default select example"
+                formControlName="type"
+                [ngClass]="{
+                  'is-invalid': f['type'].touched && f['type'].errors
+                }"
+              >
+                <option value="KANBAN">Kanban</option>
+                <option value="SCRUM">Scrum</option>
+              </select>
+              <div class="invalid-feedback">Type is required</div>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="color">Color</label>
+              <div class="d-flex flex-wrap">
+                <div
+                  class="bg-light cursor-pointer me-1 rounded color-picker"
+                  [ngClass]="{
+                    'p-2': projectBackgroundColor === 'light',
+                    'p-3': projectBackgroundColor !== 'light'
+                  }"
+                  (click)="handleChangeColor('light')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="projectBackgroundColor === 'light'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-primary cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': projectBackgroundColor === 'primary',
+                    'p-3': projectBackgroundColor !== 'primary'
+                  }"
+                  (click)="handleChangeColor('primary')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="projectBackgroundColor === 'primary'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-info cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': projectBackgroundColor === 'info',
+                    'p-3': projectBackgroundColor !== 'info'
+                  }"
+                  (click)="handleChangeColor('info')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="projectBackgroundColor === 'info'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-danger cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': projectBackgroundColor === 'danger',
+                    'p-3': projectBackgroundColor !== 'danger'
+                  }"
+                  (click)="handleChangeColor('danger')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="projectBackgroundColor === 'danger'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-warning cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': projectBackgroundColor === 'warning',
+                    'p-3': projectBackgroundColor !== 'warning'
+                  }"
+                  (click)="handleChangeColor('warning')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="projectBackgroundColor === 'warning'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-success cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': projectBackgroundColor === 'success',
+                    'p-3': projectBackgroundColor !== 'success'
+                  }"
+                  (click)="handleChangeColor('success')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="projectBackgroundColor === 'success'"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="projectForm.invalid"
+                (click)="createProject()"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #renderLoading>
+    <app-loading></app-loading>
+  </ng-template>
+</div>

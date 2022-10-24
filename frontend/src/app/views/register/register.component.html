@@ -1,370 +1,124 @@
-<!-- <div class="w-full h-full flex items-center justify-center">
-  <div class="w-80 p-6 bg-white rounded-md shadow-md dark:bg-gray-800">
-    <a
-      routerLink="/"
-      class="block text-3xl font-semibold text-center text-gray-700 dark:text-white"
-    >
-      VPM
-    </a>
-
-    <div
-      *ngIf="registered"
-      class="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800"
-    >
-      <div class="flex items-center justify-center w-12 bg-emerald-500">
-        <svg
-          class="w-6 h-6 text-white fill-current"
-          viewBox="0 0 40 40"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z"
-          />
-        </svg>
-      </div>
-
-      <div class="px-4 py-2 -mx-3">
-        <div class="mx-3">
-          <span class="font-semibold text-emerald-500 dark:text-emerald-400"
-            >Success</span
-          >
-          <p class="text-sm text-gray-600 dark:text-gray-200">
-            Your account was registered, now you can
-            <a
-              routerLink="/login"
-              class="font-medium text-gray-700 dark:text-gray-200 hover:underline"
-              >login</a
-            >!
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      *ngIf="registeredError"
-      class="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800"
-    >
-      <div class="flex items-center justify-center w-12 bg-red-500">
-        <svg
-          class="w-6 h-6 text-white fill-current"
-          viewBox="0 0 40 40"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z"
-          />
-        </svg>
-      </div>
-
-      <div class="px-4 py-2 -mx-3">
-        <div class="mx-3">
-          <span class="font-semibold text-red-500 dark:text-red-400"
-            >Error</span
-          >
-          <p class="text-sm text-gray-600 dark:text-gray-200">
-            {{ registeredErrorCode === 400 ? 'Your email is already used!' : 'Something goes wrong' }}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <form class="mt-6" [formGroup]="registerForm">
-      <div>
-        <label
-          for="email"
-          class="block text-sm text-gray-800 dark:text-gray-200"
-          >Email</label
-        >
-        <input
-          type="email"
-          placeholder="admin@vpm.es"
-          formControlName="email"
-          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-          [ngClass]="{
-            'border-red-400': f['email'].touched && f['email'].errors
-          }"
-        />
-        <div
-          class="text-sm italic text-red-400"
-          *ngIf="f['email'].touched && f['email'].errors"
-        >
-          {{ f["email"].errors["required"] && "Email cannot be empty" }}
-          {{ f["email"].errors["email"] && "Invalid email pattern" }}
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <label
-          for="fullname"
-          class="block text-sm text-gray-800 dark:text-gray-200"
-          >Fullname</label
-        >
-        <input
-          type="text"
-          placeholder="Admin Vpm"
-          formControlName="fullname"
-          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-          [ngClass]="{
-            'border-red-400': f['fullname'].touched && f['fullname'].errors
-          }"
-        />
-        <div
-          class="text-sm italic text-red-400"
-          *ngIf="f['fullname'].touched && f['fullname'].errors"
-        >
-          {{ f["fullname"].errors["required"] && "Fullname cannot be empty" }}
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <div class="flex items-center justify-between">
-          <label
-            for="password"
-            class="block text-sm text-gray-800 dark:text-gray-200"
-            >Password</label
-          >
-        </div>
-
-        <input
-          type="password"
-          placeholder="**********"
-          formControlName="password"
-          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-          [ngClass]="{
-            'border-red-400': f['password'].touched && f['password'].errors
-          }"
-        />
-        <div
-          class="text-sm italic text-red-400"
-          *ngIf="f['password'].touched && f['password'].errors"
-        >
-          {{ f["password"].errors["required"] && "Password cannot be empty" }}
-          {{
-            f["password"].errors["minlength"] &&
-              "Password must be longer than " +
-                f["password"].errors["minlength"].requiredLength +
-                " characteres"
-          }}
-        </div>
-      </div>
-
-      <div class="mt-4">
-        <div class="flex items-center justify-between">
-          <label
-            for="confirmPassword"
-            class="block text-sm text-gray-800 dark:text-gray-200"
-            >Confirm password</label
-          >
-        </div>
-
-        <input
-          type="password"
-          placeholder="**********"
-          formControlName="confirmPassword"
-          class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-          [ngClass]="{
-            'border-red-400':
-              f['confirmPassword'].touched && f['confirmPassword'].errors
-          }"
-        />
-        <div
-          class="text-sm italic text-red-400"
-          *ngIf="f['confirmPassword'].touched && f['confirmPassword'].errors"
-        >
-          {{
-            f["confirmPassword"].errors["required"] &&
-              "Confirm password cannot be empty"
-          }}
-          {{
-            f["confirmPassword"].errors["confirmedValidator"] &&
-              "Passwords must be the same"
-          }}
-        </div>
-      </div>
-
-      <div class="mt-6">
-        <button
-          class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600"
-          [disabled]="registerForm.invalid"
-          (click)="onSubmit()"
-        >
-          Register
-        </button>
-      </div>
-    </form>
-
-    <div class="flex items-center justify-between mt-4">
-      <span class="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
-
-      <a
-        href="#"
-        class="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
-        >or login with Social Media</a
+<div class="container h-100 w-100">
+  <div class="row py-2 mx-0 h-100 w-100">
+    <div class="col-12 h-100 w-100">
+      <div
+        class="d-flex flex-column justify-content-center align-items-center h-100 w-100"
       >
-
-      <span class="w-1/5 border-b dark:border-gray-400 lg:w-1/5"></span>
-    </div>
-
-    <div class="flex items-center mt-6 -mx-2">
-      <button
-        type="button"
-        class="flex items-center justify-center w-full px-6 py-2 mx-2 text-sm font-medium text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:bg-blue-400 focus:outline-none"
-      >
-        <svg class="w-4 h-4 mx-2 fill-current" viewBox="0 0 24 24">
-          <path
-            d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z"
-          ></path>
-        </svg>
-
-        <span class="hidden mx-2 sm:inline">Sign in with Google</span>
-      </button>
-
-      <a
-        href="#"
-        class="p-2 mx-2 text-sm font-medium text-gray-500 transition-colors duration-200 transform bg-gray-300 rounded-md hover:bg-gray-200"
-      >
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-          <path
-            d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"
-          ></path>
-        </svg>
-      </a>
-    </div>
-
-    <p class="mt-8 text-xs font-light text-center text-gray-400">
-      Already have an account?
-      <a
-        routerLink="/login"
-        routerLinkActive="active"
-        class="font-medium text-gray-700 dark:text-gray-200 hover:underline"
-        >Sign in</a
-      >
-    </p>
-  </div>
-</div> -->
-
-<section class="h-100">
-  <div class="container h-100">
-    <div class="row justify-content-center align-items-center h-100">
-      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-        <!-- <div class="text-center my-5">
-          <h1>VPM</h1>
-        </div> -->
-        <div class="card shadow mt-2">
-          <div class="card-body p-4 overflow-auto">
-            <h1 class="fs-4 card-title text-center fw-bold mb-4">Sign in</h1>
-            <form [formGroup]="registerForm">
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="fullname">Fullname</label>
-                <input
-                  id="fullname"
-                  type="fullname"
-                  class="form-control"
-                  name="text"
-                  formControlName="fullname"
-                  [ngClass]="{
-                    'is-invalid': f['fullname'].touched && f['fullname'].errors
-                  }"
-                />
-                <div class="invalid-feedback">Fullname is invalid</div>
-              </div>
-
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="email"
-                  >E-Mail Address</label
-                >
-                <input
-                  id="email"
-                  type="email"
-                  class="form-control"
-                  name="email"
-                  formControlName="email"
-                  [ngClass]="{
-                    'is-invalid': f['email'].touched && f['email'].errors
-                  }"
-                />
-                <div class="invalid-feedback">Email is invalid</div>
-              </div>
-
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="password">Password</label>
-                <input
-                  id="password"
-                  type="password"
-                  class="form-control"
-                  name="password"
-                  formControlName="password"
-                  [ngClass]="{
-                    'is-invalid': f['password'].touched && f['password'].errors
-                  }"
-                />
-                <div class="invalid-feedback">
-                  {{ (f["password"].errors && f["password"].errors["required"]) && "Password cannot be empty"}}
-                  {{
-                    (f["password"].errors && f["password"].errors["minlength"]) &&
-                        "Password must be longer than " +
-                          f["password"].errors["minlength"].requiredLength +
-                          " characteres"
-                  }}
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="confirmPassword"
-                  >Confirm password</label
-                >
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  class="form-control"
-                  name="confirmPassword"
-                  formControlName="confirmPassword"
-                  [ngClass]="{
-                    'is-invalid':
-                      f['confirmPassword'].touched &&
-                      f['confirmPassword'].errors
-                  }"
-                />
-                <div class="invalid-feedback">
-                  {{ (f["confirmPassword"].errors && f["confirmPassword"].errors["required"]) && "Password cannot be empty" }}
-                  {{
-                    (f["confirmPassword"].errors && f["confirmPassword"].errors["confirmedValidator"]) &&
-                      "Passwords must be the same"
-                  }}
-                </div>
-                <!-- <div class="invalid-feedback">
-                  {{
-                      f["confirmPassword"].errors!["required"] &&
-                        "Confirm password cannot be empty"
-                  }}
-                  {{
-                      f["confirmPassword"].errors!["confirmedValidator"] &&
-                        "Passwords must be the same"
-                  }}
-                </div> -->
-              </div>
-
-              <!-- {{registerForm.invalid}} -->
-              <div class="align-items-center d-flex">
-                <button
-                  type="submit"
-                  class="btn btn-primary ms-auto"
-                  [disabled]="registerForm.invalid"
-                  (click)="onSubmit()"
-                >
-                  Sign in
-                </button>
-              </div>
-            </form>
+        <h3 class="text-center fs-4 fw-semibold">Create new account</h3>
+        <form class="mt-2" [formGroup]="registerForm">
+          <div class="mb-3">
+            <label for="sign-up-fullname" class="form-label">Fullname</label>
+            <input
+              type="text"
+              id="sign-up-fullname"
+              name="fullname"
+              class="form-control shadow-lg"
+              aria-describedby="fullname-text-input"
+              formControlName="fullname"
+              [ngClass]="{
+                'is-invalid': f['fullname'].touched && f['fullname'].errors
+              }"
+            />
+            <span class="invalid-feedback fst-italic" id="fullname-validation">
+              Please enter a valid name.
+            </span>
           </div>
-          <div class="card-footer py-3 border-0">
-            <div class="text-center">
-              Don't have an account?
-              <a routerLink="/register" class="text-dark">Register</a>
-            </div>
+          <div class="mb-3">
+            <label for="sign-up-email" class="form-label">Email</label>
+            <input
+              type="text"
+              id="sign-up-email"
+              name="email"
+              class="form-control shadow-lg"
+              aria-describedby="email-text-input"
+              formControlName="email"
+              [ngClass]="{
+                'is-invalid': f['email'].touched && f['email'].errors
+              }"
+            />
+            <span class="invalid-feedback" id="email-validation">
+              Please enter a valid email address.
+            </span>
           </div>
-        </div>
+          <div class="mb-3">
+            <label for="sign-up-password" class="form-label">Password</label>
+            <input
+              type="sign-up-password"
+              id="password"
+              name="password"
+              class="form-control shado-lg"
+              aria-describedby="password-text-input"
+              formControlName="password"
+              [ngClass]="{
+                'is-invalid': f['password'].touched && f['password'].errors
+              }"
+            />
+            <span class="invalid-feedback fst-italic" id="password-validation">
+              {{
+                f["password"].errors &&
+                  f["password"].errors["required"] &&
+                  "Password cannot be empty"
+              }}
+              {{
+                f["password"].errors &&
+                  f["password"].errors["minlength"] &&
+                  "Password must be longer than " +
+                    f["password"].errors["minlength"].requiredLength +
+                    " characteres"
+              }}
+            </span>
+          </div>
+          <div class="mb-3">
+            <label for="sign-up-confirm-password" class="form-label"
+              >Confirm password</label
+            >
+            <input
+              type="password"
+              id="sign-up-confirm-password"
+              name="confirm-password"
+              class="form-control shadow-lg"
+              aria-describedby="confirmPassword-text-input"
+              formControlName="confirmPassword"
+              [ngClass]="{
+                'is-invalid':
+                  f['confirmPassword'].touched && f['confirmPassword'].errors
+              }"
+            />
+            <span
+              class="invalid-feedback fst-italic"
+              id="confirmPassword-validation"
+            >
+              {{
+                f["confirmPassword"].errors &&
+                  f["confirmPassword"].errors["required"] &&
+                  "Confirm password cannot be empty"
+              }}
+              {{
+                f["confirmPassword"].errors &&
+                  f["confirmPassword"].errors["confirmedValidator"] &&
+                  "Passwords must be the same"
+              }}
+            </span>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+            [disabled]="registerForm.invalid"
+            (click)="onSubmit()"
+          >
+            Send
+          </button>
+        </form>
+        <span
+          class="text-center fw-light fst-italic mt-5"
+          style="font-size: 0.8em"
+        >
+          Already have an account?
+          <a routerLink="/login" class="text-primary underline"
+            >Login here</a
+          ></span
+        >
       </div>
     </div>
   </div>
-</section>
+</div>

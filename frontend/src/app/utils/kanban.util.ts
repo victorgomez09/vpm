@@ -1,4 +1,4 @@
-import { Card, Column } from 'src/app/models/kanban.model';
+import { Card, Column } from 'src/app/models/issue-tracker.model';
 
 export const sortColumns = (array: Column[]): Column[] => {
   array.forEach((element, index) => (element.order = index));

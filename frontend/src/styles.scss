@@ -1,15 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import "_variables.scss";
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 @import "_components.scss";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-html, body {
-    height: 100%;
-    width: 100%;
-    font-family: 'Roboto', sans-serif;
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: "Roboto", sans-serif;
 }
 
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #878787 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 9px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff00;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #878787;
+  border-radius: 5px;
+  border: 3px solid #ffffff;
 }
