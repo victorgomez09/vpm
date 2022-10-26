@@ -3,7 +3,7 @@ services:
   db:
     container_name: pg_container
     image: postgres
-    restart: always
+    restart: "on-failure"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -13,7 +13,7 @@ services:
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
-    restart: always
+    restart: "on-failure"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@vira.com
       PGADMIN_DEFAULT_PASSWORD: vira

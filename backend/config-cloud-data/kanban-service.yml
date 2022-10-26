@@ -24,7 +24,7 @@ spring:
 server:
   port: ${PORT:${SERVER_PORT:0}}
   servlet:
-    context-path: /api/issue-tracker
+    context-path: /api/kanban
 
 eureka:
   client:
