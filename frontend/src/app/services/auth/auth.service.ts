@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, Observable, ReplaySubject } from 'rxjs';
 import { handleError } from 'src/app/utils/exception.util';
 import { environment } from 'src/environments/environment';
@@ -13,7 +14,7 @@ export class AuthService {
   private userSubject: ReplaySubject<User>;
   public user$: Observable<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.userSubject = new ReplaySubject<User>();
     this.user$ = this.userSubject.asObservable();
   }
@@ -91,5 +92,11 @@ export class AuthService {
         })
       )
     );
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('token');
+    this.userSubject.next({ id: '', email: '', fullname: '', image: '' });
+    this.router.navigate(['/']);
   }
 }

@@ -2,8 +2,8 @@ import { User } from './auth.model';
 
 export interface Project {
   id: string;
-  code: string;
   name: string;
+  code: string;
   description: string;
   color: string;
   users: User[];
@@ -25,7 +25,9 @@ export interface CreateProject {
 export interface Board {
   id: string;
   name: string;
+  code: string;
   description: string;
+  color: string;
   image: string;
   users: User[];
   columns: Column[];
@@ -35,8 +37,11 @@ export interface Board {
 
 export interface CreateBoard {
   name: string;
+  code: string;
   description: string;
-  image: string;
+  color: string;
+  image?: string;
+  users: string[];
 }
 
 export interface UpdateBoardDto {

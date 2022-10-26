@@ -1,0 +1,145 @@
+<div class="h-100" *ngIf="board; else displayLoadingBlock">
+  <div
+    class="container-fluid h-100"
+    *ngIf="!permissionBoard; else displayBoardBlock"
+  >
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      You don't have permissions to see this board
+    </div>
+  </div>
+  <ng-template #displayBoardBlock>
+    <div class="container-fluid bg-{{board.color}} h-100">
+      <div class="row h-100">
+        <div class="col-12 overflow-auto">
+          <div class="row mt-3">
+            <div
+              class="col-lg-12 d-flex align-items-center justify-content-between w-100"
+            >
+              <h3 class="fw-semibold">{{board.name}}</h3>
+              <div
+                class="rounded-circle"
+                *ngFor="let user of board.users"
+              ></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="d-flex flex-row flex-md-row align-items-start h-100">
+              <div
+                class="d-flex py-3"
+                cdkDropListGroup
+                cdkDropList
+                cdkDropListOrientation="horizontal"
+                (cdkDropListDropped)="drop($event)"
+              >
+                <div
+                  *ngFor="let column of columns$ | async"
+                  cdkDrag
+                  cdkDragHandle
+                  [cdkDragData]="column"
+                >
+                  <app-column
+                    [column]="column"
+                    [cards]="column.cards"
+                  ></app-column>
+                </div>
+              </div>
+              <div class="py-3">
+                <div
+                  class="text-center bg-light p-4 px-3 rounded mb-5 me-3 add-column"
+                >
+                  <span
+                    class="cursor-pointer"
+                    *ngIf="!addNewColumn; else showNewColumnForm"
+                    (click)="addNewColumn = !addNewColumn"
+                    >Add new column</span
+                  >
+                  <ng-template #showNewColumnForm>
+                    <form [formGroup]="columnForm">
+                      <textarea
+                        class="form-control"
+                        rows="3"
+                        formControlName="name"
+                        (keyup.enter)="submit($event)"
+                        [ngClass]="{
+                          'is-invalid': f['name'].touched && f['name'].errors
+                        }"
+                      ></textarea>
+                      <div class="invalid-feedback">Name is required</div>
+                    </form>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="showUsersModal"
+      tabindex="-1"
+      aria-labelledby="showUsersModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="showUsersModalLabel">
+              Add user to board
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="px-3 py-2">
+            <input
+              class="form-control sticky-top top-0"
+              type="text"
+              placeholder="Search..."
+              [(ngModel)]="filteredText"
+              (keyup)="search()"
+            />
+          </div>
+          <div class="modal-body overflow-auto">
+            <div class="mb-3">
+              <div
+                *ngIf="
+                  filteredUsers.length === 0;
+                  else displayFilteredUsersBlock
+                "
+              >
+                <span class="text-muted" *ngIf="filteredText !== ''">
+                  No users found.
+                </span>
+              </div>
+              <ng-template #displayFilteredUsersBlock>
+                <ol class="list-group mt-1">
+                  <li
+                    class="list-group-item list-group-item-action py-2 px-3 d-flex justify-content-between align-items-start cursor-pointer"
+                    *ngFor="let user of filteredUsers"
+                    (click)="addUserToBoard(user)"
+                  >
+                    <div class="d-flex flex-column ms-2 me-auto">
+                      <span class="fw-bold">{{user.fullname}}</span>
+                      <span class="text-muted">{{user.email}}</span>
+                    </div>
+                  </li>
+                </ol>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #displayLoadingBlock>
+  <app-loading></app-loading>
+</ng-template>
+
+<router-outlet name="card"></router-outlet>

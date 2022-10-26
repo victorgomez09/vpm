@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, Subject } from 'rxjs';
-import { User } from 'src/app/models/auth.model';
+import { BehaviorSubject, catchError, Observable } from 'rxjs';
 import { handleError } from 'src/app/utils/exception.util';
 import { environment } from 'src/environments/environment';
 import {
@@ -24,89 +23,42 @@ import { AuthService } from '../auth/auth.service';
 export class KanbanService {
   private columnArraySubject: BehaviorSubject<Column[]>;
   public columns$: Observable<Column[]>;
-  private subPath: string
+  private subPath: string;
+  private httpParams: HttpParams;
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.columnArraySubject = new BehaviorSubject<Column[]>([]);
     this.columns$ = this.columnArraySubject.asObservable();
-    this.subPath = "api/issue-tracker"
+    this.subPath = '/api/issue-tracker';
+    this.httpParams = new HttpParams();
   }
 
-  getProjects(userId: string): Observable<Project[]> {
+  getBoards(userId: string): Observable<Board[]> {
     return this.http
-      .get<Project[]>(`${environment.apiUrl}/${this.subPath}/projects?user=${userId}`, {
+      .get<Board[]>(`${environment.apiUrl}${this.subPath}/boards`, {
+        headers: {
+          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+        },
+        params: this.httpParams.set('user', userId),
+      })
+      .pipe(catchError(handleError<Board[]>('getBoards', [])));
+  }
+
+  getBoardById(boardId: string): Observable<Board> {
+    return this.http
+      .get<Board>(`${environment.apiUrl}/api/issue-tracker/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
         },
       })
-      .pipe(catchError(handleError<Project[]>('getProjects', [])));
-  }
-
-  createProject(data: CreateProject): Observable<Project> {
-    return this.http
-      .post<Project>(
-        `${environment.apiUrl}/${this.subPath}/projects`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-          },
-        }
-      )
       .pipe(
         catchError(
-          handleError<Project>('createProject', {
+          handleError<Board>('getBoardById', {
             id: '',
             name: '',
             code: '',
             description: '',
             color: '',
-            users: [],
-            responsible: {
-              id: '',
-              email: '',
-              fullname: '',
-              image: ''
-            },
-            creationDate: new Date(),
-            updateDate: new Date(),
-          })
-        )
-      );
-  }
-
-  getBoards(userId: string): Observable<Board[]> {
-    return this.http
-      .get<Board[]>(`${environment.apiUrl}/boards/list?user=${userId}`, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
-      .pipe(catchError(handleError<Board[]>('getBoards', [])));
-  }
-
-  createBoard(userId: string, data: CreateBoard): Observable<Board> {
-    return this.http
-      .post<Board>(
-        `${environment.apiUrl}/boards`,
-        {
-          name: data.name,
-          description: data.description,
-          image: data.image,
-          users: [userId],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-          },
-        }
-      )
-      .pipe(
-        catchError(
-          handleError<Board>('createBoard', {
-            id: '',
-            name: '',
-            description: '',
             image: '',
             columns: [],
             users: [],
@@ -117,19 +69,21 @@ export class KanbanService {
       );
   }
 
-  getBoardById(boardId: string): Observable<Board> {
+  createBoard(data: CreateBoard): Observable<Board> {
     return this.http
-      .get<Board>(`${environment.apiUrl}/boards/${boardId}`, {
+      .post<Board>(`${environment.apiUrl}/api/issue-tracker/boards`, data, {
         headers: {
           Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
         },
       })
       .pipe(
         catchError(
-          handleError<Board>('getBoardById', {
+          handleError<Board>('createBoard', {
             id: '',
             name: '',
+            code: '',
             description: '',
+            color: '',
             image: '',
             columns: [],
             users: [],
@@ -143,17 +97,23 @@ export class KanbanService {
   updateBoard(boardId: string, data: UpdateBoardDto): Observable<Board> {
     console.log('boardId', boardId);
     return this.http
-      .put<Board>(`${environment.apiUrl}/boards/${boardId}`, data, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
+      .put<Board>(
+        `${environment.apiUrl}/api/issue-tracker/boards/${boardId}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
       .pipe(
         catchError(
           handleError<Board>('addUserToBoard', {
             id: '',
             name: '',
+            code: '',
             description: '',
+            color: '',
             image: '',
             columns: [],
             users: [],
@@ -167,7 +127,7 @@ export class KanbanService {
   createColumn(data: CreateColumn): Observable<Column> {
     return this.http
       .post<Column>(
-        `${environment.apiUrl}/boards/column`,
+        `${environment.apiUrl}/api/issue-tracker/columns`,
         {
           name: data.name,
           boardId: data.boardId,
@@ -194,18 +154,22 @@ export class KanbanService {
 
   sortColumns(data: Column[]): Observable<Column[]> {
     return this.http
-      .put<Column[]>(`${environment.apiUrl}/boards/column/sort`, data, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
+      .put<Column[]>(
+        `${environment.apiUrl}/api/issue-tracker/columns/sort`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
       .pipe(catchError(handleError('sortColumns', [])));
   }
 
   createCard(data: CreateCard): Observable<Card> {
     return this.http
       .post<Card>(
-        `${environment.apiUrl}/boards/card`,
+        `${environment.apiUrl}/api/issue-tracker/cards`,
         {
           name: data.name,
           columnId: data.columnId,
@@ -239,11 +203,14 @@ export class KanbanService {
 
   getCardById(cardId: string): Observable<Card> {
     return this.http
-      .get<Card>(`${environment.apiUrl}/boards/card/${cardId}`, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
+      .get<Card>(
+        `${environment.apiUrl}/api/issue-tracker/cards/${cardId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
       .pipe(
         catchError(
           handleError<Card>('getCardById', {
@@ -267,31 +234,43 @@ export class KanbanService {
 
   sortCards(data: Card[]): Observable<Card[]> {
     return this.http
-      .put<Card[]>(`${environment.apiUrl}/boards/card/sort`, data, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
+      .put<Card[]>(
+        `${environment.apiUrl}/api/issue-tracker/cards/sort`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
       .pipe(catchError(handleError<Card[]>('sortCards', [])));
   }
 
   sortCardsAndUpdateColumn(data: Card[]): Observable<Card[]> {
     return this.http
-      .put<Card[]>(`${environment.apiUrl}/boards/card/sortWithColumns`, data, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
+      .put<Card[]>(
+        `${environment.apiUrl}/api/issue-tracker/cards/sortWithColumns`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
       .pipe(catchError(handleError<Card[]>('sortCardsAndUpdateColumn', [])));
   }
 
   updateCard(id: string, data: UpdateCard): Observable<Card> {
     return this.http
-      .put<Card>(`${environment.apiUrl}/boards/card/${id}`, data, {
-        headers: {
-          Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
-        },
-      })
+      .put<Card>(
+        `${environment.apiUrl}/api/issue-tracker/cards/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${this.authService.getTokenFromStorage()}`,
+          },
+        }
+      )
       .pipe(
         catchError(
           handleError<Card>('updateCard', {

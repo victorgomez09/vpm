@@ -1,0 +1,238 @@
+<div class="p-4">
+  <div
+    class="row d-flex flex-column w-100"
+    *ngIf="boards && !loading; else renderLoading"
+  >
+    <div class="col-12 w-100">
+      <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <span class="fs-4">Boards</span>
+        <button
+          type="button"
+          class="btn btn-sm btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createProjectModal"
+        >
+          Create board
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sx-12 col-sm-4 col-md-4">
+      <input
+        type="text"
+        id="search"
+        name="search"
+        class="form-control shadow"
+        placeholder="Search..."
+        [(ngModel)]="filterText"
+        (input)="search()"
+      />
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="d-flex flex-wrap w-100">
+        <div
+          class="card me-2 rounded-1 shadow-lg border-0"
+          *ngFor="let board of filteredBoards"
+          [ngClass]="['border-start', 'border-4', 'border-' + board.color]"
+          routerLink="/kanban/board/{{ board.id }}"
+          style="width: 15em; flex: 1 1 auto"
+        >
+          <div class="card-body">
+            <h5 class="card-title">
+              <span class="fw-semibold" style="opacity: 0.7">{{
+                board.code
+              }}</span>
+              {{ board.name }}
+            </h5>
+            <p class="truncate">
+              {{ !board.description ? "No description" : board.description }}
+            </p>
+            <span class="fw-light text-end d-block" style="opacity: 0.7">{{
+              board.creationDate | date
+            }}</span>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Create board modal -->
+  <div
+    class="modal fade"
+    id="createProjectModal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="create-project-modal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create new board</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div
+            *ngIf="createdBoard"
+            class="alert alert-success fade show"
+            role="alert"
+          >
+            <strong>Project created!</strong> You can close this window.
+          </div>
+          <form [formGroup]="boardForm">
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                class="form-control"
+                name="name"
+                formControlName="name"
+                (keyup)="generateCode()"
+                [ngClass]="{
+                  'is-invalid': f['name'].touched && f['name'].errors
+                }"
+              />
+              <div class="invalid-feedback">Name is required</div>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="code">Code</label>
+              <input
+                id="code"
+                type="text"
+                class="form-control"
+                name="code"
+                formControlName="code"
+                [value]="f['code'].value"
+                [ngClass]="{
+                  'is-invalid': f['code'].touched && f['code'].errors
+                }"
+              />
+              <div class="invalid-feedback">Code is required</div>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="description"
+                >Description</label
+              >
+              <textarea
+                id="description"
+                class="form-control"
+                name="description"
+                rows="3"
+                formControlName="description"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="mb-2 text-muted" for="color">Color</label>
+              <div class="d-flex flex-wrap">
+                <div
+                  class="bg-light cursor-pointer me-1 rounded color-picker"
+                  [ngClass]="{
+                    'p-2': boardBackgroundColor === 'light',
+                    'p-3': boardBackgroundColor !== 'light'
+                  }"
+                  (click)="handleChangeColor('light')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="boardBackgroundColor === 'light'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-primary cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': boardBackgroundColor === 'primary',
+                    'p-3': boardBackgroundColor !== 'primary'
+                  }"
+                  (click)="handleChangeColor('primary')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="boardBackgroundColor === 'primary'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-info cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': boardBackgroundColor === 'info',
+                    'p-3': boardBackgroundColor !== 'info'
+                  }"
+                  (click)="handleChangeColor('info')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="boardBackgroundColor === 'info'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-danger cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': boardBackgroundColor === 'danger',
+                    'p-3': boardBackgroundColor !== 'danger'
+                  }"
+                  (click)="handleChangeColor('danger')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="boardBackgroundColor === 'danger'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-warning cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': boardBackgroundColor === 'warning',
+                    'p-3': boardBackgroundColor !== 'warning'
+                  }"
+                  (click)="handleChangeColor('warning')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="boardBackgroundColor === 'warning'"
+                  ></i>
+                </div>
+                <div
+                  class="bg-success cursor-pointer me-1 rounded text-white color-picker"
+                  [ngClass]="{
+                    'p-2': boardBackgroundColor === 'success',
+                    'p-3': boardBackgroundColor !== 'success'
+                  }"
+                  (click)="handleChangeColor('success')"
+                >
+                  <i
+                    class="bi bi-check"
+                    *ngIf="boardBackgroundColor === 'success'"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="boardForm.invalid"
+                (click)="createBoard()"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #renderLoading>
+    <app-loading></app-loading>
+  </ng-template>
+</div>

@@ -13,7 +13,6 @@ import { getFirstWordOfString, getInitials } from '../../utils/text.util';
   imports: [CommonModule, RouterModule],
 })
 export class NavbarComponent implements OnInit {
-  navbarToggle: boolean = false;
   user?: User;
   firstName?: string;
   initials?: string;
@@ -28,7 +27,7 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  handleNavbarToggler(): void {
-    this.navbarToggle = !this.navbarToggle;
+  userLogout() {
+    this.authService.logout();
   }
 }

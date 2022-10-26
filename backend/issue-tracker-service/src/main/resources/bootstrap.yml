@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: issue-tracker-service
-  cloud:
-    config:
-      enabled: true
-      name: issue-tracker-service
-      uri: http://localhost:8081

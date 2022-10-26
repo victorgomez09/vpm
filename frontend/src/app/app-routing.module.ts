@@ -25,17 +25,15 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    loadComponent: () =>
-      import('./components/templates').then((m) => m.KanbanTemplateComponent),
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'issue-tracker',
-        loadChildren: () => import('./views').then((m) => m.ProjectModule),
+        path: 'kanban',
+        loadChildren: () => import('./views').then((m) => m.KanbanModule),
         canActivate: [AuthGuard],
       },
       {
-        path: 'issue-tracker/board/:id',
+        path: 'kanban/board/:id',
         loadChildren: () => import('./views').then((m) => m.BoardModule),
         canActivate: [AuthGuard],
       },
@@ -46,8 +44,6 @@ const appRoutes: Routes = [
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./components/templates').then((m) => m.LandingTemplateComponent),
     children: landingRoutes,
   },
   {
